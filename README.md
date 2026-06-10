@@ -1,6 +1,8 @@
 # 👑 Fintech Tycoon — Zero to King
 
-A self-contained learning game that takes you from absolute zero to mastery of **Finance 💰, Tech 💻 and AI 🤖** — by building your own virtual fintech empire.
+A retro Game Boy-style RPG that takes you from absolute zero to mastery of **Finance 💰, Tech 💻 and AI 🤖**. Quizzes are turn-based monster battles: every module is a wild Finmon to tame, every answer is an attack, and you only have 3 hearts.
+
+**Play now: https://royconstantymartin-hub.github.io/Smartgaming/**
 
 Everything lives in a single file: **`index.html`**. No install, no backend, no API key.
 

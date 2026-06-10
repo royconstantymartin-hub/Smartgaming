@@ -5,113 +5,144 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Fintech Tycoon — Zero to King</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
   :root{
-    --bg:#0b1020; --bg2:#111832; --card:#161f3d; --card2:#1c2750;
-    --line:#2a3866; --txt:#e8ecff; --dim:#8b96c4;
-    --gold:#ffd166; --cyan:#4cc9f0; --violet:#a78bfa; --green:#34d399; --red:#f87171;
-    --grad:linear-gradient(135deg,#7c3aed,#4cc9f0);
+    --ink:#20203a; --paper:#f8f8f0; --cream:#f0e8d0; --screen:#e8f0d8;
+    --red:#d04848; --blue:#4878d0; --green:#50a850; --gold:#c89010; --violet:#8858c8;
+    --hpg:#58c858; --hpy:#d8b820; --hpr:#d04848;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;min-height:100vh}
-  #app{max-width:980px;margin:0 auto;padding:16px 16px 90px}
-  h1{font-size:1.5rem} h2{font-size:1.2rem;margin-bottom:10px} h3{font-size:1rem}
-  .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
-  .card.glow{box-shadow:0 0 24px rgba(124,58,237,.25)}
-  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-  .grid{display:grid;gap:12px}
-  .grid.cols3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-  .grid.cols2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
-  .pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.75rem;border:1px solid var(--line);background:var(--bg2);color:var(--dim)}
-  .pill.gold{color:var(--gold);border-color:#5d4a1a}
-  .pill.green{color:var(--green);border-color:#1a5d40}
-  .pill.red{color:var(--red);border-color:#5d1a1a}
-  .pill.cyan{color:var(--cyan);border-color:#1a4a5d}
-  button{font:inherit;cursor:pointer;border:none;border-radius:10px;padding:10px 16px;background:var(--card2);color:var(--txt);border:1px solid var(--line);transition:transform .08s, filter .15s}
-  button:hover{filter:brightness(1.18)} button:active{transform:scale(.97)}
-  button.primary{background:var(--grad);border:none;font-weight:700}
-  button.big{width:100%;padding:14px;font-size:1.05rem}
-  button:disabled{opacity:.4;cursor:not-allowed;filter:none}
-  .bar{height:8px;background:var(--bg2);border-radius:999px;overflow:hidden;border:1px solid var(--line)}
-  .bar>i{display:block;height:100%;background:var(--grad);border-radius:999px;transition:width .4s}
-  .bar.gold>i{background:linear-gradient(90deg,#f59e0b,#ffd166)}
-  .bar.green>i{background:linear-gradient(90deg,#059669,#34d399)}
-  .stat{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:10px 14px;flex:1;min-width:120px;text-align:center}
-  .stat .v{font-size:1.25rem;font-weight:800} .stat .l{font-size:.72rem;color:var(--dim);text-transform:uppercase;letter-spacing:.06em}
-  .muted{color:var(--dim);font-size:.88rem}
-  .opt{display:block;width:100%;text-align:left;margin:8px 0;padding:13px 14px;border-radius:10px;background:var(--bg2);border:1px solid var(--line);font-size:.95rem}
-  .opt.correct{background:#0f3d2c;border-color:var(--green)}
-  .opt.wrong{background:#3d1414;border-color:var(--red)}
-  .opt.faded{opacity:.45}
-  nav{position:fixed;bottom:0;left:0;right:0;background:rgba(13,18,38,.95);backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;justify-content:center;gap:4px;padding:8px;z-index:50}
-  nav button{background:none;border:none;color:var(--dim);font-size:.78rem;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 14px;border-radius:10px}
-  nav button .ico{font-size:1.3rem}
-  nav button.on{color:var(--txt);background:var(--card2)}
-  .module{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--card);cursor:pointer;transition:transform .1s}
-  .module:hover{transform:translateY(-2px)}
-  .module.locked{opacity:.45;cursor:not-allowed}
-  .module .ico{font-size:1.6rem}
-  .tierhead{display:flex;align-items:center;gap:10px;margin:18px 0 10px}
-  .tierhead .ln{flex:1;height:1px;background:var(--line)}
-  .lesson li{margin:9px 0 9px 18px;line-height:1.5}
-  .toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:var(--card2);border:1px solid var(--violet);padding:10px 22px;border-radius:999px;font-weight:700;z-index:99;animation:pop 1.8s forwards}
-  @keyframes pop{0%{opacity:0;transform:translateX(-50%) translateY(-16px)}12%{opacity:1;transform:translateX(-50%) translateY(0)}80%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-10px)}}
-  .timer{font-size:1.5rem;font-weight:800;color:var(--gold);text-align:center}
-  .timer.danger{color:var(--red);animation:blink .5s infinite alternate}
-  @keyframes blink{to{opacity:.4}}
-  .expl{background:var(--bg2);border-left:3px solid var(--cyan);padding:10px 12px;border-radius:0 10px 10px 0;margin-top:10px;font-size:.9rem;line-height:1.5}
+  html{background:#181828}
+  body{
+    font-family:'Press Start 2P','Courier New',monospace;
+    color:var(--ink); background:#181828; min-height:100vh;
+    image-rendering:pixelated; -webkit-font-smoothing:none;
+  }
+  #shell{max-width:760px;margin:0 auto;min-height:100vh;background:var(--screen);
+    box-shadow:0 0 0 6px #383850,0 0 0 12px #101018; position:relative; overflow-x:hidden}
+  #shell::after{ /* CRT scanlines */
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:200;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,.06) 0 1px, transparent 1px 3px);
+  }
+  #app{padding:14px 12px 110px}
+  h1{font-size:14px;line-height:1.6} h2{font-size:12px;line-height:1.6} h3{font-size:10px;line-height:1.7}
+  p,li,button,span,div{font-size:10px;line-height:1.8}
+  .tiny{font-size:8px;line-height:1.8}
+  /* pixel box: double border GB dialog style */
+  .pb{background:var(--paper); border:3px solid var(--ink); box-shadow:inset 0 0 0 2px var(--paper), inset 0 0 0 4px var(--ink);
+    padding:14px; margin:10px 0; border-radius:2px}
+  .pb.dark{background:var(--ink); color:var(--paper); box-shadow:inset 0 0 0 2px var(--ink), inset 0 0 0 4px var(--paper)}
+  .pb.cream{background:var(--cream); box-shadow:inset 0 0 0 2px var(--cream), inset 0 0 0 4px var(--ink)}
+  button{font-family:inherit; cursor:pointer; color:var(--ink);
+    background:var(--paper); border:3px solid var(--ink);
+    box-shadow:2px 2px 0 var(--ink); padding:10px 12px; text-transform:uppercase}
+  button:active{transform:translate(2px,2px); box-shadow:none}
+  button.primary{background:var(--gold); color:#fff; text-shadow:1px 1px 0 var(--ink)}
+  button.danger{background:var(--red); color:#fff; text-shadow:1px 1px 0 var(--ink)}
+  button.big{width:100%; padding:14px; font-size:11px}
+  button:disabled{opacity:.45; cursor:not-allowed}
+  .row{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+  .sb{justify-content:space-between}
+  .grid2{display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+  .grid3{display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+  .bar{height:10px; background:#c8c8b0; border:2px solid var(--ink); position:relative}
+  .bar>i{display:block; height:100%; transition:width .5s steps(8)}
   .center{text-align:center}
-  input[type=text]{font:inherit;width:100%;padding:13px;border-radius:10px;border:1px solid var(--line);background:var(--bg2);color:var(--txt)}
-  .upg{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:13px;background:var(--card)}
-  .upg.owned{border-color:var(--green)}
-  .upg .ico{font-size:1.7rem}
-  .crown{font-size:3.2rem;animation:floaty 3s ease-in-out infinite}
-  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-  .ranktrack{display:flex;flex-direction:column;gap:6px}
-  .rankrow{display:flex;gap:10px;align-items:center;padding:7px 10px;border-radius:9px;background:var(--bg2);border:1px solid var(--line)}
-  .rankrow.now{border-color:var(--gold);background:#2a2412}
-  .rankrow.done{opacity:.55}
-  .combo{font-weight:800;color:var(--gold)}
-  @media(max-width:600px){ #app{padding:12px 10px 90px} .stat{min-width:100px} }
+  .caps{text-transform:uppercase}
+  .blink{animation:blink 1s steps(2) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .sprite{font-size:52px; line-height:1; filter:drop-shadow(3px 3px 0 rgba(32,32,58,.35))}
+  .sprite.big{font-size:72px}
+  .sprite.mini{font-size:26px}
+  .sprite.shadow{filter:brightness(0) opacity(.55)}
+  .hit{animation:hit .45s steps(3)}
+  @keyframes hit{0%{transform:translateX(0)}25%{transform:translateX(-10px);filter:brightness(3)}50%{transform:translateX(8px)}75%{transform:translateX(-6px);filter:brightness(3)}100%{transform:translateX(0)}}
+  .appear{animation:appear .5s steps(5)}
+  @keyframes appear{from{transform:translateY(-18px) scale(.3);opacity:0}to{transform:none;opacity:1}}
+  .faint{animation:faint .7s steps(6) forwards}
+  @keyframes faint{to{transform:translateY(34px);opacity:0}}
+  /* battle layout */
+  .bfield{background:linear-gradient(180deg,#a8d8a0 0 62%, #88b878 62% 100%);
+    border:3px solid var(--ink); padding:10px; position:relative; min-height:215px; margin:10px 0}
+  .erow{display:flex; justify-content:space-between; align-items:flex-start; gap:8px}
+  .prow{display:flex; justify-content:space-between; align-items:flex-end; gap:8px; margin-top:14px}
+  .infobox{background:var(--paper); border:3px solid var(--ink); box-shadow:3px 3px 0 rgba(32,32,58,.4); padding:8px 10px; min-width:175px}
+  .hearts{font-size:14px; letter-spacing:2px}
+  .moves{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+  @media(max-width:560px){ .moves{grid-template-columns:1fr} .infobox{min-width:130px} .sprite{font-size:42px}.sprite.big{font-size:58px} }
+  .move{text-align:left; text-transform:none; font-size:9px; line-height:1.7; padding:9px}
+  .move.good{background:var(--green); color:#fff}
+  .move.bad{background:var(--red); color:#fff}
+  .move.fade{opacity:.45}
+  .arrow{position:absolute; right:12px; bottom:6px; animation:blink 1s steps(2) infinite}
+  .dlg{position:relative; min-height:64px}
+  nav{position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:760px;
+    background:var(--paper); border-top:4px solid var(--ink); display:flex; z-index:100}
+  nav button{flex:1; border:none; box-shadow:none; border-right:3px solid var(--ink); padding:9px 2px;
+    display:flex; flex-direction:column; align-items:center; gap:3px; background:var(--paper); font-size:8px}
+  nav button:last-child{border-right:none}
+  nav button .nico{font-size:18px}
+  nav button.on{background:var(--ink); color:var(--paper)}
+  nav button:active{transform:none}
+  .badge{display:inline-block; width:34px; height:34px; line-height:30px; text-align:center;
+    border:3px solid var(--ink); background:var(--paper); font-size:16px; margin-right:6px}
+  .badge.empty{opacity:.3}
+  .tag{display:inline-block; border:2px solid var(--ink); padding:2px 6px; font-size:8px; background:var(--paper); text-transform:uppercase}
+  .tag.gold{background:var(--gold); color:#fff} .tag.red{background:var(--red); color:#fff}
+  .tag.green{background:var(--green); color:#fff} .tag.blue{background:var(--blue); color:#fff}
+  .mcard{cursor:pointer} .mcard:active{transform:translate(2px,2px)}
+  input[type=text]{font-family:inherit; font-size:11px; width:100%; padding:12px;
+    border:3px solid var(--ink); background:#fff; color:var(--ink); text-transform:uppercase}
+  .toast{position:fixed; top:12px; left:50%; transform:translateX(-50%); z-index:300;
+    background:var(--ink); color:var(--paper); border:3px solid var(--paper); box-shadow:0 0 0 3px var(--ink);
+    padding:10px 16px; font-size:10px; animation:tpop 2s steps(8) forwards}
+  @keyframes tpop{0%{opacity:0;transform:translateX(-50%) translateY(-14px)}10%{opacity:1;transform:translateX(-50%)}85%{opacity:1}100%{opacity:0}}
+  .lessonli{margin:0 0 12px 0; padding-left:16px; position:relative}
+  .lessonli::before{content:"▶"; position:absolute; left:0; font-size:8px; top:4px}
+  .crown{font-size:60px; animation:floaty 2s steps(4) infinite}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  .timerbox{font-size:14px; color:#fff; background:var(--red); border:3px solid var(--ink); padding:5px 9px}
+  .rankrow{display:flex; gap:8px; align-items:center; padding:6px 8px; border-bottom:2px dashed #b0b098}
+  .rankrow.now{background:var(--gold); color:#fff}
+  .rankrow.done{opacity:.5}
 </style>
 </head>
 <body>
-<div id="app"></div>
+<div id="shell"><div id="app"></div></div>
 <script>
 "use strict";
 /* ============================================================
-   FINTECH TYCOON — ZERO TO KING
-   A self-contained learning RPG/tycoon game.
-   Built-in adaptive engine: Leitner spaced repetition +
-   dynamic difficulty + weak-concept targeting. No backend.
+   FINTECH TYCOON — ZERO TO KING  (Retro GB Edition)
+   Quiz = monster battles. Leitner spaced repetition with
+   true day-gating, dynamic difficulty, tycoon economy.
    ============================================================ */
 
 /* ----------------------- GAME DATA ----------------------- */
 
 const RANKS = [
-  {xp:0,    name:"Intern",          ico:"🪪"},
-  {xp:150,  name:"Analyst",         ico:"📊"},
-  {xp:400,  name:"Associate",       ico:"💼"},
-  {xp:800,  name:"Senior Associate",ico:"📈"},
-  {xp:1400, name:"Vice President",  ico:"🏦"},
-  {xp:2200, name:"Director",        ico:"🎯"},
-  {xp:3200, name:"C-Suite Executive",ico:"🥂"},
-  {xp:4500, name:"CEO",             ico:"🚀"},
-  {xp:6000, name:"Unicorn Founder", ico:"🦄"},
-  {xp:8000, name:"Fintech King",    ico:"👑"},
+  {xp:0,     name:"Intern",           ico:"🪪"},
+  {xp:300,   name:"Analyst",          ico:"📊"},
+  {xp:800,   name:"Associate",        ico:"💼"},
+  {xp:1600,  name:"Senior Associate", ico:"📈"},
+  {xp:2800,  name:"Vice President",   ico:"🏦"},
+  {xp:4500,  name:"Director",         ico:"🎯"},
+  {xp:7000,  name:"C-Suite Executive",ico:"🥂"},
+  {xp:10500, name:"CEO",              ico:"🚀"},
+  {xp:15000, name:"Unicorn Founder",  ico:"🦄"},
+  {xp:21000, name:"FINTECH KING",     ico:"👑"},
 ];
 
-const TRACKS = {fin:{name:"Finance",ico:"💰",color:"#ffd166"}, tech:{name:"Tech",ico:"💻",color:"#4cc9f0"}, ai:{name:"AI",ico:"🤖",color:"#a78bfa"}};
+const TRACKS = {fin:{name:"Finance",ico:"💰",cls:"gold"}, tech:{name:"Tech",ico:"💻",cls:"blue"}, ai:{name:"AI",ico:"🤖",cls:"green"}};
 
 const TIERS = [
-  {n:1, name:"Foundations", boss:"The Gatekeeper Banker"},
-  {n:2, name:"Core Skills", boss:"The Quant Shark"},
-  {n:3, name:"Advanced Play", boss:"The Crypto Baron"},
-  {n:4, name:"Master Class", boss:"The Old King of Fintech"},
+  {n:1, name:"Foundations",  boss:"GATEKEEPER",   bico:"🧛", badge:"🏦"},
+  {n:2, name:"Core Skills",  boss:"QUANT SHARK",  bico:"🦈", badge:"📈"},
+  {n:3, name:"Advanced Play",boss:"CRYPTO BARON", bico:"🐉", badge:"💎"},
+  {n:4, name:"Master Class", boss:"THE OLD KING", bico:"👹", badge:"👑"},
 ];
 
 const MODULES = [
-{id:"fin1", track:"fin", tier:1, ico:"🏦", name:"Money & Banking Basics",
+{id:"fin1", track:"fin", tier:1, ico:"🏦", mon:"COINLET", mico:"🐣", name:"Money & Banking Basics",
  lesson:[
   "Money does three jobs: a medium of exchange (you pay with it), a unit of account (you price things in it), and a store of value (you save it).",
   "Commercial banks take deposits from savers and lend that money to borrowers. The gap between the interest they pay and the interest they charge is their core profit.",
@@ -120,7 +151,7 @@ const MODULES = [
   "Central banks (the Fed, the ECB) do not serve customers. They set interest rates, manage the money supply, and act as lender of last resort to keep the system stable.",
   "Banks only keep a fraction of deposits on hand (fractional reserve banking) — trust and regulation keep this machine running.",
  ]},
-{id:"tech1", track:"tech", tier:1, ico:"⚙️", name:"How Software Works",
+{id:"tech1", track:"tech", tier:1, ico:"⚙️", mon:"BITPUP", mico:"🐶", name:"How Software Works",
  lesson:[
   "Hardware is the physical machine; software is the set of instructions (code) that tells it what to do.",
   "Apps usually split into a frontend (what the user sees and touches) and a backend (servers and logic running elsewhere).",
@@ -129,7 +160,7 @@ const MODULES = [
   "A server is just a computer that listens for requests and answers them — 'the cloud' is someone else's servers.",
   "Open-source software is code anyone can read, use, and improve. Most of fintech runs on top of it.",
  ]},
-{id:"ai1", track:"ai", tier:1, ico:"🧠", name:"What Is AI?",
+{id:"ai1", track:"ai", tier:1, ico:"🧠", mon:"NEURITE", mico:"🐙", name:"What Is AI?",
  lesson:[
   "Artificial Intelligence is software that performs tasks that normally require human intelligence: recognizing, predicting, deciding, generating.",
   "Rules-based systems follow instructions a human wrote (IF x THEN y). Machine learning systems learn patterns from data instead of being explicitly programmed.",
@@ -138,7 +169,7 @@ const MODULES = [
   "The recent AI boom comes from three things converging: huge datasets, cheap massive compute (GPUs), and better algorithms.",
   "AI can be confidently wrong. It reflects the biases and gaps of its training data — never treat its output as guaranteed truth.",
  ]},
-{id:"fin2", track:"fin", tier:2, ico:"📈", name:"Markets & Investing",
+{id:"fin2", track:"fin", tier:2, ico:"📈", mon:"BULLISH", mico:"🐂", name:"Markets & Investing",
  lesson:[
   "A share of stock is a slice of ownership in a company. Shareholders gain via price increases and dividends.",
   "A bond is a loan you make to a company or government. It pays interest (the coupon) and returns the principal at maturity.",
@@ -148,7 +179,7 @@ const MODULES = [
   "Market capitalization = share price × number of shares. It is what the market says a company is worth.",
   "When interest rates rise, existing bonds with lower coupons become less attractive, so their prices fall.",
  ]},
-{id:"tech2", track:"tech", tier:2, ico:"🔌", name:"APIs, Cloud & Data",
+{id:"tech2", track:"tech", tier:2, ico:"🔌", mon:"CLOUDRA", mico:"🐲", name:"APIs, Cloud & Data",
  lesson:[
   "An API (Application Programming Interface) is a contract that lets one program use another program's features or data.",
   "Open banking forces banks to expose APIs, letting fintechs build on top of bank accounts — this unlocked an entire industry.",
@@ -158,7 +189,7 @@ const MODULES = [
   "Big data is described by the 3 Vs: Volume (a lot), Velocity (fast), Variety (many formats).",
   "A webhook reverses the API flow: instead of you asking, the server calls YOU when an event happens (e.g. 'payment received').",
  ]},
-{id:"ai2", track:"ai", tier:2, ico:"📐", name:"Machine Learning Fundamentals",
+{id:"ai2", track:"ai", tier:2, ico:"📐", mon:"DATAMITE", mico:"🐜", name:"Machine Learning Fundamentals",
  lesson:[
   "Machine learning finds patterns in historical data to make predictions about new data.",
   "Supervised learning trains on labeled examples (transaction → fraud or not). Unsupervised learning finds structure without labels (clustering customers).",
@@ -168,7 +199,7 @@ const MODULES = [
   "Classification predicts a category (fraud / not fraud); regression predicts a number (house price, credit loss).",
   "Beware accuracy on imbalanced data: if 99.9% of transactions are legit, a model that says 'never fraud' is 99.9% accurate and 100% useless.",
  ]},
-{id:"fin3", track:"fin", tier:3, ico:"💳", name:"Fintech Models & Payments",
+{id:"fin3", track:"fin", tier:3, ico:"💳", mon:"PAYDRAKE", mico:"🦆", name:"Fintech Models & Payments",
  lesson:[
   "Card payment flow: customer's bank (issuer) → card network (Visa/Mastercard) → merchant's bank (acquirer). Each hop takes a tiny cut.",
   "The interchange fee is what the merchant side pays the card issuer per transaction — a core revenue source for card fintechs.",
@@ -178,7 +209,7 @@ const MODULES = [
   "Zero-commission brokers monetize differently: payment for order flow, interest on idle cash, premium subscriptions.",
   "Unit economics 101: LTV (lifetime value of a customer) must exceed CAC (cost to acquire them), or growth just burns cash faster.",
  ]},
-{id:"tech3", track:"tech", tier:3, ico:"🔐", name:"Security, Blockchain & Crypto",
+{id:"tech3", track:"tech", tier:3, ico:"🔐", mon:"CRYPTYX", mico:"🦂", name:"Security, Blockchain & Crypto",
  lesson:[
   "Encryption scrambles data so only someone with the key can read it. It protects data in transit (HTTPS) and at rest.",
   "Two-factor authentication (2FA) requires something you know (password) plus something you have (phone) — it blocks most account takeovers.",
@@ -189,7 +220,7 @@ const MODULES = [
   "Smart contracts are programs on a blockchain that execute automatically when conditions are met — code as enforcement.",
   "Crypto custody is brutal: lose your private key and the funds are gone forever. No password reset exists.",
  ]},
-{id:"ai3", track:"ai", tier:3, ico:"✨", name:"Deep Learning, LLMs & GenAI",
+{id:"ai3", track:"ai", tier:3, ico:"✨", mon:"PROMPTGEIST", mico:"👻", name:"Deep Learning, LLMs & GenAI",
  lesson:[
   "Neural networks are loosely inspired by the brain: layers of simple units that each transform data a little.",
   "'Deep' learning just means many layers — depth lets networks learn very complex patterns (faces, language, markets).",
@@ -200,7 +231,7 @@ const MODULES = [
   "Fine-tuning retrains a model on your data; RAG (retrieval-augmented generation) instead fetches your documents at question time and feeds them in — cheaper and easier to update.",
   "GPUs dominate AI because deep learning is mostly huge matrix multiplications, which GPUs run massively in parallel.",
  ]},
-{id:"fin4", track:"fin", tier:4, ico:"⚖️", name:"Risk, Regulation & RegTech",
+{id:"fin4", track:"fin", tier:4, ico:"⚖️", mon:"REGULOX", mico:"🦉", name:"Risk, Regulation & RegTech",
  lesson:[
   "KYC (Know Your Customer): verifying who your customers really are before serving them. Step one of any fintech.",
   "AML (Anti-Money Laundering): monitoring and reporting suspicious flows so criminals cannot wash money through your product.",
@@ -211,7 +242,7 @@ const MODULES = [
   "Regulatory sandboxes let startups test innovative products with real users under supervision, before full licensing.",
   "Data protection (GDPR) is existential for fintechs: fines reach 4% of global revenue, and trust, once lost, rarely returns.",
  ]},
-{id:"tech4", track:"tech", tier:4, ico:"🏗️", name:"Scaling Fintech Systems",
+{id:"tech4", track:"tech", tier:4, ico:"🏗️", mon:"SCALEMANDER", mico:"🦎", name:"Scaling Fintech Systems",
  lesson:[
   "Vertical scaling = a bigger machine. Horizontal scaling = more machines. The web scales horizontally.",
   "Latency is money: in trading, milliseconds decide who gets the price; in checkout, slow pages kill conversion.",
@@ -222,7 +253,7 @@ const MODULES = [
   "Caching keeps frequently-read data in fast memory to cut load and latency — but stale caches showing a wrong balance are a fintech nightmare.",
   "Distributed systems trade consistency for availability: 'eventual consistency' means replicas agree... eventually. Choose carefully where money is involved.",
  ]},
-{id:"ai4", track:"ai", tier:4, ico:"📡", name:"AI in Finance",
+{id:"ai4", track:"ai", tier:4, ico:"📡", mon:"QUANTAUR", mico:"🐗", name:"AI in Finance",
  lesson:[
   "Algorithmic trading executes orders by rules at machine speed; most market volume today is algorithmic.",
   "AI credit scoring adds alternative data (cash-flow patterns, behavior) to score people that classic bureaus cannot see.",
@@ -347,86 +378,87 @@ const QUESTIONS = [
 {id:"ai4_8",m:"ai4",d:3,c:"backtesting",q:"A strategy shows amazing returns in backtests. The trap to check first:",o:["The returns are too small","Overfitting to the past — tweaked until it fits one historical sample that will not repeat","Backtests are always reliable","The data is too recent"],a:1,x:"Torture historical data long enough and it confesses to anything. Out-of-sample and live testing separate skill from curve-fitting."},
 ];
 
-/* Business events: applied scenario challenges. reward/penalty affect cash & valuation */
+/* Business events */
 const EVENTS = [
-{id:"ev_outage",ico:"🔥",title:"3 AM: Payments are DOWN",minTier:1,
+{id:"ev_outage",ico:"🔥",title:"3 AM: PAYMENTS ARE DOWN",minTier:1,
  s:"Your payment processing crashes during peak hours. Customers are furious on social media. Your CTO asks what to prioritize.",
  q:"What is the FIRST priority?",o:["Post a marketing campaign to distract users","Fail over to redundant systems and communicate transparently with users","Blame the cloud provider publicly","Turn everything off until Monday"],a:1,
- x:"Failover first, honest status updates second. Downtime handled with transparency can even build trust.",rw:{cash:400,val:2000},pn:{cash:-300,val:-1500}},
-{id:"ev_fraud",ico:"🕵️",title:"Fraud ring detected",minTier:1,
+ x:"Failover first, honest status updates second. Downtime handled with transparency can even build trust.",rw:{cash:300,val:2000},pn:{cash:-400,val:-2500}},
+{id:"ev_fraud",ico:"🕵️",title:"FRAUD RING DETECTED",minTier:1,
  s:"Overnight, fraudulent signups spike 40x. Manual review cannot keep up and losses are mounting every hour.",
  q:"Best immediate + structural response?",o:["Hire 200 reviewers tomorrow","Tighten risk rules now, then deploy an anomaly-detection model trained on the attack patterns","Ignore it, fraud is a cost of doing business","Shut down signups for a month"],a:1,
- x:"Stop the bleeding with rules, then fight machines with machines: real-time ML scoring scales where humans cannot.",rw:{cash:500,val:2500},pn:{cash:-400,val:-2000}},
-{id:"ev_rates",ico:"📉",title:"Central bank shocks the market",minTier:2,
+ x:"Stop the bleeding with rules, then fight machines with machines: real-time ML scoring scales where humans cannot.",rw:{cash:400,val:2500},pn:{cash:-500,val:-3000}},
+{id:"ev_rates",ico:"📉",title:"CENTRAL BANK SHOCK",minTier:2,
  s:"The central bank unexpectedly raises rates by 1%. Your lending fintech's funding costs jump overnight.",
  q:"What happens to your existing fixed-rate loan book's value?",o:["It rises — loans are worth more now","It falls — your old loans yield less than new market rates","Nothing changes","It doubles"],a:1,
- x:"Like bonds: old fixed-rate assets are worth less when new money earns more. Rate risk management exists for this.",rw:{cash:600,val:3000},pn:{cash:-500,val:-2500}},
-{id:"ev_viral",ico:"📱",title:"You went viral!",minTier:1,
+ x:"Like bonds: old fixed-rate assets are worth less when new money earns more. Rate risk management exists for this.",rw:{cash:450,val:3000},pn:{cash:-600,val:-3500}},
+{id:"ev_viral",ico:"📱",title:"YOU WENT VIRAL!",minTier:1,
  s:"A celebrity praised your app. Signups jump 50x in 24 hours. Your servers are sweating and your KYC queue exploded.",
  q:"What breaks FIRST if you do nothing, and why is it dangerous?",o:["The logo — it needs a redesign","Onboarding: unverified users pile up, creating both churn AND regulatory exposure","Nothing, growth is always pure upside","The office coffee machine"],a:1,
- x:"Viral growth stress-tests compliance and infrastructure simultaneously. Auto-scaling plus automated KYC saves the moment.",rw:{cash:800,val:4000},pn:{cash:-300,val:-1500}},
-{id:"ev_audit",ico:"📋",title:"Surprise regulator audit",minTier:2,
+ x:"Viral growth stress-tests compliance and infrastructure simultaneously. Auto-scaling plus automated KYC saves the moment.",rw:{cash:600,val:4000},pn:{cash:-400,val:-2000}},
+{id:"ev_audit",ico:"📋",title:"SURPRISE REGULATOR AUDIT",minTier:2,
  s:"The regulator announces an AML audit next week. Your compliance officer looks pale.",
  q:"What will auditors want to see FIRST?",o:["Your office decoration","Documented KYC/AML procedures, monitoring logs, and filed suspicious-activity reports","Your marketing budget","The CEO's diploma"],a:1,
- x:"Compliance is evidence: procedures, logs, reports. If it is not documented, for a regulator it did not happen.",rw:{cash:500,val:3000},pn:{cash:-600,val:-3000}},
-{id:"ev_crypto",ico:"🪙",title:"Crypto winter hits",minTier:3,
+ x:"Compliance is evidence: procedures, logs, reports. If it is not documented, for a regulator it did not happen.",rw:{cash:400,val:3000},pn:{cash:-700,val:-4000}},
+{id:"ev_crypto",ico:"🪙",title:"CRYPTO WINTER HITS",minTier:3,
  s:"Crypto prices crash 70%. Your exchange feature's volume evaporates, but engineering still costs the same.",
  q:"The resilient strategic answer is...",o:["Bet the company on a memecoin","Diversify revenue streams — businesses surviving crypto winters are never single-product","Fire all engineers","Pretend prices will recover by Friday"],a:1,
- x:"Cycle-proof companies have multiple engines. Concentration is how fintechs die in downturns.",rw:{cash:700,val:3500},pn:{cash:-500,val:-2500}},
-{id:"ev_llm",ico:"💬",title:"The AI support opportunity",minTier:2,
+ x:"Cycle-proof companies have multiple engines. Concentration is how fintechs die in downturns.",rw:{cash:500,val:3500},pn:{cash:-600,val:-3500}},
+{id:"ev_llm",ico:"💬",title:"THE AI SUPPORT GAMBIT",minTier:2,
  s:"Support tickets doubled. An engineer suggests an LLM assistant for customer service. Your head of ops worries it will tell customers nonsense.",
  q:"The smart deployment is...",o:["Full autonomy on day one — let it move money","RAG over your real docs, clear escalation to humans, and no irreversible actions without confirmation","Refuse all AI forever","Let it answer only in poetry"],a:1,
- x:"Ground it in your documentation, keep humans in the loop, and gate sensitive actions. AI augments support before it replaces it.",rw:{cash:600,val:3000},pn:{cash:-300,val:-1500}},
-{id:"ev_breach",ico:"🛡️",title:"Phishing attack on staff",minTier:1,
+ x:"Ground it in your documentation, keep humans in the loop, and gate sensitive actions. AI augments support before it replaces it.",rw:{cash:450,val:3000},pn:{cash:-400,val:-2000}},
+{id:"ev_breach",ico:"🛡️",title:"PHISHING ATTACK ON STAFF",minTier:1,
  s:"An employee reports a suspicious email asking them to 'urgently verify' their admin password. Two colleagues already clicked.",
  q:"Immediate response?",o:["Delete the email and move on","Reset exposed credentials, enforce 2FA, check access logs for intrusion, then train the team","Unplug the internet permanently","Reply to the attacker angrily"],a:1,
- x:"Contain (resets + 2FA), investigate (logs), prevent (training). Humans are the attack surface; process is the patch.",rw:{cash:400,val:2000},pn:{cash:-400,val:-2000}},
-{id:"ev_vc",ico:"💎",title:"Term sheet on the table",minTier:3,
+ x:"Contain (resets + 2FA), investigate (logs), prevent (training). Humans are the attack surface; process is the patch.",rw:{cash:300,val:2000},pn:{cash:-500,val:-2500}},
+{id:"ev_vc",ico:"💎",title:"TERM SHEET ON THE TABLE",minTier:3,
  s:"A famous VC offers $10M for 25% of your company. Champagne? Your CFO clears her throat and asks THE question.",
  q:"What valuation does this offer imply?",o:["$10M","$40M post-money — the $10M buys a quarter of the company","$2.5M","$100M"],a:1,
- x:"If $10M = 25%, the whole = $40M post-money (pre-money $30M). Founders who cannot do this math get eaten alive.",rw:{cash:1000,val:5000},pn:{cash:-200,val:-1000}},
-{id:"ev_model",ico:"⚠️",title:"The model is drifting",minTier:3,
+ x:"If $10M = 25%, the whole = $40M post-money (pre-money $30M). Founders who cannot do this math get eaten alive.",rw:{cash:800,val:5000},pn:{cash:-300,val:-1500}},
+{id:"ev_model",ico:"⚠️",title:"THE MODEL IS DRIFTING",minTier:3,
  s:"Your credit model's default predictions are degrading month over month. The data science team is puzzled; approvals look normal.",
  q:"Most likely culprit?",o:["The GPU is tired","Data drift — economic conditions changed, so patterns the model learned no longer hold","Someone deleted the README","Customers are lying more"],a:1,
- x:"Models are snapshots of the past. When reality shifts (rates, jobs, behavior), retraining and monitoring pipelines are vital.",rw:{cash:700,val:3500},pn:{cash:-500,val:-2500}},
+ x:"Models are snapshots of the past. When reality shifts (rates, jobs, behavior), retraining and monitoring pipelines are vital.",rw:{cash:500,val:3500},pn:{cash:-600,val:-3000}},
 ];
 
-/* Company upgrades: req = module mastery requirement (pct). Effects: cashMult, xpMult, val */
+/* Company upgrades — knowledge-gated items at the MART */
 const UPGRADES = [
-{id:"u_eng",ico:"👩‍💻",name:"Hire First Engineer",cost:500,req:{m:"tech1",p:50},desc:"Someone who actually reads the error messages.",fx:{cashMult:.15,val:1500}},
-{id:"u_app",ico:"📱",name:"Launch Mobile App",cost:1200,req:{m:"tech1",p:70},desc:"Your product in every pocket.",fx:{xpMult:.15,val:2500}},
-{id:"u_emoney",ico:"🪪",name:"E-Money License",cost:2000,req:{m:"fin1",p:70},desc:"Legally hold customer funds. The regulator nods at you.",fx:{cashMult:.15,val:4000}},
-{id:"u_api",ico:"🔌",name:"Open Banking Integration",cost:3000,req:{m:"tech2",p:60},desc:"Plug into every bank account in the market.",fx:{cashMult:.2,val:5000}},
-{id:"u_invest",ico:"📈",name:"Investment Product",cost:3500,req:{m:"fin2",p:60},desc:"ETF portfolios for your users. Assets under management begin.",fx:{cashMult:.2,val:6000}},
-{id:"u_data",ico:"🗄️",name:"Data Warehouse",cost:2500,req:{m:"tech2",p:70},desc:"All your data, one source of truth. Analysts weep with joy.",fx:{xpMult:.2,val:4000}},
-{id:"u_ml",ico:"🤖",name:"Fraud ML Model",cost:4500,req:{m:"ai2",p:60},desc:"A model that smells fraud before it happens.",fx:{cashMult:.25,val:8000}},
-{id:"u_cards",ico:"💳",name:"Card Issuing Program",cost:6000,req:{m:"fin3",p:60},desc:"Your logo on real cards. Interchange revenue flows.",fx:{cashMult:.3,val:10000}},
-{id:"u_sec",ico:"🔐",name:"Security Operations Center",cost:5000,req:{m:"tech3",p:60},desc:"24/7 eyes on every threat. Hackers sigh and move on.",fx:{val:9000,xpMult:.15}},
-{id:"u_ai",ico:"✨",name:"AI Copilot Features",cost:8000,req:{m:"ai3",p:60},desc:"LLM-powered insights in your app. The press goes wild.",fx:{cashMult:.35,val:14000}},
-{id:"u_comp",ico:"⚖️",name:"Compliance & RegTech Suite",cost:9000,req:{m:"fin4",p:60},desc:"Automated KYC/AML. Auditors leave disappointed (nothing to find).",fx:{val:15000,cashMult:.2}},
-{id:"u_global",ico:"🌍",name:"Global Infrastructure",cost:12000,req:{m:"tech4",p:60},desc:"Multi-region, redundant, idempotent. 99.999% uptime.",fx:{val:20000,xpMult:.25}},
-{id:"u_quant",ico:"📡",name:"AI Trading Desk",cost:15000,req:{m:"ai4",p:60},desc:"Models trading responsibly (with kill switches, you learned).",fx:{cashMult:.5,val:25000}},
-{id:"u_ipo",ico:"🏛️",name:"IPO Readiness",cost:25000,req:{m:"fin4",p:80},desc:"Bankers, lawyers, a bell to ring. The endgame approaches.",fx:{val:50000}},
+{id:"u_eng",ico:"👩‍💻",name:"Hire First Engineer",cost:800,req:{m:"tech1",p:60},desc:"Someone who actually reads the error messages.",fx:{cashMult:.1,val:1500}},
+{id:"u_app",ico:"📱",name:"Launch Mobile App",cost:2000,req:{m:"tech1",p:80},desc:"Your product in every pocket.",fx:{xpMult:.1,val:2500}},
+{id:"u_emoney",ico:"🪪",name:"E-Money License",cost:3200,req:{m:"fin1",p:80},desc:"Legally hold customer funds. The regulator nods at you.",fx:{cashMult:.1,val:4000}},
+{id:"u_api",ico:"🔌",name:"Open Banking Integration",cost:4800,req:{m:"tech2",p:70},desc:"Plug into every bank account in the market.",fx:{cashMult:.15,val:5000}},
+{id:"u_invest",ico:"📈",name:"Investment Product",cost:5600,req:{m:"fin2",p:70},desc:"ETF portfolios for your users. AUM begins.",fx:{cashMult:.15,val:6000}},
+{id:"u_data",ico:"🗄️",name:"Data Warehouse",cost:4000,req:{m:"tech2",p:80},desc:"All your data, one source of truth. Analysts weep with joy.",fx:{xpMult:.15,val:4000}},
+{id:"u_ml",ico:"🤖",name:"Fraud ML Model",cost:7200,req:{m:"ai2",p:70},desc:"A model that smells fraud before it happens.",fx:{cashMult:.2,val:8000}},
+{id:"u_cards",ico:"💳",name:"Card Issuing Program",cost:9600,req:{m:"fin3",p:70},desc:"Your logo on real cards. Interchange revenue flows.",fx:{cashMult:.2,val:10000}},
+{id:"u_sec",ico:"🔐",name:"Security Ops Center",cost:8000,req:{m:"tech3",p:70},desc:"24/7 eyes on every threat. Hackers sigh and move on.",fx:{val:9000,xpMult:.1}},
+{id:"u_ai",ico:"✨",name:"AI Copilot Features",cost:12800,req:{m:"ai3",p:80},desc:"LLM-powered insights in your app. The press goes wild.",fx:{cashMult:.25,val:14000}},
+{id:"u_comp",ico:"⚖️",name:"RegTech Compliance Suite",cost:14400,req:{m:"fin4",p:70},desc:"Automated KYC/AML. Auditors leave disappointed.",fx:{val:15000,cashMult:.15}},
+{id:"u_global",ico:"🌍",name:"Global Infrastructure",cost:19200,req:{m:"tech4",p:80},desc:"Multi-region, redundant, idempotent. 99.999% uptime.",fx:{val:20000,xpMult:.2}},
+{id:"u_quant",ico:"📡",name:"AI Trading Desk",cost:24000,req:{m:"ai4",p:80},desc:"Models trading responsibly (with kill switches).",fx:{cashMult:.35,val:25000}},
+{id:"u_ipo",ico:"🏛️",name:"IPO Readiness",cost:40000,req:{m:"fin4",p:100},desc:"Bankers, lawyers, a bell to ring. The endgame.",fx:{val:50000}},
 ];
 
-const QUIZ_LEN = 6, BOSS_LEN = 8, BOSS_PASS = .7, BOSS_SECS = 20, REVIEW_LEN = 10;
+const QUIZ_LEN = 6, BOSS_LEN = 8, REVIEW_LEN = 10;
+const QUIZ_HP = 3, BOSS_HP = 3;          // wrong answers allowed before KO
+const BOSS_SECS = 20, BOSS_MODULE_REQ = 65;
 const BOX_DAYS = [0, 1, 3, 7, 16, 30];
+const FREE_BOXES = 2;                    // boxes earnable same-day; beyond needs real spaced review
 const DAY = 86400000;
 
 /* ----------------------- STATE ----------------------- */
-const SAVE_KEY = "fintech_tycoon_v1";
+const SAVE_KEY = "fintech_tycoon_v2";
 let state = null;
 
 function freshState(){
   return {
-    company:{name:"", cash:200, valBonus:0, upgrades:[]},
+    company:{name:"", cash:150, valBonus:0, upgrades:[]},
     xp:0, view:"hq",
     streak:{last:"", count:0},
-    q:{},            // per-question stats {at, ok, box, due}
-    mod:{},          // per-module {best, attempts}
-    boss:{},         // tier -> true
+    q:{}, mod:{}, boss:{},
     answered:0, correctTotal:0,
-    log:[],          // recent activity strings
+    evDone:[], log:[], sound:true,
   };
 }
 function save(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }catch(e){} }
@@ -434,6 +466,35 @@ function load(){
   try{ const raw = localStorage.getItem(SAVE_KEY); if(raw){ state = JSON.parse(raw); return; } }catch(e){}
   state = freshState();
 }
+
+/* ----------------------- 8-BIT SOUND ----------------------- */
+let actx = null;
+function beep(seq){
+  if(!state.sound) return;
+  try{
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    let t = actx.currentTime;
+    for(const [f, d] of seq){
+      const o = actx.createOscillator(), g = actx.createGain();
+      o.type = "square"; o.frequency.value = f;
+      g.gain.setValueAtTime(.06, t); g.gain.exponentialRampToValueAtTime(.001, t + d);
+      o.connect(g); g.connect(actx.destination);
+      o.start(t); o.stop(t + d);
+      t += d * .9;
+    }
+  }catch(e){}
+}
+const SFX = {
+  hit:   () => beep([[660,.07],[880,.09]]),
+  crit:  () => beep([[660,.06],[880,.06],[1320,.12]]),
+  hurt:  () => beep([[220,.12],[160,.18]]),
+  win:   () => beep([[523,.1],[659,.1],[784,.1],[1047,.22]]),
+  lose:  () => beep([[330,.15],[262,.15],[196,.3]]),
+  rank:  () => beep([[523,.08],[659,.08],[784,.08],[1047,.08],[1319,.2]]),
+  buy:   () => beep([[988,.07],[1319,.12]]),
+  click: () => beep([[880,.05]]),
+  intro: () => beep([[392,.08],[523,.08],[659,.14]]),
+};
 
 /* ----------------------- ADAPTIVE ENGINE ----------------------- */
 function qstat(id){ return state.q[id] || {at:0, ok:0, box:0, due:0}; }
@@ -462,18 +523,17 @@ function dueReviews(){
   const now = Date.now();
   return QUESTIONS.filter(q => { const s = qstat(q.id); return s.at > 0 && s.due <= now && qMastery(q.id) < 1; });
 }
-/* Pick quiz questions: due reviews first, then unseen at adapted difficulty, then weakest */
 function pickQuiz(mid){
   const now = Date.now();
   const qs = moduleQs(mid);
-  const prof = moduleMastery(mid);                      // 0..1
-  const targetD = prof < .34 ? 1 : prof < .67 ? 2 : 3;  // dynamic difficulty
+  const prof = moduleMastery(mid);
+  const targetD = prof < .34 ? 1 : prof < .67 ? 2 : 3;
   const score = q => {
     const s = qstat(q.id);
     let v = 0;
-    if(s.at > 0 && s.due <= now) v -= 100;              // overdue first
-    if(s.at === 0) v -= 50 - Math.abs(q.d - targetD)*8; // unseen near target difficulty
-    v += qMastery(q.id) * 30;                            // weak before strong
+    if(s.at > 0 && s.due <= now) v -= 100;
+    if(s.at === 0) v -= 50 - Math.abs(q.d - targetD)*8;
+    v += qMastery(q.id) * 30;
     v += Math.random()*6;
     return v;
   };
@@ -486,11 +546,16 @@ function pickBoss(tier){
 function pickReview(){
   return dueReviews().sort((a,b) => qstat(a.id).due - qstat(b.id).due).slice(0, REVIEW_LEN);
 }
+/* HARD MODE: boxes beyond FREE_BOXES only advance when the review was actually due.
+   Full mastery therefore requires returning on later days — true spaced repetition. */
 function recordAnswer(q, ok){
   const s = qstat(q.id);
+  const wasDue = s.at === 0 || s.due <= Date.now();
   s.at++;
-  if(ok){ s.ok++; s.box = Math.min(BOX_DAYS.length - 1, s.box + 1); }
-  else  { s.box = 0; }
+  if(ok){
+    s.ok++;
+    if(s.box < FREE_BOXES || wasDue) s.box = Math.min(BOX_DAYS.length - 1, s.box + 1);
+  } else s.box = 0;
   s.due = Date.now() + BOX_DAYS[s.box]*DAY;
   state.q[q.id] = s;
   state.answered++; if(ok) state.correctTotal++;
@@ -502,13 +567,17 @@ function xpMult(){ return 1 + state.company.upgrades.reduce((a,id) => a + ((UPGR
 function valuation(){
   const upgVal = state.company.upgrades.reduce((a,id) => a + ((UPGRADES.find(u=>u.id===id).fx.val)||0), 0);
   const masteredBonus = MODULES.filter(m => moduleMastery(m.id) >= .8).length * 3000;
-  return Math.max(0, 5000 + Math.round(state.xp*40) + upgVal + masteredBonus + state.company.valBonus + Math.round(state.company.cash*1.5));
+  return Math.max(0, 5000 + Math.round(state.xp*15) + upgVal + masteredBonus + state.company.valBonus + Math.round(state.company.cash*1.5));
 }
 function rank(){ let r = RANKS[0]; for(const k of RANKS) if(state.xp >= k.xp) r = k; return r; }
 function nextRank(){ return RANKS.find(k => k.xp > state.xp) || null; }
 function tierUnlocked(t){ return t === 1 || !!state.boss[t-1]; }
-function bossReady(t){ return MODULES.filter(m => m.tier === t).every(m => modulePct(m.id) >= 60); }
-function gainXP(n){ state.xp += Math.round(n * xpMult()); }
+function bossReady(t){ return MODULES.filter(m => m.tier === t).every(m => modulePct(m.id) >= BOSS_MODULE_REQ); }
+function gainXP(n){
+  const before = rank().name;
+  state.xp += Math.round(n * xpMult());
+  if(rank().name !== before){ SFX.rank(); toast("🎉 RANK UP! " + rank().ico + " " + rank().name); }
+}
 function gainCash(n){ state.company.cash += Math.round(n * cashMult()); }
 function touchStreak(){
   const today = new Date().toDateString();
@@ -520,45 +589,62 @@ function touchStreak(){
 function logEv(s){ state.log.unshift(s); state.log = state.log.slice(0,6); }
 function fmt(n){ return n >= 1e6 ? "$" + (n/1e6).toFixed(2) + "M" : "$" + n.toLocaleString("en-US"); }
 
-/* ----------------------- SESSION (quiz/boss/review/event) ----------------------- */
-let S = null;       // {mode, qs, i, ok, combo, mid|tier|ev, opts, picked, timer, secs, xpEarned, cashEarned}
+/* ----------------------- BATTLE SESSION ----------------------- */
+let S = null;
 let timerH = null;
 
-function shuffleOpts(q){
-  return q.o.map((t,i) => ({t, orig:i})).sort(() => Math.random() - .5);
+function shuffleOpts(q){ return q.o.map((t,i) => ({t, orig:i})).sort(() => Math.random() - .5); }
+
+function battleFoe(){
+  if(S.mode === "boss"){ const t = TIERS[S.tier-1]; return {name:t.boss, ico:t.bico}; }
+  if(S.mode === "review") return {name:"MEMORY PHANTOM", ico:"🌫️"};
+  const m = MODULES.find(x => x.id === S.mid);
+  return {name:m.mon, ico:m.mico};
 }
 function startQuiz(mid){
-  S = {mode:"quiz", mid, qs:pickQuiz(mid), i:0, ok:0, combo:0, xpEarned:0, cashEarned:0, picked:-1, opts:null};
+  SFX.intro();
+  S = {mode:"quiz", mid, qs:pickQuiz(mid), i:0, ok:0, combo:0, php:QUIZ_HP, lastHit:"",
+       xpEarned:0, cashEarned:0, picked:-1, phase:"intro"};
   S.opts = shuffleOpts(S.qs[0]); state.view = "session"; render();
 }
 function startReview(){
   const qs = pickReview(); if(!qs.length) return;
-  S = {mode:"review", qs, i:0, ok:0, combo:0, xpEarned:0, cashEarned:0, picked:-1, opts:shuffleOpts(qs[0])};
+  SFX.intro();
+  S = {mode:"review", qs, i:0, ok:0, combo:0, php:QUIZ_HP, lastHit:"",
+       xpEarned:0, cashEarned:0, picked:-1, phase:"intro", opts:shuffleOpts(qs[0])};
   state.view = "session"; render();
 }
 function startBoss(tier){
-  S = {mode:"boss", tier, qs:pickBoss(tier), i:0, ok:0, combo:0, xpEarned:0, cashEarned:0, picked:-1, secs:BOSS_SECS};
-  S.opts = shuffleOpts(S.qs[0]); state.view = "session"; render(); armTimer();
+  SFX.intro();
+  S = {mode:"boss", tier, qs:pickBoss(tier), i:0, ok:0, combo:0, php:BOSS_HP, lastHit:"",
+       xpEarned:0, cashEarned:0, picked:-1, phase:"intro", secs:BOSS_SECS};
+  S.opts = shuffleOpts(S.qs[0]); state.view = "session"; render();
 }
 function startEvent(){
   const pool = EVENTS.filter(e => tierUnlocked(e.minTier) && !(state.evDone||[]).includes(e.id));
   const all = pool.length ? pool : EVENTS.filter(e => tierUnlocked(e.minTier));
   const ev = all[Math.floor(Math.random()*all.length)];
-  S = {mode:"event", ev, i:0, ok:0, picked:-1, opts:shuffleOpts(ev)};
+  S = {mode:"event", ev, i:0, ok:0, picked:-1, phase:"q", opts:shuffleOpts(ev)};
   state.view = "session"; render();
+}
+function beginFight(){
+  SFX.click();
+  S.phase = "q";
+  render();
+  if(S.mode === "boss") armTimer();
 }
 function armTimer(){
   clearInterval(timerH);
   timerH = setInterval(() => {
-    if(!S || S.mode !== "boss" || S.picked !== -1){ clearInterval(timerH); return; }
+    if(!S || S.mode !== "boss" || S.phase !== "q"){ clearInterval(timerH); return; }
     S.secs--;
     const el = document.getElementById("bosstimer");
-    if(el){ el.textContent = S.secs + "s"; el.className = "timer" + (S.secs <= 5 ? " danger" : ""); }
+    if(el){ el.textContent = S.secs; if(S.secs<=5) el.classList.add("blink"); }
     if(S.secs <= 0){ clearInterval(timerH); answer(-1); }
   }, 1000);
 }
 function answer(idx){
-  if(!S || S.picked !== -1) return;
+  if(!S || S.phase !== "q" || S.picked !== -1) return;
   clearInterval(timerH);
   S.picked = idx;
   const q = S.mode === "event" ? S.ev : S.qs[S.i];
@@ -568,7 +654,7 @@ function answer(idx){
     const fx = ok ? q.rw : q.pn;
     state.company.cash = Math.max(0, state.company.cash + fx.cash);
     state.company.valBonus += fx.val;
-    if(ok){ gainXP(30); S.ok = 1; }
+    if(ok){ gainXP(25); S.ok = 1; SFX.win(); } else SFX.lose();
     state.evDone = (state.evDone||[]).concat(q.id);
     logEv((ok ? "✅ " : "❌ ") + q.title);
     touchStreak(); save(); render(); return;
@@ -577,43 +663,55 @@ function answer(idx){
   recordAnswer(q, ok);
   if(ok){
     S.ok++; S.combo++;
-    const comboM = S.combo >= 5 ? 2 : S.combo >= 3 ? 1.5 : 1;
-    const xp = Math.round(10 * q.d * comboM * (S.mode === "boss" ? 1.5 : 1));
-    const cash = Math.round(25 * q.d * comboM);
+    const comboM = S.combo >= 5 ? 1.5 : S.combo >= 3 ? 1.25 : 1;
+    const xp = Math.round(6 * q.d * comboM * (S.mode === "boss" ? 1.5 : 1));
+    const cash = Math.round(15 * q.d * comboM);
     gainXP(xp); gainCash(cash);
     S.xpEarned += xp; S.cashEarned += cash;
-  } else S.combo = 0;
+    S.lastHit = "enemy";
+    if(S.combo >= 3) SFX.crit(); else SFX.hit();
+  } else {
+    S.combo = 0; S.php--; S.lastHit = "player";
+    SFX.hurt();
+  }
+  S.phase = "fb";
   touchStreak(); save(); render();
 }
 function nextQ(){
   if(!S) return;
-  if(S.mode === "event" || S.i >= S.qs.length - 1){ finishSession(); return; }
-  S.i++; S.picked = -1; S.opts = shuffleOpts(S.qs[S.i]);
+  SFX.click();
+  if(S.php <= 0){ finishSession(true); return; }
+  if(S.i >= S.qs.length - 1){ finishSession(false); return; }
+  S.i++; S.picked = -1; S.opts = shuffleOpts(S.qs[S.i]); S.phase = "q"; S.lastHit = "";
   if(S.mode === "boss"){ S.secs = BOSS_SECS; render(); armTimer(); } else render();
 }
-function finishSession(){
+function finishSession(ko){
   clearInterval(timerH);
+  S.done = true; S.ko = !!ko;
+  S.pct = Math.round(100*S.ok/S.qs.length);
   if(S.mode === "quiz"){
-    const pct = Math.round(100*S.ok/S.qs.length);
     const m = state.mod[S.mid] || {best:0, attempts:0};
-    m.attempts++; m.best = Math.max(m.best, pct); state.mod[S.mid] = m;
-    logEv("📚 " + MODULES.find(x=>x.id===S.mid).name + " — " + pct + "%");
-    S.done = true; S.pct = pct;
-    S.eventNext = Math.random() < .35;
+    m.attempts++;
+    if(!ko) m.best = Math.max(m.best, S.pct);
+    state.mod[S.mid] = m;
+    const mod = MODULES.find(x=>x.id===S.mid);
+    logEv((ko ? "💀 KO vs " : "⚔️ ") + mod.mon + " — " + S.pct + "%");
+    S.eventNext = !ko && Math.random() < .3;
   } else if(S.mode === "boss"){
-    const pct = S.ok / S.qs.length;
-    S.done = true; S.pct = Math.round(pct*100);
-    if(pct >= BOSS_PASS && !state.boss[S.tier]){
-      state.boss[S.tier] = true;
-      const reward = 1500 * S.tier;
-      state.company.cash += reward; gainXP(100*S.tier);
-      S.bossWon = true; S.bossReward = reward;
-      logEv("⚔️ Boss defeated: " + TIERS[S.tier-1].boss);
-    } else if(pct >= BOSS_PASS){ S.bossWon = true; S.bossReward = 0; }
+    if(!ko){
+      S.bossWon = true;
+      if(!state.boss[S.tier]){
+        state.boss[S.tier] = true;
+        const reward = 1000 * S.tier;
+        state.company.cash += reward; gainXP(60*S.tier);
+        S.bossReward = reward;
+        logEv("🏅 BADGE EARNED: " + TIERS[S.tier-1].boss);
+      } else S.bossReward = 0;
+    } else logEv("💀 Crushed by " + TIERS[S.tier-1].boss);
   } else if(S.mode === "review"){
-    S.done = true; S.pct = Math.round(100*S.ok/S.qs.length);
-    logEv("🔁 Review session — " + S.pct + "%");
+    logEv((ko?"💀":"🔁") + " Training — " + S.pct + "%");
   }
+  if(ko) SFX.lose(); else SFX.win();
   save(); render();
 }
 function endSession(toEvent){
@@ -628,24 +726,27 @@ function buyUpgrade(id){
   if(state.company.cash < u.cost || modulePct(u.req.m) < u.req.p) return;
   state.company.cash -= u.cost;
   state.company.upgrades.push(id);
-  gainXP(40);
+  gainXP(30);
   logEv("🏗️ Built: " + u.name);
-  toast(u.ico + " " + u.name + " acquired!");
+  SFX.buy();
+  toast(u.ico + " " + u.name.toUpperCase() + " GET!");
   save(); render();
 }
 function toast(msg){
   const t = document.createElement("div");
   t.className = "toast"; t.textContent = msg;
   document.body.appendChild(t);
-  setTimeout(() => t.remove(), 1900);
+  setTimeout(() => t.remove(), 2100);
 }
-function go(v){ state.view = v; save(); render(); window.scrollTo(0,0); }
+function toggleSound(){ state.sound = !state.sound; save(); render(); }
+function go(v){ SFX.click(); state.view = v; save(); render(); window.scrollTo(0,0); }
 function setName(){
   const el = document.getElementById("cname");
   const n = (el.value || "").trim();
   if(!n) return;
   state.company.name = n; state.view = "hq";
   logEv("🚀 " + n + " is founded!");
+  SFX.win();
   save(); render();
 }
 function resetGame(){
@@ -654,25 +755,49 @@ function resetGame(){
 }
 function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 
+/* typewriter for battle dialog */
+let twTimer = null;
+function typewrite(id, text){
+  const el = document.getElementById(id);
+  if(!el) return;
+  clearInterval(twTimer);
+  let i = 0; el.textContent = "";
+  twTimer = setInterval(() => {
+    i += 2;
+    el.textContent = text.slice(0, i);
+    if(i >= text.length) clearInterval(twTimer);
+  }, 16);
+  el.onclick = () => { clearInterval(twTimer); el.textContent = text; };
+}
+
 /* ----------------------- VIEWS ----------------------- */
+function hpBarColor(p){ return p > .5 ? "var(--hpg)" : p > .25 ? "var(--hpy)" : "var(--hpr)"; }
+function hearts(n, max){ return "❤️".repeat(n) + "🖤".repeat(Math.max(0, max-n)); }
+
 function vOnboard(){
-  return `<div class="card glow center" style="margin-top:8vh">
+  return `<div class="center" style="padding-top:7vh">
     <div class="crown">👑</div>
-    <h1 class="grad-text">Fintech Tycoon</h1>
-    <p class="muted" style="margin:8px 0 4px">ZERO &rarr; KING</p>
-    <p style="margin:14px 0;line-height:1.6">Found a startup. Master <b>Finance 💰</b>, <b>Tech 💻</b> and <b>AI 🤖</b> from absolute zero.<br>
-    Every correct answer earns XP and cash. Cash builds your company. Knowledge unlocks your empire.</p>
-    <p class="muted" style="margin-bottom:8px">Name your fintech startup:</p>
-    <input type="text" id="cname" maxlength="24" placeholder="e.g. RoyalPay, NeoVault, KingCoin..." onkeydown="if(event.key==='Enter')setName()">
-    <button class="primary big" style="margin-top:14px" onclick="setName()">🚀 Found my company</button>
+    <h1 style="font-size:20px;margin:10px 0 4px">FINTECH</h1>
+    <h1 style="font-size:20px;color:var(--gold);text-shadow:2px 2px 0 var(--ink)">TYCOON</h1>
+    <p class="tiny" style="margin:10px 0">— ZERO TO KING —</p>
+    <div class="pb" style="text-align:left;max-width:430px;margin:18px auto">
+      <p>PROF. LEDGER: Welcome to the world of FINTECH! Wild concepts of <b>FINANCE</b> 💰, <b>TECH</b> 💻 and <b>AI</b> 🤖 roam these lands.</p>
+      <p style="margin-top:10px">Defeat them in battle to grow your startup from a garage to a KINGDOM. But beware... knowledge fades. Only true masters reach the throne.</p>
+      <p style="margin-top:10px">Now... what will you name your startup?</p>
+    </div>
+    <div style="max-width:430px;margin:0 auto">
+      <input type="text" id="cname" maxlength="20" placeholder="STARTUP NAME" onkeydown="if(event.key==='Enter')setName()">
+      <button class="primary big" style="margin-top:12px" onclick="setName()">▶ START ADVENTURE</button>
+      <p class="tiny blink" style="margin-top:14px">PRESS START — © FINTECH KINGDOM</p>
+    </div>
   </div>`;
 }
 
 function vNav(){
-  const tabs = [["hq","🏰","HQ"],["learn","🎓","Learn"],["review","🔁","Review"],["company","🏗️","Company"]];
+  const tabs = [["hq","🏰","BASE"],["learn","🗺️","WORLD"],["review","🥋","DOJO"],["company","🏪","MART"]];
   const due = dueReviews().length;
   return `<nav>` + tabs.map(([v,i,l]) =>
-    `<button class="${state.view===v?'on':''}" onclick="go('${v}')"><span class="ico">${i}</span>${l}${v==='review'&&due?` <span class="pill red">${due}</span>`:''}</button>`
+    `<button class="${state.view===v?'on':''}" onclick="go('${v}')"><span class="nico">${i}</span>${l}${v==='review'&&due?` (${due})`:''}</button>`
   ).join("") + `</nav>`;
 }
 
@@ -684,66 +809,84 @@ function vHQ(){
   const acc = state.answered ? Math.round(100*state.correctTotal/state.answered) : 0;
   const nextBossTier = TIERS.find(t => tierUnlocked(t.n) && !state.boss[t.n]);
   return `
-  <div class="row" style="justify-content:space-between;margin-bottom:12px">
-    <div><h1>${r.ico} ${esc(state.company.name)}</h1>
-    <span class="pill gold">${r.name}</span> ${state.streak.count>1?`<span class="pill cyan">🔥 ${state.streak.count}-day streak</span>`:''}</div>
+  <div class="pb dark">
+    <div class="row sb">
+      <div><p class="tiny">FOUNDER CARD</p><h2>${esc(state.company.name)}</h2></div>
+      <div class="sprite" style="font-size:34px">${r.ico}</div>
+    </div>
+    <p style="margin-top:6px">RANK: <span style="color:#f8d870">${r.name}</span></p>
+    <div class="row sb" style="margin-top:8px">
+      <span class="tiny">${nx ? (nx.xp - state.xp) + " XP TO " + nx.name : "MAXIMUM RANK!"}</span>
+      <span class="tiny">${state.xp} XP</span>
+    </div>
+    <div class="bar" style="margin-top:4px;background:#404060"><i style="width:${rankPct}%;background:#f8d870"></i></div>
+    <p style="margin-top:10px" class="tiny">BADGES:
+      ${TIERS.map(t => `<span class="badge ${state.boss[t.n]?'':'empty'}" title="${t.boss}">${state.boss[t.n]?t.badge:"?"}</span>`).join("")}
+    </p>
   </div>
-  <div class="row" style="margin-bottom:14px">
-    <div class="stat"><div class="v" style="color:var(--gold)">${fmt(state.company.cash)}</div><div class="l">Cash</div></div>
-    <div class="stat"><div class="v" style="color:var(--cyan)">${fmt(valuation())}</div><div class="l">Valuation</div></div>
-    <div class="stat"><div class="v" style="color:var(--violet)">${state.xp}</div><div class="l">XP</div></div>
-    <div class="stat"><div class="v">${acc}%</div><div class="l">Accuracy</div></div>
+  <div class="grid3">
+    <div class="pb center"><p class="tiny">CASH</p><h2 style="color:var(--gold)">${fmt(state.company.cash)}</h2></div>
+    <div class="pb center"><p class="tiny">VALUATION</p><h2 style="color:var(--blue)">${fmt(valuation())}</h2></div>
+    <div class="pb center"><p class="tiny">ACCURACY</p><h2>${acc}%${state.streak.count>1?` 🔥${state.streak.count}`:""}</h2></div>
   </div>
-  <div class="card">
-    <div class="row" style="justify-content:space-between"><h3>Path to the throne</h3><span class="muted">${nx?`${nx.xp - state.xp} XP to ${nx.ico} ${nx.name}`:"👑 MAXIMUM RANK"}</span></div>
-    <div class="bar gold" style="margin-top:8px"><i style="width:${rankPct}%"></i></div>
-  </div>
-  ${due ? `<div class="card glow"><div class="row" style="justify-content:space-between">
-    <div><h3>🔁 ${due} concept${due>1?"s":""} due for review</h3><p class="muted">Spaced repetition keeps knowledge permanent.</p></div>
-    <button class="primary" onclick="startReview()">Review now</button></div></div>` : ""}
-  ${nextBossTier && bossReady(nextBossTier.n) ? `<div class="card glow"><div class="row" style="justify-content:space-between">
-    <div><h3>⚔️ Boss available: ${nextBossTier.boss}</h3><p class="muted">Defeat them to unlock Tier ${nextBossTier.n+1}.</p></div>
-    <button class="primary" onclick="startBoss(${nextBossTier.n})">Fight</button></div></div>` : ""}
-  <div class="grid cols3">
+  ${due ? `<div class="pb cream"><div class="row sb">
+    <div style="flex:1"><h3>🌫️ ${due} MEMORIES ARE FADING!</h3><p class="tiny">The MEMORY PHANTOM feeds on forgotten knowledge.</p></div>
+    <button class="primary" onclick="startReview()">FIGHT</button></div></div>` : ""}
+  ${nextBossTier && bossReady(nextBossTier.n) ? `<div class="pb cream"><div class="row sb">
+    <div style="flex:1"><h3>${TIERS[nextBossTier.n-1].bico} ${nextBossTier.boss} BLOCKS YOUR PATH!</h3><p class="tiny">Defeat the boss to earn the ${TIERS[nextBossTier.n-1].badge} badge and open Tier ${nextBossTier.n+1}.</p></div>
+    <button class="danger" onclick="startBoss(${nextBossTier.n})">BATTLE</button></div></div>` : ""}
+  <div class="pb">
+    <h3 class="caps">▦ Mastery</h3>
     ${Object.entries(TRACKS).map(([k,t]) => {
       const pct = Math.round(trackMastery(k)*100);
-      return `<div class="card"><div class="row" style="justify-content:space-between"><h3>${t.ico} ${t.name}</h3><b style="color:${t.color}">${pct}%</b></div>
-      <div class="bar" style="margin-top:8px"><i style="width:${pct}%;background:${t.color}"></i></div></div>`;
+      return `<div class="row sb" style="margin-top:8px"><span class="tiny">${t.ico} ${t.name.toUpperCase()}</span><span class="tiny">${pct}%</span></div>
+      <div class="bar"><i style="width:${pct}%;background:${hpBarColor(pct/100)}"></i></div>`;
     }).join("")}
+    ${weak.length ? `<p class="tiny" style="margin-top:10px">WEAK SPOTS: ${weak.map(w => w.c.toUpperCase()+" "+Math.round(w.m*100)+"%").join(" • ")}</p>` : ""}
   </div>
-  ${weak.length ? `<div class="card"><h3>🎯 Your weak spots</h3><p class="muted" style="margin:6px 0">The adaptive engine is targeting these:</p>
-    <div class="row">${weak.map(w => `<span class="pill red">${w.c} — ${Math.round(w.m*100)}%</span>`).join("")}</div></div>` : ""}
-  <div class="card"><h3>📜 Recent activity</h3>
-    ${state.log.length ? state.log.map(l => `<p class="muted" style="margin:6px 0">${esc(l)}</p>`).join("") : '<p class="muted" style="margin:6px 0">Nothing yet. Hit Learn and start your ascension.</p>'}
+  <div class="pb"><h3 class="caps">▦ Journal</h3>
+    ${state.log.length ? state.log.map(l => `<p class="tiny" style="margin-top:6px">• ${esc(l)}</p>`).join("") : '<p class="tiny" style="margin-top:6px">• Your story begins. Head to the WORLD map!</p>'}
   </div>
-  <div class="card"><h3>🏆 Rank ladder</h3><div class="ranktrack" style="margin-top:8px">
-    ${RANKS.map(k => `<div class="rankrow ${k.name===r.name?'now':state.xp>=k.xp?'done':''}">
-      <span>${k.ico}</span><b style="flex:1">${k.name}</b><span class="muted">${k.xp} XP</span></div>`).join("")}
-  </div></div>
-  <p class="center"><button onclick="resetGame()" style="font-size:.8rem;color:var(--dim)">Reset progress</button></p>`;
+  <div class="pb"><h3 class="caps">▦ Road to the throne</h3>
+    <div style="margin-top:6px">${RANKS.map(k => `<div class="rankrow ${k.name===r.name?'now':state.xp>=k.xp?'done':''}">
+      <span>${k.ico}</span><span class="tiny" style="flex:1">${k.name}</span><span class="tiny">${k.xp}</span></div>`).join("")}</div>
+  </div>
+  <div class="row sb">
+    <button class="tiny" onclick="toggleSound()">${state.sound?"🔊 SOUND ON":"🔇 SOUND OFF"}</button>
+    <button class="tiny" onclick="resetGame()">⚠ RESET</button>
+  </div>`;
 }
 
 function vLearn(){
-  let html = `<h1>🎓 Skill Tree</h1><p class="muted">Master each module to at least 60% to face the tier boss. Defeat the boss to unlock the next tier.</p>`;
+  let html = `<h2 class="caps">🗺️ World Map</h2>
+  <p class="tiny" style="margin:6px 0">Tame every wild Finmon of a tier (≥${BOSS_MODULE_REQ}% mastery) to challenge its boss. Full mastery needs spaced training over days!</p>`;
   for(const t of TIERS){
     const unlocked = tierUnlocked(t.n);
-    html += `<div class="tierhead"><span class="pill ${unlocked?'gold':''}">TIER ${t.n}</span><b>${t.name}</b><div class="ln"></div>
-      ${state.boss[t.n] ? '<span class="pill green">⚔️ Boss defeated</span>' : unlocked && bossReady(t.n) ? `<button class="primary" onclick="startBoss(${t.n})">⚔️ Fight ${t.boss}</button>` : unlocked ? `<span class="pill">Boss: ${t.boss}</span>` : '<span class="pill">🔒 Locked</span>'}</div>`;
-    html += `<div class="grid cols3">`;
+    html += `<div class="pb dark" style="padding:9px 12px"><div class="row sb">
+      <span class="tiny">ROUTE ${t.n} — ${t.name.toUpperCase()}</span>
+      ${state.boss[t.n] ? `<span class="tag gold">${t.badge} CLEARED</span>`
+        : unlocked && bossReady(t.n) ? `<button class="danger tiny" onclick="startBoss(${t.n})">${t.bico} FIGHT ${t.boss}</button>`
+        : unlocked ? `<span class="tag">BOSS: ${t.boss}</span>` : `<span class="tag">🔒 LOCKED</span>`}
+    </div></div>`;
+    html += `<div class="grid3">`;
     for(const m of MODULES.filter(x => x.tier === t.n)){
       const pct = modulePct(m.id);
       const tr = TRACKS[m.track];
       html += unlocked
-        ? `<div class="module" onclick="go('lesson_${m.id}')">
-            <div class="row" style="justify-content:space-between"><span class="ico">${m.ico}</span><span class="pill" style="color:${tr.color}">${tr.ico} ${tr.name}</span></div>
-            <h3 style="margin:8px 0 6px">${m.name}</h3>
-            <div class="bar"><i style="width:${pct}%;background:${tr.color}"></i></div>
-            <p class="muted" style="margin-top:6px">${pct}% mastery ${pct>=80?"⭐":""}</p>
+        ? `<div class="pb mcard" onclick="go('lesson_${m.id}')" style="margin:0">
+            <div class="row sb"><span class="sprite mini">${m.mico}</span><span class="tag ${tr.cls}">${tr.ico}</span></div>
+            <p style="margin-top:6px"><b>${m.mon}</b> <span class="tiny">Lv.${Math.floor(pct/10)}</span></p>
+            <p class="tiny" style="margin:3px 0">${m.name}</p>
+            <div class="bar"><i style="width:${pct}%;background:${hpBarColor(pct/100)}"></i></div>
+            <p class="tiny" style="margin-top:3px">${pct}%${pct>=100?" ⭐ TAMED":""}</p>
           </div>`
-        : `<div class="module locked"><div class="row" style="justify-content:space-between"><span class="ico">🔒</span><span class="pill">${tr.ico} ${tr.name}</span></div>
-            <h3 style="margin:8px 0 6px">${m.name}</h3><p class="muted">Defeat the Tier ${t.n-1} boss to unlock.</p></div>`;
+        : `<div class="pb" style="margin:0;opacity:.7">
+            <span class="sprite mini shadow">${m.mico}</span>
+            <p style="margin-top:6px"><b>???</b></p>
+            <p class="tiny">A mysterious creature. Clear Route ${t.n-1} first.</p>
+          </div>`;
     }
-    html += `</div>`;
+    html += `</div><div style="height:12px"></div>`;
   }
   return html;
 }
@@ -753,159 +896,206 @@ function vLesson(mid){
   const tr = TRACKS[m.track];
   const pct = modulePct(mid);
   const st = state.mod[mid];
-  return `<button onclick="go('learn')">&larr; Skill tree</button>
-  <div class="card" style="margin-top:12px">
-    <div class="row" style="justify-content:space-between">
-      <h2>${m.ico} ${m.name}</h2><span class="pill" style="color:${tr.color}">${tr.ico} ${tr.name} • Tier ${m.tier}</span>
-    </div>
-    <div class="bar" style="margin:10px 0"><i style="width:${pct}%;background:${tr.color}"></i></div>
-    <p class="muted">${pct}% mastery${st ? ` • best quiz ${st.best}% • ${st.attempts} attempt${st.attempts>1?"s":""}` : " • never attempted"}</p>
+  return `<button class="tiny" onclick="go('learn')">◀ MAP</button>
+  <div class="pb dark" style="margin-top:10px"><div class="row sb">
+    <div><p class="tiny">FINDEX No.${MODULES.indexOf(m)+1} — ${tr.name.toUpperCase()} TYPE</p>
+      <h2>${m.mon}</h2><p class="tiny">${m.name}</p></div>
+    <span class="sprite">${m.mico}</span></div>
+    <div class="bar" style="margin-top:8px;background:#404060"><i style="width:${pct}%;background:${hpBarColor(pct/100)}"></i></div>
+    <p class="tiny" style="margin-top:4px">MASTERY ${pct}%${st ? " • BEST " + st.best + "% • " + st.attempts + " BATTLES" : " • NEVER FOUGHT"}</p>
   </div>
-  <div class="card"><h3>📖 The lesson</h3><ul class="lesson">${m.lesson.map(l => `<li>${l}</li>`).join("")}</ul></div>
-  <button class="primary big" onclick="startQuiz('${mid}')">⚡ Take the quiz (${QUIZ_LEN} questions)</button>`;
+  <div class="pb"><h3 class="caps">📖 Field notes</h3>
+    <ul style="list-style:none;margin-top:10px">${m.lesson.map(l => `<li class="lessonli tiny" style="font-size:9px">${l}</li>`).join("")}</ul>
+  </div>
+  <button class="primary big" onclick="startQuiz('${mid}')">⚔ BATTLE ${m.mon}!</button>`;
 }
 
-function vSession(){
+function vBattle(){
   if(S.mode === "event") return vEvent();
   if(S.done) return vResults();
   const q = S.qs[S.i];
+  const foe = battleFoe();
   const total = S.qs.length;
-  const answered = S.picked !== -1;
-  const correctOrig = q.a;
-  const head = S.mode === "boss"
-    ? `<h2>⚔️ ${TIERS[S.tier-1].boss}</h2><div class="timer" id="bosstimer">${S.secs}s</div>`
-    : S.mode === "review"
-    ? `<h2>🔁 Review session</h2>`
-    : `<h2>${MODULES.find(m=>m.id===S.mid).ico} ${MODULES.find(m=>m.id===S.mid).name}</h2>`;
-  return `<div class="row" style="justify-content:space-between">${head}
-    <span class="pill">Q ${S.i+1}/${total}</span>${S.combo>=3?`<span class="combo">🔥 x${S.combo>=5?2:1.5} combo</span>`:''}</div>
-  <div class="bar" style="margin:10px 0"><i style="width:${Math.round(100*S.i/total)}%"></i></div>
-  <div class="card"><span class="pill ${q.d===3?'red':q.d===2?'gold':'green'}">${'★'.repeat(q.d)} ${q.d===1?"Basics":q.d===2?"Pro":"Expert"}</span>
-    <h3 style="margin-top:10px;line-height:1.5">${q.q}</h3>
-    ${S.opts.map((o,i) => {
-      let cls = "opt";
-      if(answered){
-        if(o.orig === correctOrig) cls += " correct";
-        else if(i === S.picked) cls += " wrong";
-        else cls += " faded";
-      }
-      return `<button class="${cls}" ${answered?"disabled":""} onclick="answer(${i})">${o.t}</button>`;
-    }).join("")}
-    ${answered ? `<div class="expl">${S.picked>=0 && S.opts[S.picked].orig===correctOrig ? "✅ <b>Correct!</b>" : S.picked<0 ? "⏰ <b>Time is up!</b>" : "❌ <b>Not quite.</b>"} ${q.x}</div>
-    <button class="primary big" style="margin-top:12px" onclick="nextQ()">${S.i >= S.qs.length-1 ? "See results" : "Next →"}</button>` : ""}
-  </div>`;
+  const ehp = total - S.ok;
+  const maxhp = S.mode === "boss" ? BOSS_HP : QUIZ_HP;
+  const inFb = S.phase === "fb";
+  const ok = inFb && S.picked >= 0 && S.opts[S.picked].orig === q.a;
+
+  let dialog;
+  if(S.phase === "intro"){
+    dialog = `<div class="dlg"><p id="twmsg"></p><span class="arrow">▼</span></div>
+      <button class="primary big" style="margin-top:8px" onclick="beginFight()">⚔ FIGHT</button>`;
+  } else if(S.phase === "q"){
+    dialog = `<p class="tiny" style="margin-bottom:6px">${"★".repeat(q.d)}${"☆".repeat(3-q.d)} ${q.d===1?"BASIC":q.d===2?"PRO":"EXPERT"} ATTACK ${S.combo>=3?` — 🔥COMBO x${S.combo>=5?"1.5":"1.25"}`:""}</p>
+      <p style="margin-bottom:10px">${q.q}</p>
+      <div class="moves">${S.opts.map((o,i) => `<button class="move" onclick="answer(${i})">▶ ${o.t}</button>`).join("")}</div>`;
+  } else {
+    dialog = `<div class="moves">${S.opts.map((o,i) => {
+        let cls = "move";
+        if(o.orig === q.a) cls += " good"; else if(i === S.picked) cls += " bad"; else cls += " fade";
+        return `<button class="${cls}" disabled>▶ ${o.t}</button>`;
+      }).join("")}
+      <div></div></div>
+      <p id="twmsg" style="margin-top:10px"></p>
+      <p class="tiny" style="margin-top:8px">${q.x}</p>
+      <button class="primary big" style="margin-top:10px" onclick="nextQ()">${S.php<=0 ? "..." : S.i >= total-1 ? "FINISH ▶" : "NEXT ▶"}</button>`;
+  }
+
+  return `
+  <div class="row sb">
+    <span class="tiny caps">${S.mode==="boss"?"💀 BOSS BATTLE":S.mode==="review"?"🥋 TRAINING BATTLE":"⚔ WILD BATTLE"}</span>
+    <span class="tiny">TURN ${S.i+1}/${total}</span>
+  </div>
+  <div class="bfield">
+    <div class="erow">
+      <div class="infobox">
+        <p class="tiny"><b>${foe.name}</b>${S.mode==="boss"?" 💀":""}</p>
+        <div class="row sb"><span class="tiny">HP</span>
+          ${S.mode==="boss" && S.phase==="q" ? `<span class="timerbox" id="bosstimer">${S.secs}</span>` : ""}</div>
+        <div class="bar"><i style="width:${Math.round(100*ehp/total)}%;background:${hpBarColor(ehp/total)}"></i></div>
+      </div>
+      <span class="sprite big ${S.phase==='intro'?'appear':''} ${inFb && S.lastHit==='enemy' ? (ehp===0?'faint':'hit'):''}">${foe.ico}</span>
+    </div>
+    <div class="prow">
+      <span class="sprite ${inFb && S.lastHit==='player' ? (S.php<=0?'faint':'hit'):''}">🧑‍💼</span>
+      <div class="infobox">
+        <p class="tiny"><b>${esc(state.company.name).slice(0,14)}</b></p>
+        <p class="hearts">${hearts(S.php, maxhp)}</p>
+      </div>
+    </div>
+  </div>
+  <div class="pb">${dialog}</div>`;
 }
 
 function vEvent(){
   const ev = S.ev;
   const answered = S.picked !== -1;
   const ok = answered && S.picked >= 0 && S.opts[S.picked].orig === ev.a;
-  return `<div class="card glow">
-    <span class="pill red">⚡ BUSINESS EVENT</span>
-    <h2 style="margin:10px 0">${ev.ico} ${ev.title}</h2>
-    <p style="line-height:1.6">${ev.s}</p></div>
-  <div class="card"><h3 style="line-height:1.5">${ev.q}</h3>
-    ${S.opts.map((o,i) => {
-      let cls = "opt";
-      if(answered){ if(o.orig === ev.a) cls += " correct"; else if(i === S.picked) cls += " wrong"; else cls += " faded"; }
-      return `<button class="${cls}" ${answered?"disabled":""} onclick="answer(${i})">${o.t}</button>`;
-    }).join("")}
-    ${answered ? `<div class="expl">${ok?"✅ <b>Masterstroke!</b>":"❌ <b>Costly mistake.</b>"} ${ev.x}</div>
-      <p style="margin-top:10px"><b style="color:${ok?'var(--green)':'var(--red)'}">${ok ? `+${fmt(ev.rw.cash)} cash, +${fmt(ev.rw.val)} valuation, +30 XP` : `${fmt(ev.pn.cash)} cash, ${fmt(ev.pn.val)} valuation`}</b></p>
-      <button class="primary big" style="margin-top:12px" onclick="endSession(false)">Back to HQ</button>` : ""}
+  return `<div class="pb dark"><p class="tiny blink">⚡ BREAKING NEWS</p>
+    <h2 style="margin:8px 0">${ev.ico} ${ev.title}</h2>
+    <p class="tiny" style="line-height:2">${ev.s}</p></div>
+  <div class="pb"><p style="margin-bottom:10px">${ev.q}</p>
+    <div class="moves">${S.opts.map((o,i) => {
+      let cls = "move";
+      if(answered){ if(o.orig === ev.a) cls += " good"; else if(i === S.picked) cls += " bad"; else cls += " fade"; }
+      return `<button class="${cls}" ${answered?"disabled":""} onclick="answer(${i})">▶ ${o.t}</button>`;
+    }).join("")}</div>
+    ${answered ? `<p style="margin-top:10px">${ok?"✅ MASTERSTROKE!":"❌ COSTLY MISTAKE..."}</p>
+      <p class="tiny" style="margin-top:6px">${ev.x}</p>
+      <p class="tiny" style="margin-top:8px;color:${ok?'var(--green)':'var(--red)'}">${ok ? `+${fmt(ev.rw.cash)} CASH / +${fmt(ev.rw.val)} VALUATION / +25 XP` : `${fmt(ev.pn.cash)} CASH / ${fmt(ev.pn.val)} VALUATION`}</p>
+      <button class="primary big" style="margin-top:10px" onclick="endSession(false)">BACK TO BASE ▶</button>` : ""}
   </div>`;
 }
 
 function vResults(){
-  const pct = S.pct;
+  const foe = battleFoe();
   let title, sub = "";
-  if(S.mode === "boss"){
-    title = S.bossWon ? `⚔️ ${TIERS[S.tier-1].boss} DEFEATED!` : `💀 ${TIERS[S.tier-1].boss} wins this round...`;
-    sub = S.bossWon ? (S.bossReward ? `Tier ${S.tier+1 <= 4 ? S.tier+1 : "MAX"} unlocked! Bounty: ${fmt(S.bossReward)} + ${100*S.tier} XP` : "Already conquered, but glory never gets old.") : `You need ${Math.round(BOSS_PASS*100)}%. Strengthen the tier modules and return.`;
+  if(S.ko){
+    title = "💀 YOU BLACKED OUT!";
+    sub = S.mode === "boss" ? foe.name + " was too strong. Train the tier modules and return!"
+        : "You kept the XP you earned, but " + foe.name + " escaped untamed.";
+  } else if(S.mode === "boss"){
+    title = "🏅 " + foe.name + " DEFEATED!";
+    sub = S.bossReward ? "BADGE GET! " + fmt(S.bossReward) + " bounty + " + (60*S.tier) + " XP. Route " + (S.tier+1 <= 4 ? S.tier+1 : "MAX") + " is open!" : "Glory never gets old.";
   } else {
-    title = pct >= 90 ? "🌟 Flawless execution!" : pct >= 70 ? "💪 Solid performance!" : pct >= 50 ? "📈 Progress made." : "🌧️ Rough session — the engine will bring these back.";
+    title = S.pct >= 90 ? "🌟 FLAWLESS VICTORY!" : S.pct >= 70 ? "⚔ VICTORY!" : "😮‍💨 NARROW ESCAPE...";
+    sub = S.pct >= 70 ? "" : "The engine will hunt your mistakes in the DOJO.";
   }
-  return `<div class="card glow center">
-    <h1 style="margin-bottom:6px">${title}</h1>
-    ${sub ? `<p class="muted">${sub}</p>` : ""}
-    <div class="row" style="margin:16px 0;justify-content:center">
-      <div class="stat"><div class="v">${S.ok}/${S.qs.length}</div><div class="l">Correct</div></div>
-      <div class="stat"><div class="v" style="color:var(--violet)">+${S.xpEarned}</div><div class="l">XP</div></div>
-      <div class="stat"><div class="v" style="color:var(--gold)">+${fmt(S.cashEarned)}</div><div class="l">Cash</div></div>
+  return `<div class="pb center">
+    <span class="sprite big ${S.ko?'':'appear'}">${S.ko ? "🧑‍💼" : foe.ico}</span>
+    <h2 style="margin:10px 0">${title}</h2>
+    ${sub ? `<p class="tiny">${sub}</p>` : ""}
+    <div class="grid3" style="margin:12px 0">
+      <div class="pb cream center" style="margin:0"><p class="tiny">HITS</p><h3>${S.ok}/${S.qs.length}</h3></div>
+      <div class="pb cream center" style="margin:0"><p class="tiny">XP</p><h3 style="color:var(--violet)">+${S.xpEarned}</h3></div>
+      <div class="pb cream center" style="margin:0"><p class="tiny">CASH</p><h3 style="color:var(--gold)">+${fmt(S.cashEarned)}</h3></div>
     </div>
-    <div class="bar ${pct>=70?'green':''}" style="margin-bottom:14px"><i style="width:${pct}%"></i></div>
-    ${S.eventNext ? `<p style="margin-bottom:10px">⚡ <b>Breaking news at your company...</b></p>
-      <button class="primary big" onclick="endSession(true)">Handle the situation</button>`
-    : `<button class="primary big" onclick="endSession(false)">Continue</button>`}
+    ${S.eventNext ? `<p class="tiny blink" style="margin-bottom:8px">⚡ SOMETHING IS HAPPENING AT YOUR COMPANY...</p>
+      <button class="danger big" onclick="endSession(true)">HANDLE IT ▶</button>`
+    : `<button class="primary big" onclick="endSession(false)">CONTINUE ▶</button>`}
   </div>`;
 }
 
 function vReview(){
   const due = dueReviews();
   const cs = conceptStats();
-  return `<h1>🔁 Review Center</h1>
-  <p class="muted">The engine schedules each concept right before you would forget it (spaced repetition). Miss one and it comes back sooner.</p>
-  <div class="card glow" style="margin-top:12px">
-    ${due.length ? `<div class="row" style="justify-content:space-between">
-      <div><h3>${due.length} question${due.length>1?"s":""} due now</h3><p class="muted">Clearing reviews is the fastest path to permanent mastery.</p></div>
-      <button class="primary" onclick="startReview()">Start review</button></div>`
-    : `<h3>✅ All clear!</h3><p class="muted">Nothing due. Learn new modules or come back tomorrow — the forgetting curve never sleeps.</p>`}
+  return `<h2 class="caps">🥋 The Dojo</h2>
+  <p class="tiny" style="margin:6px 0">The MEMORY PHANTOM grows stronger as you forget. Spaced repetition: each concept returns right before it fades (1, 3, 7, 16, 30 days). Beyond level 2, mastery only grows on a DUE day — patience, grasshopper.</p>
+  <div class="pb cream">
+    ${due.length ? `<div class="row sb">
+      <div style="flex:1"><h3>🌫️ ${due.length} FADING ${due.length>1?"MEMORIES":"MEMORY"}!</h3><p class="tiny">Defeat the phantom to lock them in.</p></div>
+      <button class="primary" onclick="startReview()">FIGHT</button></div>`
+    : `<h3>✅ MIND FORTRESS SECURE</h3><p class="tiny">Nothing due. The forgetting curve never sleeps — return tomorrow.</p>`}
   </div>
-  ${cs.length ? `<div class="card"><h3>🧠 Concept mastery</h3>
-    ${cs.map(w => `<div class="row" style="justify-content:space-between;margin:8px 0">
-      <span style="min-width:140px">${w.c}</span>
-      <div class="bar" style="flex:1"><i style="width:${Math.round(w.m*100)}%"></i></div>
-      <b style="min-width:44px;text-align:right;color:${w.m>=.7?'var(--green)':w.m>=.4?'var(--gold)':'var(--red)'}">${Math.round(w.m*100)}%</b></div>`).join("")}
-  </div>` : `<div class="card"><p class="muted">Answer some quizzes first — your concept map will appear here.</p></div>`}`;
+  ${cs.length ? `<div class="pb"><h3 class="caps">▦ Concept mastery</h3>
+    ${cs.map(w => `<div class="row sb" style="margin-top:8px"><span class="tiny">${w.c.toUpperCase()}</span><span class="tiny">${Math.round(w.m*100)}%</span></div>
+      <div class="bar"><i style="width:${Math.round(w.m*100)}%;background:${hpBarColor(w.m)}"></i></div>`).join("")}
+  </div>` : `<div class="pb"><p class="tiny">Fight some battles first — your concept map will appear here.</p></div>`}`;
 }
 
 function vCompany(){
-  return `<h1>🏗️ ${esc(state.company.name)}</h1>
-  <div class="row" style="margin:12px 0">
-    <div class="stat"><div class="v" style="color:var(--gold)">${fmt(state.company.cash)}</div><div class="l">Cash</div></div>
-    <div class="stat"><div class="v" style="color:var(--cyan)">${fmt(valuation())}</div><div class="l">Valuation</div></div>
-    <div class="stat"><div class="v" style="color:var(--green)">x${cashMult().toFixed(2)}</div><div class="l">Cash mult</div></div>
-    <div class="stat"><div class="v" style="color:var(--violet)">x${xpMult().toFixed(2)}</div><div class="l">XP mult</div></div>
+  return `<h2 class="caps">🏪 Tycoon Mart</h2>
+  <div class="pb"><p>CLERK: Welcome to ${esc(state.company.name).toUpperCase()} MART! Upgrades need <b>CASH</b> and <b>KNOWLEDGE</b>. No shortcuts to the throne!</p></div>
+  <div class="grid3">
+    <div class="pb center" style="margin:0"><p class="tiny">CASH</p><h3 style="color:var(--gold)">${fmt(state.company.cash)}</h3></div>
+    <div class="pb center" style="margin:0"><p class="tiny">CASH MULT</p><h3>x${cashMult().toFixed(2)}</h3></div>
+    <div class="pb center" style="margin:0"><p class="tiny">XP MULT</p><h3>x${xpMult().toFixed(2)}</h3></div>
   </div>
-  <p class="muted" style="margin-bottom:12px">Upgrades need <b>cash</b> (earned by answering) AND <b>knowledge</b> (module mastery). No shortcuts to the throne.</p>
-  <div class="grid cols2">
+  <div style="height:10px"></div>
   ${UPGRADES.map(u => {
     const owned = state.company.upgrades.includes(u.id);
     const reqM = MODULES.find(m => m.id === u.req.m);
     const reqOK = modulePct(u.req.m) >= u.req.p;
     const canBuy = !owned && reqOK && state.company.cash >= u.cost;
     const fx = [];
-    if(u.fx.cashMult) fx.push("+" + Math.round(u.fx.cashMult*100) + "% cash");
+    if(u.fx.cashMult) fx.push("+" + Math.round(u.fx.cashMult*100) + "% CASH");
     if(u.fx.xpMult) fx.push("+" + Math.round(u.fx.xpMult*100) + "% XP");
-    if(u.fx.val) fx.push("+" + fmt(u.fx.val) + " valuation");
-    return `<div class="upg ${owned?'owned':''}">
-      <span class="ico">${u.ico}</span>
-      <div style="flex:1">
-        <div class="row" style="justify-content:space-between"><b>${u.name}</b>${owned?'<span class="pill green">OWNED</span>':`<span class="pill gold">${fmt(u.cost)}</span>`}</div>
-        <p class="muted" style="margin:4px 0">${u.desc}</p>
-        <p style="font-size:.8rem;margin:4px 0"><span class="pill ${reqOK?'green':'red'}">${reqM.ico} ${reqM.name} ≥ ${u.req.p}% (you: ${modulePct(u.req.m)}%)</span></p>
-        <p class="muted" style="font-size:.8rem">${fx.join(" • ")}</p>
-        ${!owned ? `<button class="primary" style="margin-top:6px" ${canBuy?"":"disabled"} onclick="buyUpgrade('${u.id}')">${reqOK ? (state.company.cash >= u.cost ? "Build" : "Not enough cash") : "Knowledge required"}</button>` : ""}
+    if(u.fx.val) fx.push("+" + fmt(u.fx.val) + " VAL");
+    return `<div class="pb" style="margin:8px 0;${owned?'background:#d8e8c8':''}">
+      <div class="row sb">
+        <span class="sprite mini">${u.ico}</span>
+        <div style="flex:1;min-width:150px">
+          <p><b>${u.name.toUpperCase()}</b> ${owned?'<span class="tag green">OWNED</span>':`<span class="tag gold">${fmt(u.cost)}</span>`}</p>
+          <p class="tiny" style="margin:3px 0">${u.desc}</p>
+          <p class="tiny"><span class="tag ${reqOK?'green':'red'}">${reqM.mon} ≥${u.req.p}% (${modulePct(u.req.m)}%)</span> ${fx.join(" • ")}</p>
+        </div>
+        ${!owned ? `<button class="tiny" ${canBuy?"":"disabled"} onclick="buyUpgrade('${u.id}')">${reqOK ? (state.company.cash >= u.cost ? "BUY" : "NO CASH") : "LOCKED"}</button>` : ""}
       </div></div>`;
-  }).join("")}
-  </div>`;
+  }).join("")}`;
 }
 
 function render(){
   const app = document.getElementById("app");
   if(!state.company.name){ app.innerHTML = vOnboard(); return; }
   let body;
-  if(state.view === "session" && S) body = vSession();
+  if(state.view === "session" && S) body = vBattle();
   else if(state.view && state.view.startsWith("lesson_")) body = vLesson(state.view.slice(7));
   else if(state.view === "learn") body = vLearn();
   else if(state.view === "review") body = vReview();
   else if(state.view === "company") body = vCompany();
   else { state.view = "hq"; body = vHQ(); }
   app.innerHTML = body + (state.view === "session" ? "" : vNav());
+  /* battle dialog typewriter */
+  if(state.view === "session" && S && !S.done && S.mode !== "event"){
+    const foe = battleFoe();
+    if(S.phase === "intro"){
+      const msg = S.mode === "boss" ? "Boss " + foe.name + " wants to crush your startup!"
+        : S.mode === "review" ? "The MEMORY PHANTOM emerges from the fog of forgetting!"
+        : "A wild " + foe.name + " appeared!";
+      typewrite("twmsg", msg);
+    } else if(S.phase === "fb"){
+      const q = S.qs[S.i];
+      const ok = S.picked >= 0 && S.opts[S.picked].orig === q.a;
+      const msg = S.picked < 0 ? "⏰ Too slow! " + foe.name + " strikes!"
+        : ok ? (S.combo >= 3 ? "💥 CRITICAL HIT! " + foe.name + " staggers!" : "✅ A solid hit! +" + Math.round(6*q.d*(S.mode==="boss"?1.5:1)) + " XP")
+        : "❌ It backfired! " + foe.name + " hits you hard!";
+      typewrite("twmsg", msg);
+    }
+  }
 }
 
 load();
-if(state.view === "session") state.view = "hq"; // never resume mid-session after reload
+if(state.view === "session") state.view = "hq";
 render();
 </script>
 </body>
