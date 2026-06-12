@@ -1,38 +1,34 @@
-# 👑 Fintech Tycoon — Zero to King
+# 👑 Fintech Tycoon — Intern to King
 
-A retro Game Boy-style RPG that takes you from absolute zero to mastery of **Finance 💰, Tech 💻 and AI 🤖**. Quizzes are turn-based monster battles: every module is a wild Finmon to tame, every answer is an attack, and you only have 3 hearts.
+A retro Game Boy-style career game. You start as an **intern at a fintech startup** and climb all the way to **Fintech King** by surviving real workplace situations: client meetings, prospect pitches, crisis calls and promotion interviews — all about **Finance 💰, Tech 💻 and AI 🤖**.
 
 **Play now: https://royconstantymartin-hub.github.io/Smartgaming/**
 
 Everything lives in a single file: **`index.html`**. No install, no backend, no API key.
 
-## ▶️ How to play
-
-Open `index.html` in any browser (double-click it, or serve it, or paste its content as a Claude artifact). Your progress is saved automatically in the browser (localStorage).
-
 ## 🎮 The game
 
-1. **Found your startup** — name it, you start with $200 and the rank of Intern.
-2. **Learn** — 12 modules across 3 tracks (Finance, Tech, AI) and 4 tiers, from "What is money?" to "AI trading, model risk & explainability". Each module = a concise lesson + an adaptive quiz.
-3. **Earn** — every correct answer pays XP and cash. Combos multiply rewards.
-4. **Build** — spend cash on 14 company upgrades (engineers, licenses, ML models, IPO readiness). Each upgrade also requires real knowledge: minimum mastery of a specific module.
-5. **Survive events** — random business crises (outages, fraud rings, regulator audits, VC term sheets) test your applied knowledge: good calls boost your valuation, bad calls cost you.
-6. **Fight bosses** — beat the timed tier boss (70%+ under 20s/question) to unlock the next tier.
-7. **Reach the throne** — climb 10 ranks from Intern to **Fintech King** (8000 XP).
+1. **Clock in** — name the startup you join. You start as an Intern with $150 of savings.
+2. **Take meetings** — every quiz is a real situation: a client, a prospect, your mentor or your manager asks you 6 real-world questions (interview-style, support escalations, board challenges, due-diligence calls...). You have **3 credibility hearts**: 3 wrong answers and the meeting collapses.
+3. **Earn** — good answers earn XP and cash bonuses. Combo streaks multiply rewards.
+4. **Ship projects** — pitch 14 projects to management (hire engineers, launch the mobile app, ship a fraud ML model, IPO readiness). Each needs budget AND proven skill.
+5. **Survive crises** — outages at 3am, fraud rings, regulator audits, VC term sheets — they land on YOUR desk after meetings.
+6. **Pass promotion interviews** — each career stage ends with a timed interview (HR Manager → Head of Product → CTO+CFO → The Board). 20s per question, 3 mistakes max.
+7. **Reach the throne** — climb 10 titles from Intern to **FINTECH KING** (21,000 XP).
 
 ## 🧠 The adaptive engine (built-in, offline)
 
-- **Spaced repetition (Leitner)** — every question lives in a box (intervals: 1, 3, 7, 16, 30 days). Fail it and it comes back immediately; master it and it fades to long-term review.
-- **Dynamic difficulty** — quizzes pick questions near your current proficiency level and target your weakest concepts first.
-- **Weak-spot radar** — the HQ dashboard shows the 3 concepts the engine is hunting in you.
+- **Spaced repetition (Leitner)** — every question has a memory box (1, 3, 7, 16, 30 days). Miss it and it comes back immediately; master it and it fades to long-term review.
+- **Day-gated mastery** — same-day grinding caps a skill at 67%. Full mastery requires coming back when reviews are actually due. No cramming your way to the top.
+- **Dynamic difficulty** — meetings pick questions near your level and target your weakest concepts first.
 
 ## 📚 Curriculum
 
-| Tier | Finance | Tech | AI |
-|------|---------|------|----|
-| 1 — Foundations | Money & Banking Basics | How Software Works | What Is AI? |
-| 2 — Core Skills | Markets & Investing | APIs, Cloud & Data | ML Fundamentals |
-| 3 — Advanced | Fintech Models & Payments | Security, Blockchain & Crypto | Deep Learning, LLMs & GenAI |
-| 4 — Master | Risk, Regulation & RegTech | Scaling Fintech Systems | AI in Finance |
+| Stage | Finance | Tech | AI |
+|-------|---------|------|----|
+| 1 — Intern Desk | Money & Banking Basics | How Software Works | What Is AI? |
+| 2 — Analyst Floor | Markets & Investing | APIs, Cloud & Data | ML Fundamentals |
+| 3 — Managers Office | Fintech Models & Payments | Security, Blockchain & Crypto | Deep Learning, LLMs & GenAI |
+| 4 — Executive Suite | Risk, Regulation & RegTech | Scaling Fintech Systems | AI in Finance |
 
-96 questions, 10 business events, 14 upgrades, 4 bosses. One file. Zero dependencies.
+96 situational questions, 10 crisis events, 14 projects, 4 promotion interviews. One file. Zero dependencies.

@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fintech Tycoon — Zero to King</title>
+<title>Fintech Tycoon — Intern to King</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
   :root{
-    --ink:#20203a; --paper:#f8f8f0; --cream:#f0e8d0; --screen:#e8f0d8;
+    --ink:#20203a; --paper:#f8f8f0; --cream:#f0e8d0; --screen:#e8ecf0;
     --red:#d04848; --blue:#4878d0; --green:#50a850; --gold:#c89010; --violet:#8858c8;
     --hpg:#58c858; --hpy:#d8b820; --hpr:#d04848;
   }
@@ -28,7 +28,6 @@
   h1{font-size:14px;line-height:1.6} h2{font-size:12px;line-height:1.6} h3{font-size:10px;line-height:1.7}
   p,li,button,span,div{font-size:10px;line-height:1.8}
   .tiny{font-size:8px;line-height:1.8}
-  /* pixel box: double border GB dialog style */
   .pb{background:var(--paper); border:3px solid var(--ink); box-shadow:inset 0 0 0 2px var(--paper), inset 0 0 0 4px var(--ink);
     padding:14px; margin:10px 0; border-radius:2px}
   .pb.dark{background:var(--ink); color:var(--paper); box-shadow:inset 0 0 0 2px var(--ink), inset 0 0 0 4px var(--paper)}
@@ -43,7 +42,6 @@
   button:disabled{opacity:.45; cursor:not-allowed}
   .row{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
   .sb{justify-content:space-between}
-  .grid2{display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
   .grid3{display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
   .bar{height:10px; background:#c8c8b0; border:2px solid var(--ink); position:relative}
   .bar>i{display:block; height:100%; transition:width .5s steps(8)}
@@ -54,15 +52,14 @@
   .sprite{font-size:52px; line-height:1; filter:drop-shadow(3px 3px 0 rgba(32,32,58,.35))}
   .sprite.big{font-size:72px}
   .sprite.mini{font-size:26px}
-  .sprite.shadow{filter:brightness(0) opacity(.55)}
   .hit{animation:hit .45s steps(3)}
   @keyframes hit{0%{transform:translateX(0)}25%{transform:translateX(-10px);filter:brightness(3)}50%{transform:translateX(8px)}75%{transform:translateX(-6px);filter:brightness(3)}100%{transform:translateX(0)}}
   .appear{animation:appear .5s steps(5)}
   @keyframes appear{from{transform:translateY(-18px) scale(.3);opacity:0}to{transform:none;opacity:1}}
   .faint{animation:faint .7s steps(6) forwards}
   @keyframes faint{to{transform:translateY(34px);opacity:0}}
-  /* battle layout */
-  .bfield{background:linear-gradient(180deg,#a8d8a0 0 62%, #88b878 62% 100%);
+  /* meeting room layout */
+  .bfield{background:linear-gradient(180deg,#b8cce0 0 62%, #8898b0 62% 100%);
     border:3px solid var(--ink); padding:10px; position:relative; min-height:215px; margin:10px 0}
   .erow{display:flex; justify-content:space-between; align-items:flex-start; gap:8px}
   .prow{display:flex; justify-content:space-between; align-items:flex-end; gap:8px; margin-top:14px}
@@ -76,6 +73,8 @@
   .move.fade{opacity:.45}
   .arrow{position:absolute; right:12px; bottom:6px; animation:blink 1s steps(2) infinite}
   .dlg{position:relative; min-height:64px}
+  .speech{background:#fff; border:3px solid var(--ink); padding:10px 12px; position:relative; margin-bottom:10px}
+  .speech::after{content:""; position:absolute; right:26px; bottom:-12px; border:6px solid transparent; border-top-color:var(--ink)}
   nav{position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:760px;
     background:var(--paper); border-top:4px solid var(--ink); display:flex; z-index:100}
   nav button{flex:1; border:none; box-shadow:none; border-right:3px solid var(--ink); padding:9px 2px;
@@ -112,9 +111,11 @@
 <script>
 "use strict";
 /* ============================================================
-   FINTECH TYCOON — ZERO TO KING  (Retro GB Edition)
-   Quiz = monster battles. Leitner spaced repetition with
-   true day-gating, dynamic difficulty, tycoon economy.
+   FINTECH TYCOON — INTERN TO KING  (Retro Career Edition)
+   You start as an intern in a fintech startup. Quizzes are
+   real workplace situations: client meetings, prospect calls,
+   crisis events — and PROMOTION INTERVIEWS gate each stage.
+   Leitner spaced repetition with day-gating + dynamic difficulty.
    ============================================================ */
 
 /* ----------------------- GAME DATA ----------------------- */
@@ -134,15 +135,25 @@ const RANKS = [
 
 const TRACKS = {fin:{name:"Finance",ico:"💰",cls:"gold"}, tech:{name:"Tech",ico:"💻",cls:"blue"}, ai:{name:"AI",ico:"🤖",cls:"green"}};
 
+/* Career stages. Each ends with a PROMOTION INTERVIEW. */
 const TIERS = [
-  {n:1, name:"Foundations",  boss:"GATEKEEPER",   bico:"🧛", badge:"🏦"},
-  {n:2, name:"Core Skills",  boss:"QUANT SHARK",  bico:"🦈", badge:"📈"},
-  {n:3, name:"Advanced Play",boss:"CRYPTO BARON", bico:"🐉", badge:"💎"},
-  {n:4, name:"Master Class", boss:"THE OLD KING", bico:"👹", badge:"👑"},
+  {n:1, name:"Intern Desk",     itw:"THE HR MANAGER",   bico:"👩‍💼", badge:"📋", role:"Junior Analyst"},
+  {n:2, name:"Analyst Floor",   itw:"HEAD OF PRODUCT",  bico:"🧑‍💼", badge:"📈", role:"Team Lead"},
+  {n:3, name:"Managers Office", itw:"THE CTO + CFO",    bico:"👔", badge:"💎", role:"Executive"},
+  {n:4, name:"Executive Suite", itw:"THE BOARD",        bico:"🎩", badge:"👑", role:"FINTECH KING"},
 ];
 
+/* Meeting personas — who is across the table this time */
+const PERSONAS = [
+  {name:"THE CLIENT",   ico:"🧔", intro:"Your manager grabs you: a big client is waiting in Room 2. Answer well or we lose the account!", win:"🤝 ACCOUNT SAVED!", bar:"TRUST"},
+  {name:"THE PROSPECT", ico:"👩‍💼", intro:"Sales pulled you into a pitch: convince this prospect and the deal is yours.", win:"🤝 DEAL CLOSED!", bar:"DEAL"},
+  {name:"YOUR MENTOR",  ico:"🧓", intro:"Your mentor pours a coffee and starts grilling you. As usual. Prove you did the homework.", win:"☕ MENTOR IMPRESSED!", bar:"RESPECT"},
+  {name:"THE MANAGER",  ico:"👨‍💼", intro:"Surprise skill check from your manager. Your next review depends on it.", win:"📋 GLOWING REVIEW!", bar:"RATING"},
+];
+const REVIEW_PERSONA = {name:"YOUR MENTOR", ico:"🧓", intro:"Your mentor noticed you are forgetting things. Drill time — lock that knowledge in.", win:"🧠 KNOWLEDGE LOCKED IN!", bar:"RECALL"};
+
 const MODULES = [
-{id:"fin1", track:"fin", tier:1, ico:"🏦", mon:"COINLET", mico:"🐣", name:"Money & Banking Basics",
+{id:"fin1", track:"fin", tier:1, ico:"🏦", name:"Money & Banking Basics",
  lesson:[
   "Money does three jobs: a medium of exchange (you pay with it), a unit of account (you price things in it), and a store of value (you save it).",
   "Commercial banks take deposits from savers and lend that money to borrowers. The gap between the interest they pay and the interest they charge is their core profit.",
@@ -151,7 +162,7 @@ const MODULES = [
   "Central banks (the Fed, the ECB) do not serve customers. They set interest rates, manage the money supply, and act as lender of last resort to keep the system stable.",
   "Banks only keep a fraction of deposits on hand (fractional reserve banking) — trust and regulation keep this machine running.",
  ]},
-{id:"tech1", track:"tech", tier:1, ico:"⚙️", mon:"BITPUP", mico:"🐶", name:"How Software Works",
+{id:"tech1", track:"tech", tier:1, ico:"⚙️", name:"How Software Works",
  lesson:[
   "Hardware is the physical machine; software is the set of instructions (code) that tells it what to do.",
   "Apps usually split into a frontend (what the user sees and touches) and a backend (servers and logic running elsewhere).",
@@ -160,7 +171,7 @@ const MODULES = [
   "A server is just a computer that listens for requests and answers them — 'the cloud' is someone else's servers.",
   "Open-source software is code anyone can read, use, and improve. Most of fintech runs on top of it.",
  ]},
-{id:"ai1", track:"ai", tier:1, ico:"🧠", mon:"NEURITE", mico:"🐙", name:"What Is AI?",
+{id:"ai1", track:"ai", tier:1, ico:"🧠", name:"What Is AI?",
  lesson:[
   "Artificial Intelligence is software that performs tasks that normally require human intelligence: recognizing, predicting, deciding, generating.",
   "Rules-based systems follow instructions a human wrote (IF x THEN y). Machine learning systems learn patterns from data instead of being explicitly programmed.",
@@ -169,7 +180,7 @@ const MODULES = [
   "The recent AI boom comes from three things converging: huge datasets, cheap massive compute (GPUs), and better algorithms.",
   "AI can be confidently wrong. It reflects the biases and gaps of its training data — never treat its output as guaranteed truth.",
  ]},
-{id:"fin2", track:"fin", tier:2, ico:"📈", mon:"BULLISH", mico:"🐂", name:"Markets & Investing",
+{id:"fin2", track:"fin", tier:2, ico:"📈", name:"Markets & Investing",
  lesson:[
   "A share of stock is a slice of ownership in a company. Shareholders gain via price increases and dividends.",
   "A bond is a loan you make to a company or government. It pays interest (the coupon) and returns the principal at maturity.",
@@ -179,7 +190,7 @@ const MODULES = [
   "Market capitalization = share price × number of shares. It is what the market says a company is worth.",
   "When interest rates rise, existing bonds with lower coupons become less attractive, so their prices fall.",
  ]},
-{id:"tech2", track:"tech", tier:2, ico:"🔌", mon:"CLOUDRA", mico:"🐲", name:"APIs, Cloud & Data",
+{id:"tech2", track:"tech", tier:2, ico:"🔌", name:"APIs, Cloud & Data",
  lesson:[
   "An API (Application Programming Interface) is a contract that lets one program use another program's features or data.",
   "Open banking forces banks to expose APIs, letting fintechs build on top of bank accounts — this unlocked an entire industry.",
@@ -189,7 +200,7 @@ const MODULES = [
   "Big data is described by the 3 Vs: Volume (a lot), Velocity (fast), Variety (many formats).",
   "A webhook reverses the API flow: instead of you asking, the server calls YOU when an event happens (e.g. 'payment received').",
  ]},
-{id:"ai2", track:"ai", tier:2, ico:"📐", mon:"DATAMITE", mico:"🐜", name:"Machine Learning Fundamentals",
+{id:"ai2", track:"ai", tier:2, ico:"📐", name:"Machine Learning Fundamentals",
  lesson:[
   "Machine learning finds patterns in historical data to make predictions about new data.",
   "Supervised learning trains on labeled examples (transaction → fraud or not). Unsupervised learning finds structure without labels (clustering customers).",
@@ -199,7 +210,7 @@ const MODULES = [
   "Classification predicts a category (fraud / not fraud); regression predicts a number (house price, credit loss).",
   "Beware accuracy on imbalanced data: if 99.9% of transactions are legit, a model that says 'never fraud' is 99.9% accurate and 100% useless.",
  ]},
-{id:"fin3", track:"fin", tier:3, ico:"💳", mon:"PAYDRAKE", mico:"🦆", name:"Fintech Models & Payments",
+{id:"fin3", track:"fin", tier:3, ico:"💳", name:"Fintech Models & Payments",
  lesson:[
   "Card payment flow: customer's bank (issuer) → card network (Visa/Mastercard) → merchant's bank (acquirer). Each hop takes a tiny cut.",
   "The interchange fee is what the merchant side pays the card issuer per transaction — a core revenue source for card fintechs.",
@@ -209,7 +220,7 @@ const MODULES = [
   "Zero-commission brokers monetize differently: payment for order flow, interest on idle cash, premium subscriptions.",
   "Unit economics 101: LTV (lifetime value of a customer) must exceed CAC (cost to acquire them), or growth just burns cash faster.",
  ]},
-{id:"tech3", track:"tech", tier:3, ico:"🔐", mon:"CRYPTYX", mico:"🦂", name:"Security, Blockchain & Crypto",
+{id:"tech3", track:"tech", tier:3, ico:"🔐", name:"Security, Blockchain & Crypto",
  lesson:[
   "Encryption scrambles data so only someone with the key can read it. It protects data in transit (HTTPS) and at rest.",
   "Two-factor authentication (2FA) requires something you know (password) plus something you have (phone) — it blocks most account takeovers.",
@@ -220,7 +231,7 @@ const MODULES = [
   "Smart contracts are programs on a blockchain that execute automatically when conditions are met — code as enforcement.",
   "Crypto custody is brutal: lose your private key and the funds are gone forever. No password reset exists.",
  ]},
-{id:"ai3", track:"ai", tier:3, ico:"✨", mon:"PROMPTGEIST", mico:"👻", name:"Deep Learning, LLMs & GenAI",
+{id:"ai3", track:"ai", tier:3, ico:"✨", name:"Deep Learning, LLMs & GenAI",
  lesson:[
   "Neural networks are loosely inspired by the brain: layers of simple units that each transform data a little.",
   "'Deep' learning just means many layers — depth lets networks learn very complex patterns (faces, language, markets).",
@@ -231,7 +242,7 @@ const MODULES = [
   "Fine-tuning retrains a model on your data; RAG (retrieval-augmented generation) instead fetches your documents at question time and feeds them in — cheaper and easier to update.",
   "GPUs dominate AI because deep learning is mostly huge matrix multiplications, which GPUs run massively in parallel.",
  ]},
-{id:"fin4", track:"fin", tier:4, ico:"⚖️", mon:"REGULOX", mico:"🦉", name:"Risk, Regulation & RegTech",
+{id:"fin4", track:"fin", tier:4, ico:"⚖️", name:"Risk, Regulation & RegTech",
  lesson:[
   "KYC (Know Your Customer): verifying who your customers really are before serving them. Step one of any fintech.",
   "AML (Anti-Money Laundering): monitoring and reporting suspicious flows so criminals cannot wash money through your product.",
@@ -242,7 +253,7 @@ const MODULES = [
   "Regulatory sandboxes let startups test innovative products with real users under supervision, before full licensing.",
   "Data protection (GDPR) is existential for fintechs: fines reach 4% of global revenue, and trust, once lost, rarely returns.",
  ]},
-{id:"tech4", track:"tech", tier:4, ico:"🏗️", mon:"SCALEMANDER", mico:"🦎", name:"Scaling Fintech Systems",
+{id:"tech4", track:"tech", tier:4, ico:"🏗️", name:"Scaling Fintech Systems",
  lesson:[
   "Vertical scaling = a bigger machine. Horizontal scaling = more machines. The web scales horizontally.",
   "Latency is money: in trading, milliseconds decide who gets the price; in checkout, slow pages kill conversion.",
@@ -253,7 +264,7 @@ const MODULES = [
   "Caching keeps frequently-read data in fast memory to cut load and latency — but stale caches showing a wrong balance are a fintech nightmare.",
   "Distributed systems trade consistency for availability: 'eventual consistency' means replicas agree... eventually. Choose carefully where money is involved.",
  ]},
-{id:"ai4", track:"ai", tier:4, ico:"📡", mon:"QUANTAUR", mico:"🐗", name:"AI in Finance",
+{id:"ai4", track:"ai", tier:4, ico:"📡", name:"AI in Finance",
  lesson:[
   "Algorithmic trading executes orders by rules at machine speed; most market volume today is algorithmic.",
   "AI credit scoring adds alternative data (cash-flow patterns, behavior) to score people that classic bureaus cannot see.",
@@ -266,174 +277,176 @@ const MODULES = [
  ]},
 ];
 
-/* Questions: m=module, d=difficulty 1-3, c=concept tag, a=index of correct option, x=explanation */
+/* Questions as REAL workplace situations: interviews, client calls,
+   prospect pitches, incident reviews. m=module, d=difficulty, c=concept,
+   a=correct option index, x=explanation */
 const QUESTIONS = [
 // fin1
-{id:"fin1_1",m:"fin1",d:1,c:"money",q:"Which of these is NOT one of the three classic functions of money?",o:["Medium of exchange","Store of value","Unit of account","Generator of inflation"],a:3,x:"Money serves as a medium of exchange, a store of value, and a unit of account. Inflation affects money but is not a function of it."},
-{id:"fin1_2",m:"fin1",d:1,c:"banking",q:"What is the core business of a commercial bank?",o:["Printing money","Taking deposits and making loans","Setting national interest rates","Collecting taxes"],a:1,x:"Banks profit from the spread: they pay savers low interest and charge borrowers higher interest."},
-{id:"fin1_3",m:"fin1",d:1,c:"interest",q:"Interest is best described as...",o:["A tax on savings","The price of borrowing money","A government fee","Free money from banks"],a:1,x:"Interest compensates the lender for risk and for giving up the use of their money."},
-{id:"fin1_4",m:"fin1",d:1,c:"inflation",q:"Inflation means...",o:["Prices generally rise and money buys less","Banks raise their fees","The stock market goes up","Salaries always increase"],a:0,x:"Inflation is a sustained rise in the general price level — each unit of currency loses purchasing power."},
-{id:"fin1_5",m:"fin1",d:2,c:"central-banks",q:"Which is a job of a CENTRAL bank (like the Fed or ECB)?",o:["Giving mortgages to families","Setting interest rates and managing money supply","Running ATMs","Selling insurance"],a:1,x:"Central banks steer the economy via monetary policy and backstop the banking system. They do not serve retail customers."},
-{id:"fin1_6",m:"fin1",d:2,c:"interest",q:"You invest $100 at 10% annual COMPOUND interest. After 2 years you have...",o:["$120","$121","$110","$200"],a:1,x:"Year 1: 100→110. Year 2: 110×1.10 = 121. Interest on interest — that is compounding."},
-{id:"fin1_7",m:"fin1",d:2,c:"banking",q:"Fractional reserve banking means banks...",o:["Keep all deposits in their vaults","Keep only a fraction of deposits and lend out the rest","Only lend to other banks","Split every loan into fractions"],a:1,x:"Banks lend out most deposits, keeping only a fraction available. That multiplies credit in the economy — and is why trust matters."},
-{id:"fin1_8",m:"fin1",d:3,c:"central-banks",q:"Why do central banks RAISE interest rates to fight inflation?",o:["To make banks richer","Costlier borrowing cools spending and demand, easing price pressure","Higher rates print more money","It forces shops to lower prices by law"],a:1,x:"Expensive credit means less borrowing and spending. Lower demand slows price increases. It is a brake pedal for the economy."},
+{id:"fin1_1",m:"fin1",d:1,c:"money",q:"Interview warm-up: 'Money has three classic functions. Which of these is NOT one of them?'",o:["Medium of exchange","Store of value","Unit of account","Generator of inflation"],a:3,x:"Money serves as a medium of exchange, a store of value, and a unit of account. Inflation affects money but is not a function of it."},
+{id:"fin1_2",m:"fin1",d:1,c:"banking",q:"The new intern thinks banks just 'hold money for people'. Set them straight: what is the core business of a commercial bank?",o:["Printing money","Taking deposits and making loans","Setting national interest rates","Collecting taxes"],a:1,x:"Banks profit from the spread: they pay savers low interest and charge borrowers higher interest."},
+{id:"fin1_3",m:"fin1",d:1,c:"interest",q:"A customer emails: 'Why do you even charge interest on my loan?' Interest is best described as...",o:["A tax on savings","The price of borrowing money","A government fee","Free money from banks"],a:1,x:"Interest compensates the lender for risk and for giving up the use of their money."},
+{id:"fin1_4",m:"fin1",d:1,c:"inflation",q:"A client complains: 'My savings number never changed, but I can buy less with it every year.' What are they describing?",o:["Inflation: prices rise and money buys less","Hidden bank fees","A stock market crash","A salary problem"],a:0,x:"Inflation is a sustained rise in the general price level — each unit of currency loses purchasing power."},
+{id:"fin1_5",m:"fin1",d:2,c:"central-banks",q:"On a panel, a journalist asks you: 'What does a CENTRAL bank like the Fed or ECB actually do?'",o:["Gives mortgages to families","Sets interest rates and manages the money supply","Runs the ATMs","Sells insurance"],a:1,x:"Central banks steer the economy via monetary policy and backstop the banking system. They do not serve retail customers."},
+{id:"fin1_6",m:"fin1",d:2,c:"interest",q:"A client invests $100 at 10% annual COMPOUND interest and asks: 'What exactly do I have after 2 years?'",o:["$120","$121","$110","$200"],a:1,x:"Year 1: 100→110. Year 2: 110×1.10 = 121. Interest on interest — that is compounding."},
+{id:"fin1_7",m:"fin1",d:2,c:"banking",q:"An anxious customer read that banks 'don't keep everyone's money in the vault'. What does fractional reserve banking mean?",o:["Banks keep all deposits in their vaults","Banks keep only a fraction of deposits and lend out the rest","Banks only lend to other banks","Every loan is split into fractions"],a:1,x:"Banks lend out most deposits, keeping only a fraction available. That multiplies credit in the economy — and is why trust matters."},
+{id:"fin1_8",m:"fin1",d:3,c:"central-banks",q:"Rates jumped again. At the all-hands, your CEO asks: 'Why do central banks RAISE rates to fight inflation?'",o:["To make banks richer","Costlier borrowing cools spending and demand, easing price pressure","Higher rates print more money","It forces shops to lower prices by law"],a:1,x:"Expensive credit means less borrowing and spending. Lower demand slows price increases. It is a brake pedal for the economy."},
 // tech1
-{id:"tech1_1",m:"tech1",d:1,c:"software",q:"Software is best described as...",o:["The physical parts of a computer","Instructions (code) that tell hardware what to do","The internet","An electrical signal"],a:1,x:"Hardware is the machine; software is the recipe the machine follows."},
-{id:"tech1_2",m:"tech1",d:1,c:"frontend-backend",q:"In an app, the 'backend' is...",o:["The screen the user sees","Server-side logic and data the user never sees directly","The phone's battery","The app store page"],a:1,x:"Frontend = the interface in your hands. Backend = the servers, logic, and databases doing the real work elsewhere."},
-{id:"tech1_3",m:"tech1",d:1,c:"databases",q:"What does a database do?",o:["Stores and organizes data for reliable reading and writing","Makes websites pretty","Speeds up the internet","Sends emails"],a:0,x:"Your account balance, transactions, and profile all live in databases. Losing one means losing the business."},
-{id:"tech1_4",m:"tech1",d:1,c:"internet",q:"Fundamentally, the internet is...",o:["One giant computer owned by Google","A network of networks exchanging data via shared protocols","A wireless signal in the air","A software program"],a:1,x:"Millions of networks agree on common protocols (like TCP/IP) to move data between any two machines on Earth."},
-{id:"tech1_5",m:"tech1",d:2,c:"servers",q:"A server is...",o:["A special government computer","A computer that listens for requests and responds to them","A type of cable","A backup hard drive"],a:1,x:"Any computer answering requests is a server. 'The cloud' is just vast warehouses of them."},
-{id:"tech1_6",m:"tech1",d:2,c:"internet",q:"HTTP is...",o:["A programming language","The protocol browsers and servers use to communicate","A type of computer virus","A database"],a:1,x:"HyperText Transfer Protocol defines how clients request web resources and how servers reply. HTTPS adds encryption."},
-{id:"tech1_7",m:"tech1",d:2,c:"open-source",q:"Open-source software is...",o:["Always free of bugs","Code anyone can read, use, and modify","Software without a license","Illegal to use commercially"],a:1,x:"Linux, Python, PostgreSQL — the open-source foundations carry most of modern finance."},
-{id:"tech1_8",m:"tech1",d:3,c:"software",q:"Why do most fintech startups build on existing APIs (payments, KYC) instead of building everything themselves?",o:["Regulators forbid building in-house","Speed and focus: buying commodity pieces lets them spend effort on what differentiates them","APIs are always free","Investors require it"],a:1,x:"Build vs buy: rebuilding solved problems burns time and money. Winners assemble proven blocks and innovate on top."},
+{id:"tech1_1",m:"tech1",d:1,c:"software",q:"Your new sales colleague whispers before a demo: 'Honestly... what IS software?'",o:["The physical parts of a computer","Instructions (code) that tell hardware what to do","The internet","An electrical signal"],a:1,x:"Hardware is the machine; software is the recipe the machine follows."},
+{id:"tech1_2",m:"tech1",d:1,c:"frontend-backend",q:"A non-technical founder asks you in the elevator: 'In our app, what is the backend exactly?'",o:["The screen the user sees","Server-side logic and data the user never sees directly","The phone's battery","The app store page"],a:1,x:"Frontend = the interface in your hands. Backend = the servers, logic, and databases doing the real work elsewhere."},
+{id:"tech1_3",m:"tech1",d:1,c:"databases",q:"A client asks where their account balance actually 'lives'. What does a database do?",o:["Stores and organizes data for reliable reading and writing","Makes websites pretty","Speeds up the internet","Sends emails"],a:0,x:"Your account balance, transactions, and profile all live in databases. Losing one means losing the business."},
+{id:"tech1_4",m:"tech1",d:1,c:"internet",q:"Interview question: 'Strip away the buzzwords — what IS the internet, fundamentally?'",o:["One giant computer owned by Google","A network of networks exchanging data via shared protocols","A wireless signal in the air","A software program"],a:1,x:"Millions of networks agree on common protocols (like TCP/IP) to move data between any two machines on Earth."},
+{id:"tech1_5",m:"tech1",d:2,c:"servers",q:"Your manager hands you the infrastructure budget and asks you to start simple: 'What is a server?'",o:["A special government computer","A computer that listens for requests and responds to them","A type of cable","A backup hard drive"],a:1,x:"Any computer answering requests is a server. 'The cloud' is just vast warehouses of them."},
+{id:"tech1_6",m:"tech1",d:2,c:"internet",q:"A junior asks what the 'http' at the start of our URLs means. HTTP is...",o:["A programming language","The protocol browsers and servers use to communicate","A type of computer virus","A database"],a:1,x:"HyperText Transfer Protocol defines how clients request web resources and how servers reply. HTTPS adds encryption."},
+{id:"tech1_7",m:"tech1",d:2,c:"open-source",q:"Legal asks whether we can build on open-source software. First: what IS open-source software?",o:["Always free of bugs","Code anyone can read, use, and modify","Software without a license","Illegal to use commercially"],a:1,x:"Linux, Python, PostgreSQL — the open-source foundations carry most of modern finance."},
+{id:"tech1_8",m:"tech1",d:3,c:"software",q:"The board challenges you: 'Why are we PAYING for payments and KYC APIs instead of building our own?'",o:["Regulators forbid building in-house","Speed and focus: buying commodity pieces lets us spend effort on what differentiates us","APIs are always free","Investors require it"],a:1,x:"Build vs buy: rebuilding solved problems burns time and money. Winners assemble proven blocks and innovate on top."},
 // ai1
-{id:"ai1_1",m:"ai1",d:1,c:"ai-definition",q:"Artificial Intelligence is software that...",o:["Is always smarter than humans","Performs tasks that typically require human intelligence","Only plays chess","Has feelings"],a:1,x:"Recognizing images, understanding language, predicting outcomes — tasks once exclusive to human minds."},
-{id:"ai1_2",m:"ai1",d:2,c:"ml-vs-rules",q:"The key difference between machine learning and traditional rules-based software:",o:["ML is always faster","ML learns patterns from data instead of following hand-written rules","Rules-based software cannot do math","ML does not need computers"],a:1,x:"Instead of a human writing IF/THEN rules, ML infers the rules from examples."},
-{id:"ai1_3",m:"ai1",d:1,c:"data",q:"What is the 'fuel' of machine learning?",o:["Electricity","Data","Programmers","Luck"],a:1,x:"Models learn from examples. More good data usually means better predictions; bad data means bad predictions."},
-{id:"ai1_4",m:"ai1",d:2,c:"narrow-ai",q:"Today's AI systems are called 'narrow' because they...",o:["Run on small computers","Excel at specific tasks but cannot generalize across all human tasks","Only work at night","Are owned by few companies"],a:1,x:"A fraud-detection model cannot drive a car. Artificial GENERAL intelligence remains a research goal, not a reality."},
-{id:"ai1_5",m:"ai1",d:2,c:"ai-history",q:"The Turing test asks whether a machine can...",o:["Beat a human at chess","Hold a conversation indistinguishable from a human's","Compute faster than a calculator","Pass a math exam"],a:1,x:"Alan Turing proposed it in 1950: if you cannot tell the machine from the human in conversation, call it intelligent."},
-{id:"ai1_6",m:"ai1",d:1,c:"ai-definition",q:"Which is an everyday example of AI?",o:["A pocket calculator","Your bank flagging a suspicious card payment automatically","A light switch","A paper map"],a:1,x:"Fraud alerts, face unlock, music recommendations, spam filters — AI already runs your daily life quietly."},
-{id:"ai1_7",m:"ai1",d:2,c:"ai-history",q:"The recent AI boom is mainly driven by...",o:["A single genius inventor","Big data + cheap massive compute (GPUs) + better algorithms","Government mandates","Faster internet cables alone"],a:1,x:"All three converged in the 2010s-2020s. Remove any one and the boom stalls."},
-{id:"ai1_8",m:"ai1",d:3,c:"data",q:"An AI system trained mostly on data from one country is used worldwide. The biggest risk is...",o:["It runs slower abroad","Its learned patterns may not fit other populations, causing biased or wrong outputs","It uses more electricity","It violates patents"],a:1,x:"Models inherit the blind spots of their training data. Distribution shift and bias are the top causes of real-world AI failure."},
+{id:"ai1_1",m:"ai1",d:1,c:"ai-definition",q:"A prospect interrupts your pitch: 'When you say AI, what do you actually MEAN?'",o:["Software smarter than humans at everything","Software performing tasks that typically require human intelligence","Chess programs","Software with feelings"],a:1,x:"Recognizing images, understanding language, predicting outcomes — tasks once exclusive to human minds."},
+{id:"ai1_2",m:"ai1",d:2,c:"ml-vs-rules",q:"Interview question: 'What is the key difference between machine learning and traditional rules-based software?'",o:["ML is always faster","ML learns patterns from data instead of following hand-written rules","Rules-based software cannot do math","ML does not need computers"],a:1,x:"Instead of a human writing IF/THEN rules, ML infers the rules from examples."},
+{id:"ai1_3",m:"ai1",d:1,c:"data",q:"Your CEO keeps repeating 'data is the new oil'. In machine learning terms, what is data actually FOR?",o:["Powering the servers","It is the fuel models learn from — examples in, predictions out","Replacing programmers","Marketing"],a:1,x:"Models learn from examples. More good data usually means better predictions; bad data means bad predictions."},
+{id:"ai1_4",m:"ai1",d:2,c:"narrow-ai",q:"A client read that 'AI will do everything soon'. Why do experts call today's AI 'narrow'?",o:["It runs on small computers","It excels at specific tasks but cannot generalize across all human tasks","It only works at night","Few companies own it"],a:1,x:"A fraud-detection model cannot drive a car. Artificial GENERAL intelligence remains a research goal, not a reality."},
+{id:"ai1_5",m:"ai1",d:2,c:"ai-history",q:"Team trivia night: 'What does the Turing test ask whether a machine can do?'",o:["Beat a human at chess","Hold a conversation indistinguishable from a human's","Compute faster than a calculator","Pass a math exam"],a:1,x:"Alan Turing proposed it in 1950: if you cannot tell the machine from the human in conversation, call it intelligent."},
+{id:"ai1_6",m:"ai1",d:1,c:"ai-definition",q:"Your uncle claims he has 'never used AI in his life'. Which everyday example proves him wrong?",o:["His pocket calculator","His bank flagging a suspicious card payment automatically","His light switch","His paper map"],a:1,x:"Fraud alerts, face unlock, music recommendations, spam filters — AI already runs daily life quietly."},
+{id:"ai1_7",m:"ai1",d:2,c:"ai-history",q:"Conference panel: 'Why did AI suddenly boom in the last decade?'",o:["A single genius inventor","Big data + cheap massive compute (GPUs) + better algorithms converged","Government mandates","Faster internet cables alone"],a:1,x:"All three converged in the 2010s-2020s. Remove any one and the boom stalls."},
+{id:"ai1_8",m:"ai1",d:3,c:"data",q:"Risk review: our scoring model was trained on data from ONE country and we are launching worldwide. The biggest danger?",o:["It runs slower abroad","Learned patterns may not fit other populations, causing biased or wrong outputs","Higher electricity bills","Patent issues"],a:1,x:"Models inherit the blind spots of their training data. Distribution shift and bias are the top causes of real-world AI failure."},
 // fin2
-{id:"fin2_1",m:"fin2",d:1,c:"stocks",q:"Owning a share of stock means you...",o:["Lent money to the company","Own a fraction of the company","Work for the company","Insure the company"],a:1,x:"Equity = ownership. You benefit from rising value and dividends, and you bear losses if it sinks."},
-{id:"fin2_2",m:"fin2",d:1,c:"bonds",q:"A bond is essentially...",o:["A share of ownership","A loan you make to a company or government","A type of bank account","A lottery ticket"],a:1,x:"The issuer pays you interest (the coupon) and repays the principal at maturity."},
-{id:"fin2_3",m:"fin2",d:2,c:"risk-return",q:"The risk-return tradeoff says...",o:["Safe investments earn the most","Higher potential returns come with higher potential losses","Risk can be eliminated entirely","Returns are random and unrelated to risk"],a:1,x:"Anyone promising high returns with no risk is selling either a misunderstanding or a fraud."},
-{id:"fin2_4",m:"fin2",d:1,c:"diversification",q:"Diversification means...",o:["Buying only the best stock","Spreading investments across many assets to reduce risk","Investing only in your own country","Changing banks often"],a:1,x:"When one asset crashes, others may hold. It is the only 'free lunch' in investing."},
-{id:"fin2_5",m:"fin2",d:2,c:"etf",q:"An ETF is...",o:["A single company's stock","A basket of assets traded as one share","A type of cryptocurrency","A savings account"],a:1,x:"One purchase, instant diversification, low fees — the workhorse of modern investing."},
-{id:"fin2_6",m:"fin2",d:2,c:"valuation",q:"A company has 1M shares trading at $50 each. Its market cap is...",o:["$50 million","$1 million","$50 thousand","$500 million"],a:0,x:"Market cap = price × shares = 50 × 1,000,000 = $50M. It is the market's price tag on the whole company."},
-{id:"fin2_7",m:"fin2",d:1,c:"risk-return",q:"A 'bull market' is when prices are...",o:["Falling","Rising","Frozen","Only moving sideways"],a:1,x:"Bulls strike upward, bears swipe downward — rising vs falling markets."},
-{id:"fin2_8",m:"fin2",d:3,c:"bonds",q:"Interest rates rise sharply. What happens to EXISTING bond prices?",o:["They rise","They fall","Nothing","They become stocks"],a:1,x:"New bonds now pay more, so old low-coupon bonds must sell at a discount to compete. Rates up, bond prices down."},
+{id:"fin2_1",m:"fin2",d:1,c:"stocks",q:"A first-time investor client asks: 'When I buy a share of stock, what do I actually OWN?'",o:["A loan to the company","A fraction of the company itself","A job at the company","An insurance policy on the company"],a:1,x:"Equity = ownership. You benefit from rising value and dividends, and you bear losses if it sinks."},
+{id:"fin2_2",m:"fin2",d:1,c:"bonds",q:"Same client, next question: 'And a bond — what is that exactly?'",o:["A share of ownership","A loan you make to a company or government","A type of bank account","A lottery ticket"],a:1,x:"The issuer pays you interest (the coupon) and repays the principal at maturity."},
+{id:"fin2_3",m:"fin2",d:2,c:"risk-return",q:"A prospect demands 'high returns with zero risk'. What does the risk-return tradeoff say?",o:["Safe investments earn the most","Higher potential returns come with higher potential losses","Risk can be eliminated entirely","Returns are unrelated to risk"],a:1,x:"Anyone promising high returns with no risk is selling either a misunderstanding or a fraud."},
+{id:"fin2_4",m:"fin2",d:1,c:"diversification",q:"Your client put ALL their savings into one single stock. Which principle do you urgently explain?",o:["Buy only the best stock","Diversification: spreading money across many assets to reduce risk","Invest only domestically","Switch banks often"],a:1,x:"When one asset crashes, others may hold. It is the only 'free lunch' in investing."},
+{id:"fin2_5",m:"fin2",d:2,c:"etf",q:"The client asks why you recommend ETFs for beginners. An ETF is...",o:["A single company's stock","A basket of assets traded as one share","A type of cryptocurrency","A savings account"],a:1,x:"One purchase, instant diversification, low fees — the workhorse of modern investing."},
+{id:"fin2_6",m:"fin2",d:2,c:"valuation",q:"Due diligence call: the target startup has 1M shares trading at $50. The analyst asks you its market cap.",o:["$50 million","$1 million","$50 thousand","$500 million"],a:0,x:"Market cap = price × shares = 50 × 1,000,000 = $50M. It is the market's price tag on the whole company."},
+{id:"fin2_7",m:"fin2",d:1,c:"risk-return",q:"Financial TV in the lobby mentions a 'bull market'. The intern asks what that means. Prices are...",o:["Falling","Rising","Frozen","Only moving sideways"],a:1,x:"Bulls strike upward, bears swipe downward — rising vs falling markets."},
+{id:"fin2_8",m:"fin2",d:3,c:"bonds",q:"Rates just rose sharply. A worried client holding OLD bonds calls: 'What happens to their price?'",o:["They rise","They fall","Nothing","They become stocks"],a:1,x:"New bonds now pay more, so old low-coupon bonds must sell at a discount to compete. Rates up, bond prices down."},
 // tech2
-{id:"tech2_1",m:"tech2",d:1,c:"api",q:"An API is...",o:["A type of computer chip","A contract that lets one program use another program's features or data","An internet provider","A security camera"],a:1,x:"APIs are how software talks to software. Stripe's API lets your app charge cards without you touching the card networks."},
-{id:"tech2_2",m:"tech2",d:2,c:"api",q:"Why did open banking APIs transform fintech?",o:["They made banks free","They let licensed third parties access bank data and payments, enabling apps built on top of any bank","They removed all regulation","They replaced the internet"],a:1,x:"Account aggregators, budgeting apps, instant credit scoring — all exist because banks were forced to open APIs."},
-{id:"tech2_3",m:"tech2",d:1,c:"cloud",q:"Cloud computing means...",o:["Storing data in the atmosphere","Renting computing power and storage on demand instead of owning servers","Using only wireless internet","Free computers for startups"],a:1,x:"AWS, Google Cloud, Azure: pay-as-you-go datacenters. Startups scale from zero to millions of users without buying a single machine."},
-{id:"tech2_4",m:"tech2",d:2,c:"saas",q:"Which is a SaaS product?",o:["A rented bare-metal server","An online accounting app you use in the browser on subscription","A USB stick","A laptop"],a:1,x:"Software-as-a-Service: the vendor runs everything; you log in and pay monthly."},
-{id:"tech2_5",m:"tech2",d:2,c:"cloud",q:"The biggest advantage of cloud for a fintech startup is...",o:["It is always cheaper at huge scale","No upfront hardware cost and instant scaling as users grow","It removes the need for engineers","It guarantees zero downtime"],a:1,x:"Zero capex and elasticity. (At massive scale some companies actually leave the cloud to cut costs.)"},
-{id:"tech2_6",m:"tech2",d:3,c:"microservices",q:"Microservices vs monolith — the real tradeoff is...",o:["Microservices are always better","Independent scaling and team autonomy vs added complexity in communication and operations","Monoliths cannot use databases","Microservices need no testing"],a:1,x:"Many small services = flexibility but distributed-systems pain. One codebase = simplicity but coupling. Stage-dependent choice."},
-{id:"tech2_7",m:"tech2",d:2,c:"big-data",q:"The '3 Vs' of big data are...",o:["Value, Vision, Victory","Volume, Velocity, Variety","Virtual, Visible, Verified","Vectors, Versions, Volumes"],a:1,x:"A lot of data, arriving fast, in many formats — that is when ordinary tools break and 'big data' tech begins."},
-{id:"tech2_8",m:"tech2",d:3,c:"api",q:"A webhook differs from a normal API call because...",o:["It is encrypted","The server pushes a notification to YOU when an event happens, instead of you polling","It only works at night","It cannot carry data"],a:1,x:"Polling asks 'anything new?' every second. A webhook means the payment processor calls your URL the instant money lands."},
+{id:"tech2_1",m:"tech2",d:1,c:"api",q:"Interview at a fintech: 'Explain an API to our CFO in one line.'",o:["A type of computer chip","A contract letting one program use another program's features or data","An internet provider","A security camera"],a:1,x:"APIs are how software talks to software. Stripe's API lets your app charge cards without touching the card networks."},
+{id:"tech2_2",m:"tech2",d:2,c:"api",q:"A VC asks during your pitch: 'Why were open banking APIs such a big deal for fintech?'",o:["They made banks free","They let licensed third parties access bank data and payments, enabling apps built on top of any bank","They removed all regulation","They replaced the internet"],a:1,x:"Account aggregators, budgeting apps, instant credit scoring — all exist because banks were forced to open APIs."},
+{id:"tech2_3",m:"tech2",d:1,c:"cloud",q:"Your boss asks if the company should 'move to the cloud'. Start simple: what does cloud computing mean?",o:["Storing data in the atmosphere","Renting computing power and storage on demand instead of owning servers","Using only wireless internet","Free computers for startups"],a:1,x:"AWS, Google Cloud, Azure: pay-as-you-go datacenters. Startups scale from zero to millions of users without buying a single machine."},
+{id:"tech2_4",m:"tech2",d:2,c:"saas",q:"Procurement asks you to classify the tools we pay for. Which one is a SaaS product?",o:["A rented bare-metal server","An online accounting app used in the browser on subscription","A USB stick","A laptop"],a:1,x:"Software-as-a-Service: the vendor runs everything; you log in and pay monthly."},
+{id:"tech2_5",m:"tech2",d:2,c:"cloud",q:"An investor asks: 'Why is the cloud such an advantage for a startup like yours?'",o:["It is always cheaper at huge scale","No upfront hardware cost and instant scaling as users grow","It removes the need for engineers","It guarantees zero downtime"],a:1,x:"Zero capex and elasticity. (At massive scale some companies actually leave the cloud to cut costs.)"},
+{id:"tech2_6",m:"tech2",d:3,c:"microservices",q:"Architecture review: the CTO asks you to summarize the REAL tradeoff between microservices and a monolith.",o:["Microservices are always better","Independent scaling and team autonomy vs added complexity in communication and operations","Monoliths cannot use databases","Microservices need no testing"],a:1,x:"Many small services = flexibility but distributed-systems pain. One codebase = simplicity but coupling. Stage-dependent choice."},
+{id:"tech2_7",m:"tech2",d:2,c:"big-data",q:"A data vendor keeps saying 'big data, the 3 Vs!' in the meeting. Which are they?",o:["Value, Vision, Victory","Volume, Velocity, Variety","Virtual, Visible, Verified","Vectors, Versions, Volumes"],a:1,x:"A lot of data, arriving fast, in many formats — that is when ordinary tools break and 'big data' tech begins."},
+{id:"tech2_8",m:"tech2",d:3,c:"api",q:"Integration call: the payment provider offers webhooks. The client asks how a webhook differs from a normal API call.",o:["It is encrypted","Their server pushes a notification to YOU when an event happens, instead of you polling","It only works at night","It cannot carry data"],a:1,x:"Polling asks 'anything new?' every second. A webhook means the payment processor calls your URL the instant money lands."},
 // ai2
-{id:"ai2_1",m:"ai2",d:1,c:"ml-definition",q:"Machine learning is the practice of...",o:["Writing rules by hand for every case","Learning patterns from historical data to predict new cases","Building robots","Storing data in the cloud"],a:1,x:"Show the model thousands of past examples; it infers the pattern; it predicts on the next one."},
-{id:"ai2_2",m:"ai2",d:2,c:"supervised",q:"Supervised learning requires...",o:["A human watching the computer","Labeled examples (input + known correct answer)","No data at all","A robot supervisor"],a:1,x:"To learn 'fraud vs legit', the model needs past transactions already labeled fraud or legit."},
-{id:"ai2_3",m:"ai2",d:2,c:"unsupervised",q:"Grouping customers into segments WITHOUT predefined labels is...",o:["Supervised learning","Unsupervised learning (clustering)","Reinforcement learning","Manual sorting"],a:1,x:"Clustering finds natural structure in data — 'these users behave alike' — without being told the categories."},
-{id:"ai2_4",m:"ai2",d:2,c:"evaluation",q:"Why split data into training and test sets?",o:["To save storage","To evaluate the model on data it has never seen, proving it generalizes","Because GPUs require it","To train twice as fast"],a:1,x:"Grading a model on its own training data is like grading students on questions they memorized with answers."},
-{id:"ai2_5",m:"ai2",d:3,c:"overfitting",q:"Overfitting means the model...",o:["Is too small for the data","Memorized noise in training data and performs poorly on new data","Trains too slowly","Uses too little memory"],a:1,x:"Perfect on the past, useless on the future. The classic ML failure — and the classic trading-strategy failure too."},
-{id:"ai2_6",m:"ai2",d:2,c:"features",q:"In ML, 'features' are...",o:["The model's settings menu","The input variables the model uses to predict (amount, time, location...)","Bugs in the code","Marketing highlights"],a:1,x:"Feature engineering — choosing and shaping good inputs — often matters more than the algorithm itself."},
-{id:"ai2_7",m:"ai2",d:2,c:"supervised",q:"Predicting whether a transaction is fraud (yes/no) vs predicting a customer's lifetime value ($) — these are...",o:["Both classification","Classification vs regression","Both regression","Clustering vs ranking"],a:1,x:"Category output = classification. Numeric output = regression."},
-{id:"ai2_8",m:"ai2",d:3,c:"evaluation",q:"A fraud model is 99.9% accurate on data where 99.9% of transactions are legit. What is wrong?",o:["Nothing, ship it","It may catch ZERO fraud — predicting 'always legit' achieves the same accuracy","Accuracy cannot exceed 99%","The data is too small"],a:1,x:"On imbalanced data, accuracy lies. Use precision and recall: of flagged transactions how many are fraud, and of all fraud how much is caught."},
+{id:"ai2_1",m:"ai2",d:1,c:"ml-definition",q:"Interview: 'Define machine learning — no buzzwords allowed.'",o:["Writing rules by hand for every case","Learning patterns from historical data to predict new cases","Building robots","Storing data in the cloud"],a:1,x:"Show the model thousands of past examples; it infers the pattern; it predicts on the next one."},
+{id:"ai2_2",m:"ai2",d:2,c:"supervised",q:"The data scientist says the fraud model 'needs labels'. Supervised learning requires...",o:["A human watching the computer","Labeled examples: input + the known correct answer","No data at all","A robot supervisor"],a:1,x:"To learn 'fraud vs legit', the model needs past transactions already labeled fraud or legit."},
+{id:"ai2_3",m:"ai2",d:2,c:"unsupervised",q:"Marketing wants customer segments but has NO predefined categories. Which approach do you propose?",o:["Supervised learning","Unsupervised learning (clustering)","Reinforcement learning","Manual sorting"],a:1,x:"Clustering finds natural structure in data — 'these users behave alike' — without being told the categories."},
+{id:"ai2_4",m:"ai2",d:2,c:"evaluation",q:"Code review: a junior trained AND evaluated the model on the same data. Why do we split into training and test sets?",o:["To save storage","To evaluate the model on data it has never seen, proving it generalizes","Because GPUs require it","To train twice as fast"],a:1,x:"Grading a model on its own training data is like grading students on questions they memorized with answers."},
+{id:"ai2_5",m:"ai2",d:3,c:"overfitting",q:"Post-mortem: the model scored near-perfect in training and flopped in production. What is overfitting?",o:["The model is too small for the data","It memorized noise in training data and performs poorly on new data","It trains too slowly","It uses too little memory"],a:1,x:"Perfect on the past, useless on the future. The classic ML failure — and the classic trading-strategy failure too."},
+{id:"ai2_6",m:"ai2",d:2,c:"features",q:"Your PM reads the model spec and asks: 'What does features mean here?'",o:["The model's settings menu","The input variables the model uses to predict (amount, time, location...)","Bugs in the code","Marketing highlights"],a:1,x:"Feature engineering — choosing and shaping good inputs — often matters more than the algorithm itself."},
+{id:"ai2_7",m:"ai2",d:2,c:"supervised",q:"Two tickets land on your desk: predict fraud (yes/no) and predict customer lifetime value (in $). These are...",o:["Both classification","Classification vs regression","Both regression","Clustering vs ranking"],a:1,x:"Category output = classification. Numeric output = regression."},
+{id:"ai2_8",m:"ai2",d:3,c:"evaluation",q:"A vendor brags their fraud model is '99.9% accurate' — on data where 99.9% of transactions are legit. What do you tell your boss?",o:["Sounds great, sign the contract","It may catch ZERO fraud — predicting 'always legit' achieves the same accuracy","Accuracy cannot exceed 99%","The data is too small"],a:1,x:"On imbalanced data, accuracy lies. Use precision and recall: of flagged transactions how many are fraud, and of all fraud how much is caught."},
 // fin3
-{id:"fin3_1",m:"fin3",d:2,c:"payments",q:"In a card payment, the ISSUER is...",o:["The merchant's bank","The customer's bank that issued the card","The card network","The cash register company"],a:1,x:"Issuer = customer's bank. Acquirer = merchant's bank. The network (Visa/Mastercard) connects them."},
-{id:"fin3_2",m:"fin3",d:2,c:"interchange",q:"The interchange fee is...",o:["A currency exchange rate","A per-transaction fee paid to the card issuer, funding card businesses","A tax on imports","A subway ticket"],a:1,x:"A slice of every card payment flows to the issuer — it funds rewards programs and is core revenue for card fintechs."},
-{id:"fin3_3",m:"fin3",d:1,c:"neobanks",q:"A neobank is...",o:["A bank for new customers only","A digital-only bank without physical branches","A central bank","A crypto exchange"],a:1,x:"App-first, low fees, slick UX — often running on a partner bank's license underneath."},
-{id:"fin3_4",m:"fin3",d:2,c:"bnpl",q:"In the BNPL model, who primarily pays the BNPL provider?",o:["The shopper, via huge mandatory interest","The merchant, paying a fee for increased conversion and basket size","The government","Nobody, it is charity"],a:1,x:"Merchants pay because installment options make people buy more. Late fees from shoppers add a second stream."},
-{id:"fin3_5",m:"fin3",d:3,c:"revenue-models",q:"How do zero-commission trading apps make money?",o:["They do not — they are nonprofits","Payment for order flow, interest on idle cash, premium subscriptions","Selling users' passwords","Government grants"],a:1,x:"'Free' has a business model behind it. Routing orders to market makers and earning interest on your cash are the engines."},
-{id:"fin3_6",m:"fin3",d:2,c:"lending",q:"P2P lending platforms...",o:["Let banks lend to other banks","Match individual lenders with borrowers directly, taking a platform fee","Print their own currency","Only lend to governments"],a:1,x:"The platform handles scoring and servicing; investors take the credit risk in exchange for the interest."},
-{id:"fin3_7",m:"fin3",d:3,c:"unit-economics",q:"A fintech spends $200 to acquire each customer (CAC) who generates $120 lifetime value (LTV). Scaling up will...",o:["Fix the problem automatically","Burn cash faster — every new customer destroys $80 of value","Double the LTV","Please investors"],a:1,x:"LTV must exceed CAC. Growth with broken unit economics is just accelerated bankruptcy."},
-{id:"fin3_8",m:"fin3",d:3,c:"payments",q:"Why are payments described as a 'rails' business?",o:["They were invented by railway companies","Revenue = enormous volume × tiny take rate flowing over fixed infrastructure","They only work on straight lines","Because of blockchain"],a:1,x:"Like railways: build the track once, earn a tiny toll on everything that moves across it. Volume is everything."},
+{id:"fin3_1",m:"fin3",d:2,c:"payments",q:"Whiteboard onboarding at the payments startup: 'In a card payment, who is the ISSUER?'",o:["The merchant's bank","The customer's bank that issued the card","The card network","The cash register company"],a:1,x:"Issuer = customer's bank. Acquirer = merchant's bank. The network (Visa/Mastercard) connects them."},
+{id:"fin3_2",m:"fin3",d:2,c:"interchange",q:"The CFO is modeling revenue and asks you: 'Remind me what the interchange fee is?'",o:["A currency exchange rate","A per-transaction fee paid to the card issuer, funding card businesses","A tax on imports","A subway ticket"],a:1,x:"A slice of every card payment flows to the issuer — it funds rewards programs and is core revenue for card fintechs."},
+{id:"fin3_3",m:"fin3",d:1,c:"neobanks",q:"A prospect asks how you differ from their old bank: 'What IS a neobank anyway?'",o:["A bank for new customers only","A digital-only bank without physical branches","A central bank","A crypto exchange"],a:1,x:"App-first, low fees, slick UX — often running on a partner bank's license underneath."},
+{id:"fin3_4",m:"fin3",d:2,c:"bnpl",q:"A merchant prospect is skeptical about BNPL: 'Who actually PAYS you people?'",o:["The shopper, via huge mandatory interest","Mostly the merchant — a fee in exchange for higher conversion and bigger baskets","The government","Nobody, it is charity"],a:1,x:"Merchants pay because installment options make people buy more. Late fees from shoppers add a second stream."},
+{id:"fin3_5",m:"fin3",d:3,c:"revenue-models",q:"A user challenges you at a demo: 'Your trading app is zero-commission... so how do you make money?'",o:["We do not — we are a nonprofit","Payment for order flow, interest on idle cash, premium subscriptions","Selling users' passwords","Government grants"],a:1,x:"'Free' has a business model behind it. Routing orders to market makers and earning interest on your cash are the engines."},
+{id:"fin3_6",m:"fin3",d:2,c:"lending",q:"Investor due diligence: 'Walk me through the P2P lending model.'",o:["Banks lending to other banks","Matching individual lenders with borrowers directly, taking a platform fee","Printing your own currency","Lending only to governments"],a:1,x:"The platform handles scoring and servicing; investors take the credit risk in exchange for the interest."},
+{id:"fin3_7",m:"fin3",d:3,c:"unit-economics",q:"Board meeting: CAC is $200, LTV is $120, and growth wants to TRIPLE ad spend. What happens if we scale now?",o:["The problem fixes itself","We burn cash faster — every new customer destroys $80 of value","LTV doubles automatically","Investors will be pleased"],a:1,x:"LTV must exceed CAC. Growth with broken unit economics is just accelerated bankruptcy."},
+{id:"fin3_8",m:"fin3",d:3,c:"payments",q:"An analyst on the earnings call describes payments as a 'rails business'. What do they mean?",o:["It was invented by railway companies","Revenue = enormous volume × tiny take rate flowing over infrastructure built once","It only works on straight lines","It runs on blockchain"],a:1,x:"Like railways: build the track once, earn a tiny toll on everything that moves across it. Volume is everything."},
 // tech3
-{id:"tech3_1",m:"tech3",d:1,c:"encryption",q:"Encryption protects data by...",o:["Deleting it after reading","Scrambling it so only key-holders can read it","Hiding it in images","Making backups"],a:1,x:"In transit (HTTPS) and at rest (encrypted disks) — unreadable without the key."},
-{id:"tech3_2",m:"tech3",d:1,c:"authentication",q:"Two-factor authentication (2FA) combines...",o:["Two passwords","Something you know (password) + something you have (phone/key)","Two usernames","Fingerprint and face only"],a:1,x:"Stealing a password is easy; stealing the password AND your phone is much harder."},
-{id:"tech3_3",m:"tech3",d:1,c:"security-human",q:"Phishing is...",o:["A network speed test","Tricking people into revealing credentials via fake messages or sites","A type of firewall","Catching computer viruses"],a:1,x:"Most breaches start with a human clicking the wrong link, not with broken cryptography."},
-{id:"tech3_4",m:"tech3",d:2,c:"blockchain",q:"A blockchain is fundamentally...",o:["A faster database for banks","A distributed append-only ledger replicated across many computers","A cryptocurrency","A programming language"],a:1,x:"No single party controls the record; consensus among many machines does."},
-{id:"tech3_5",m:"tech3",d:3,c:"blockchain",q:"What makes tampering with old blockchain records evident?",o:["Police monitoring","Each block contains the hash of the previous one — changing history breaks every later block","A daily manual audit","Blocks are printed on paper"],a:1,x:"Hash-chaining: modify one byte of an old block and every subsequent hash stops matching. The network rejects the fork."},
-{id:"tech3_6",m:"tech3",d:2,c:"bitcoin",q:"The relationship between Bitcoin and blockchain:",o:["They are the same thing","Bitcoin is one application built ON a blockchain; blockchain is the underlying technology","Blockchain is a type of Bitcoin","Bitcoin invented the internet"],a:1,x:"Blockchain also powers other chains, tokenized assets, and settlement experiments far beyond Bitcoin."},
-{id:"tech3_7",m:"tech3",d:2,c:"smart-contracts",q:"A smart contract is...",o:["A PDF signed electronically","A program on a blockchain that executes automatically when conditions are met","A lawyer chatbot","A phone subscription"],a:1,x:"Code as enforcement: 'when payment arrives, release the asset' — executed by the network, no intermediary."},
-{id:"tech3_8",m:"tech3",d:2,c:"wallets",q:"If you lose the private key to your crypto wallet...",o:["Support resets it in 24h","The funds are permanently inaccessible — no reset exists","The bank refunds you","You can guess it eventually"],a:1,x:"Self-custody means total responsibility. An estimated 20% of all Bitcoin is lost forever this way."},
+{id:"tech3_1",m:"tech3",d:1,c:"encryption",q:"Security onboarding, day one: 'What does encryption actually do for our data?'",o:["Deletes it after reading","Scrambles it so only key-holders can read it","Hides it inside images","Makes automatic backups"],a:1,x:"In transit (HTTPS) and at rest (encrypted disks) — unreadable without the key."},
+{id:"tech3_2",m:"tech3",d:1,c:"authentication",q:"After a phishing scare, IT enforces 2FA company-wide. What does two-factor authentication combine?",o:["Two passwords","Something you know (password) + something you have (phone/key)","Two usernames","Fingerprint and face only"],a:1,x:"Stealing a password is easy; stealing the password AND your phone is much harder."},
+{id:"tech3_3",m:"tech3",d:1,c:"security-human",q:"A colleague forwards you a suspicious 'URGENT: verify your password' email. What is phishing?",o:["A network speed test","Tricking people into revealing credentials via fake messages or sites","A type of firewall","Catching computer viruses"],a:1,x:"Most breaches start with a human clicking the wrong link, not with broken cryptography."},
+{id:"tech3_4",m:"tech3",d:2,c:"blockchain",q:"A client asks if your company 'does blockchain'. First, what IS a blockchain, fundamentally?",o:["A faster database for banks","A distributed append-only ledger replicated across many computers","A cryptocurrency","A programming language"],a:1,x:"No single party controls the record; consensus among many machines does."},
+{id:"tech3_5",m:"tech3",d:3,c:"blockchain",q:"Tech interview: 'What makes tampering with OLD blockchain records evident?'",o:["Police monitoring","Each block contains the hash of the previous one — changing history breaks every later block","A daily manual audit","Blocks are printed on paper"],a:1,x:"Hash-chaining: modify one byte of an old block and every subsequent hash stops matching. The network rejects the fork."},
+{id:"tech3_6",m:"tech3",d:2,c:"bitcoin",q:"Your CEO mixed up Bitcoin and blockchain on stage. Brief them: what is the actual relationship?",o:["They are the same thing","Bitcoin is one application built ON a blockchain; blockchain is the underlying technology","Blockchain is a type of Bitcoin","Bitcoin invented the internet"],a:1,x:"Blockchain also powers other chains, tokenized assets, and settlement experiments far beyond Bitcoin."},
+{id:"tech3_7",m:"tech3",d:2,c:"smart-contracts",q:"A partner proposes automating settlements 'with smart contracts'. What is a smart contract?",o:["A PDF signed electronically","A program on a blockchain that executes automatically when conditions are met","A lawyer chatbot","A phone subscription"],a:1,x:"Code as enforcement: 'when payment arrives, release the asset' — executed by the network, no intermediary."},
+{id:"tech3_8",m:"tech3",d:2,c:"wallets",q:"Support escalation: a user lost the private key to their self-custody wallet and demands a reset. The truth is...",o:["Support resets it in 24h","The funds are permanently inaccessible — no reset exists","The bank refunds them","They can guess it eventually"],a:1,x:"Self-custody means total responsibility. An estimated 20% of all Bitcoin is lost forever this way."},
 // ai3
-{id:"ai3_1",m:"ai3",d:1,c:"neural-networks",q:"Neural networks are loosely inspired by...",o:["Telephone switchboards","The human brain's interconnected neurons","Spider webs","Road networks"],a:1,x:"Layers of simple units, each transforming the data slightly — stacked, they learn astonishing patterns."},
-{id:"ai3_2",m:"ai3",d:2,c:"deep-learning",q:"The 'deep' in deep learning refers to...",o:["Deep philosophical questions","Many layers in the neural network","Underwater datacenters","Deep storage of data"],a:1,x:"Depth = many stacked layers, letting the network build complex concepts from simple ones."},
-{id:"ai3_3",m:"ai3",d:2,c:"llm",q:"At its core, a large language model is trained to...",o:["Search the internet","Predict the next token (word piece) given the previous ones","Translate only","Store conversations"],a:1,x:"Everything an LLM does — answering, coding, reasoning — emerges from next-token prediction at colossal scale."},
-{id:"ai3_4",m:"ai3",d:2,c:"llm",q:"Why do most companies use frontier LLMs via API instead of training their own?",o:["Training is illegal","Training frontier models costs enormous data, GPUs, and expertise that few possess","APIs are always free","Their own models would be too accurate"],a:1,x:"Frontier training runs cost hundreds of millions. Building ON TOP of models via API is where most value is created."},
-{id:"ai3_5",m:"ai3",d:1,c:"prompting",q:"A 'prompt' is...",o:["The model's source code","The input/instructions you give a model","An error message","A type of GPU"],a:1,x:"Clear context, constraints, and examples in the prompt dramatically change output quality."},
-{id:"ai3_6",m:"ai3",d:2,c:"hallucination",q:"LLM 'hallucination' means the model...",o:["Crashes","Produces fluent, confident, but false statements","Refuses to answer","Sees images in text"],a:1,x:"In finance this is dangerous: always verify model output against a source of truth before money moves."},
-{id:"ai3_7",m:"ai3",d:3,c:"rag",q:"You want an LLM to answer using YOUR company's documents, updated daily. Best approach:",o:["Retrain the model from scratch daily","RAG: retrieve relevant documents at question time and include them in the prompt","Email the documents to the AI company","Fine-tune once and never update"],a:1,x:"Retrieval-augmented generation keeps knowledge fresh without retraining — the standard pattern for enterprise AI."},
-{id:"ai3_8",m:"ai3",d:3,c:"deep-learning",q:"Why are GPUs (not CPUs) the workhorse of deep learning?",o:["They are cheaper","Deep learning is mostly giant matrix multiplications, which GPUs execute massively in parallel","They use less power","CPUs cannot do math"],a:1,x:"A GPU runs thousands of simple operations simultaneously — exactly the shape of neural network math."},
+{id:"ai3_1",m:"ai3",d:1,c:"neural-networks",q:"An investor asks where the term 'neural network' even comes from. They are loosely inspired by...",o:["Telephone switchboards","The human brain's interconnected neurons","Spider webs","Road networks"],a:1,x:"Layers of simple units, each transforming the data slightly — stacked, they learn astonishing patterns."},
+{id:"ai3_2",m:"ai3",d:2,c:"deep-learning",q:"Interview: 'What does the deep in deep learning actually refer to?'",o:["Deep philosophical questions","Many layers in the neural network","Underwater datacenters","Deep storage of data"],a:1,x:"Depth = many stacked layers, letting the network build complex concepts from simple ones."},
+{id:"ai3_3",m:"ai3",d:2,c:"llm",q:"The board wants to know what an LLM 'really does under the hood'. At its core, it is trained to...",o:["Search the internet","Predict the next token (word piece) given the previous ones","Translate only","Store conversations"],a:1,x:"Everything an LLM does — answering, coding, reasoning — emerges from next-token prediction at colossal scale."},
+{id:"ai3_4",m:"ai3",d:2,c:"llm",q:"A client asks why you build on a frontier model API instead of training your own model. Because...",o:["Training is illegal","Training frontier models costs enormous data, GPUs, and expertise that few possess","APIs are always free","Our own model would be too accurate"],a:1,x:"Frontier training runs cost hundreds of millions. Building ON TOP of models via API is where most value is created."},
+{id:"ai3_5",m:"ai3",d:1,c:"prompting",q:"Before the AI workshop, your designer asks: 'What is a prompt?'",o:["The model's source code","The input/instructions you give a model","An error message","A type of GPU"],a:1,x:"Clear context, constraints, and examples in the prompt dramatically change output quality."},
+{id:"ai3_6",m:"ai3",d:2,c:"hallucination",q:"Support escalation: the chatbot confidently INVENTED a refund policy to a customer. What is this failure called?",o:["A crash","Hallucination: fluent, confident, false statements","A refusal","Image recognition"],a:1,x:"In finance this is dangerous: always verify model output against a source of truth before money moves."},
+{id:"ai3_7",m:"ai3",d:3,c:"rag",q:"Product wants the assistant to answer from OUR internal docs, updated daily. What do you propose?",o:["Retrain the model from scratch every day","RAG: retrieve relevant documents at question time and include them in the prompt","Email the docs to the AI company","Fine-tune once and never update"],a:1,x:"Retrieval-augmented generation keeps knowledge fresh without retraining — the standard pattern for enterprise AI."},
+{id:"ai3_8",m:"ai3",d:3,c:"deep-learning",q:"Finance reviews the AI budget: 'Why do you keep buying GPUs instead of normal CPUs?'",o:["They are cheaper","Deep learning is mostly giant matrix multiplications, which GPUs execute massively in parallel","They use less power","CPUs cannot do math"],a:1,x:"A GPU runs thousands of simple operations simultaneously — exactly the shape of neural network math."},
 // fin4
-{id:"fin4_1",m:"fin4",d:1,c:"kyc",q:"KYC stands for...",o:["Keep Your Cash","Know Your Customer — verifying who your customers really are","Key Yield Curve","Know Your Code"],a:1,x:"Identity verification is the legal gateway to offering any financial service."},
-{id:"fin4_2",m:"fin4",d:2,c:"aml",q:"AML rules exist to...",o:["Limit ATM withdrawals","Prevent criminals from disguising illegal money as legitimate through the financial system","Set minimum interest rates","Protect bank buildings"],a:1,x:"Fintechs must monitor flows, flag suspicious patterns, and report them — or face crushing fines."},
-{id:"fin4_3",m:"fin4",d:3,c:"capital",q:"Why must banks hold capital buffers?",o:["To pay staff bonuses","So loan losses hit shareholders' capital before threatening depositors' money","To buy government bonds","To fund marketing"],a:1,x:"Capital absorbs losses. The 2008 crisis showed what happens when buffers are too thin for the risks taken."},
-{id:"fin4_4",m:"fin4",d:3,c:"risk-types",q:"A trader's systems crash during a market spike, causing losses. This is...",o:["Credit risk","Market risk","Operational risk","Inflation risk"],a:2,x:"Operational risk = failures of systems, processes, or people. Credit = defaults; market = price moves."},
-{id:"fin4_5",m:"fin4",d:2,c:"regtech",q:"RegTech refers to...",o:["Regulating technology companies","Technology that automates compliance: screening, monitoring, reporting","A government tech department","Regular technology updates"],a:1,x:"AI-driven transaction monitoring and automated KYC turn compliance from an army of clerks into software."},
-{id:"fin4_6",m:"fin4",d:3,c:"open-banking-reg",q:"PSD2-style open banking regulation matters because it...",o:["Closed all bank branches","Forced banks to share data/payments access with licensed third parties, creating the fintech app ecosystem","Banned credit cards","Merged all banks"],a:1,x:"Regulation, not just technology, opened the door: your budgeting app legally plugs into your bank because of it."},
-{id:"fin4_7",m:"fin4",d:2,c:"sandbox",q:"A regulatory sandbox lets startups...",o:["Avoid all regulation forever","Test innovative products with real users under regulator supervision before full licensing","Play games at work","Hide from auditors"],a:1,x:"A controlled space to prove a model works before paying the full cost of licensing."},
-{id:"fin4_8",m:"fin4",d:2,c:"data-protection",q:"Why is GDPR existential for fintechs?",o:["It only affects social networks","Fines reach 4% of global revenue, and losing customer trust over data is often fatal","It bans databases","It applies only to banks"],a:1,x:"Fintechs hold the most sensitive data there is: money + identity. Mishandling it ends companies."},
+{id:"fin4_1",m:"fin4",d:1,c:"kyc",q:"Day one at a regulated fintech. Compliance asks if you know what KYC stands for.",o:["Keep Your Cash","Know Your Customer — verifying who your customers really are","Key Yield Curve","Know Your Code"],a:1,x:"Identity verification is the legal gateway to offering any financial service."},
+{id:"fin4_2",m:"fin4",d:2,c:"aml",q:"The compliance officer briefs the team: 'Why do AML rules exist at all?'",o:["To limit ATM withdrawals","To prevent criminals from disguising illegal money as legitimate through the financial system","To set minimum interest rates","To protect bank buildings"],a:1,x:"Fintechs must monitor flows, flag suspicious patterns, and report them — or face crushing fines."},
+{id:"fin4_3",m:"fin4",d:3,c:"capital",q:"An intern asks why banks can't just lend out everything they hold. Why must banks keep capital buffers?",o:["To pay staff bonuses","So loan losses hit shareholders' capital before threatening depositors' money","To buy government bonds","To fund marketing"],a:1,x:"Capital absorbs losses. The 2008 crisis showed what happens when buffers are too thin for the risks taken."},
+{id:"fin4_4",m:"fin4",d:3,c:"risk-types",q:"Risk committee: a trader's systems crashed during a market spike, causing losses. Which risk category is this?",o:["Credit risk","Market risk","Operational risk","Inflation risk"],a:2,x:"Operational risk = failures of systems, processes, or people. Credit = defaults; market = price moves."},
+{id:"fin4_5",m:"fin4",d:2,c:"regtech",q:"A vendor pitches their 'RegTech platform' to your team. RegTech refers to...",o:["Regulating technology companies","Technology that automates compliance: screening, monitoring, reporting","A government tech department","Regular technology updates"],a:1,x:"AI-driven transaction monitoring and automated KYC turn compliance from an army of clerks into software."},
+{id:"fin4_6",m:"fin4",d:3,c:"open-banking-reg",q:"A journalist asks why PSD2-style open banking regulation mattered so much. Because it...",o:["Closed all bank branches","Forced banks to share data/payments access with licensed third parties, creating the fintech app ecosystem","Banned credit cards","Merged all banks"],a:1,x:"Regulation, not just technology, opened the door: your budgeting app legally plugs into your bank because of it."},
+{id:"fin4_7",m:"fin4",d:2,c:"sandbox",q:"Your startup wants to test a new product with real users BEFORE full licensing. The lawyer suggests a regulatory sandbox, which allows...",o:["Avoiding all regulation forever","Testing innovative products with real users under regulator supervision before full licensing","Playing games at work","Hiding from auditors"],a:1,x:"A controlled space to prove a model works before paying the full cost of licensing."},
+{id:"fin4_8",m:"fin4",d:2,c:"data-protection",q:"The data protection officer looks grim in the GDPR meeting. Why is data protection EXISTENTIAL for fintechs?",o:["It only affects social networks","Fines reach 4% of global revenue, and losing customer trust over data is often fatal","It bans databases","It applies only to banks"],a:1,x:"Fintechs hold the most sensitive data there is: money + identity. Mishandling it ends companies."},
 // tech4
-{id:"tech4_1",m:"tech4",d:2,c:"scalability",q:"Horizontal scaling means...",o:["Buying one bigger server","Adding more machines that share the load","Making the code shorter","Moving servers sideways"],a:1,x:"The web scales out, not up: ten modest machines beat one giant, and you can keep adding."},
-{id:"tech4_2",m:"tech4",d:2,c:"latency",q:"Why does latency matter intensely in trading systems?",o:["It does not","Milliseconds determine who gets the price first — slow systems systematically lose","Only the UI cares about speed","Regulators measure it"],a:1,x:"High-frequency firms pay fortunes to shave microseconds. In payments, latency kills checkout conversion instead."},
-{id:"tech4_3",m:"tech4",d:2,c:"redundancy",q:"Redundancy in fintech infrastructure means...",o:["Writing the same code twice","Running duplicate systems so a single failure never causes downtime","Hiring backup employees","Deleting unused files"],a:1,x:"Failover: when one instance dies, its twin takes over instantly. Money systems cannot go dark."},
-{id:"tech4_4",m:"tech4",d:3,c:"ledgers",q:"Fintech ledgers use double-entry accounting because...",o:["It is twice as fast","Every movement is a debit and a credit, so books always balance and errors surface immediately","Regulators like tradition","It uses less storage"],a:1,x:"If debits and credits stop matching, you KNOW something broke. Single-entry systems silently lose money."},
-{id:"tech4_5",m:"tech4",d:3,c:"idempotency",q:"A payment API client times out and retries the same request. Idempotency keys ensure...",o:["The customer is charged twice for safety","The retry is recognized as a duplicate and the charge happens exactly once","The request is always rejected","The server restarts"],a:1,x:"Same key = same operation, executed once. Without this, flaky networks would double-charge customers daily."},
-{id:"tech4_6",m:"tech4",d:2,c:"devops",q:"CI/CD pipelines...",o:["Replace all developers","Automatically test and deploy every code change — speed with a safety net","Are only for big banks","Slow down releases on purpose"],a:1,x:"Continuous integration/deployment: each change runs the full test suite before shipping. Fast AND safe."},
-{id:"tech4_7",m:"tech4",d:2,c:"caching",q:"Caching improves performance by...",o:["Compressing the database","Keeping frequently-read data in fast memory to cut load and latency","Deleting old data","Buying faster internet"],a:1,x:"But beware: a stale cache showing yesterday's balance is a fintech incident, not an optimization."},
-{id:"tech4_8",m:"tech4",d:3,c:"consistency",q:"'Eventual consistency' is acceptable for...",o:["Account balances during a withdrawal","A social feed or analytics dashboard — but NOT for the money ledger itself","Everything in a bank","Nothing, ever"],a:1,x:"Replicas agreeing 'eventually' is fine for likes; for money you need strong consistency or provable reconciliation."},
+{id:"tech4_1",m:"tech4",d:2,c:"scalability",q:"Capacity planning: traffic doubled this quarter. What does HORIZONTAL scaling mean?",o:["Buying one bigger server","Adding more machines that share the load","Making the code shorter","Moving servers sideways"],a:1,x:"The web scales out, not up: ten modest machines beat one giant, and you can keep adding."},
+{id:"tech4_2",m:"tech4",d:2,c:"latency",q:"A trading client threatens to leave over 30 milliseconds. Why does latency matter so much in trading?",o:["It does not","Milliseconds determine who gets the price first — slow systems systematically lose","Only the UI cares about speed","Regulators measure it"],a:1,x:"High-frequency firms pay fortunes to shave microseconds. In payments, latency kills checkout conversion instead."},
+{id:"tech4_3",m:"tech4",d:2,c:"redundancy",q:"Post-incident review after last night's outage: what does redundancy mean for our infrastructure?",o:["Writing the same code twice","Running duplicate systems so a single failure never causes downtime","Hiring backup employees","Deleting unused files"],a:1,x:"Failover: when one instance dies, its twin takes over instantly. Money systems cannot go dark."},
+{id:"tech4_4",m:"tech4",d:3,c:"ledgers",q:"The new engineer asks why our ledger insists on double-entry accounting. Because...",o:["It is twice as fast","Every movement is a debit and a credit, so books always balance and errors surface immediately","Regulators like tradition","It uses less storage"],a:1,x:"If debits and credits stop matching, you KNOW something broke. Single-entry systems silently lose money."},
+{id:"tech4_5",m:"tech4",d:3,c:"idempotency",q:"A furious client was charged TWICE after a network timeout and retry. What should have prevented this?",o:["Charging twice is the safe default","Idempotency keys: the retry is recognized as a duplicate and the charge happens exactly once","Always rejecting retries","Restarting the server"],a:1,x:"Same key = same operation, executed once. Without this, flaky networks would double-charge customers daily."},
+{id:"tech4_6",m:"tech4",d:2,c:"devops",q:"DevOps onboarding: 'What do our CI/CD pipelines actually do?'",o:["Replace all developers","Automatically test and deploy every code change — speed with a safety net","Exist only at big banks","Slow down releases on purpose"],a:1,x:"Continuous integration/deployment: each change runs the full test suite before shipping. Fast AND safe."},
+{id:"tech4_7",m:"tech4",d:2,c:"caching",q:"The app is slow and someone proposes 'adding caching'. Caching improves performance by...",o:["Compressing the database","Keeping frequently-read data in fast memory to cut load and latency","Deleting old data","Buying faster internet"],a:1,x:"But beware: a stale cache showing yesterday's balance is a fintech incident, not an optimization."},
+{id:"tech4_8",m:"tech4",d:3,c:"consistency",q:"Architecture debate: where is 'eventual consistency' actually acceptable?",o:["Account balances during a withdrawal","A social feed or analytics dashboard — but NOT the money ledger itself","Everywhere in a bank","Nowhere, ever"],a:1,x:"Replicas agreeing 'eventually' is fine for likes; for money you need strong consistency or provable reconciliation."},
 // ai4
-{id:"ai4_1",m:"ai4",d:1,c:"algo-trading",q:"Algorithmic trading is...",o:["Trading only algorithm company stocks","Executing orders automatically by programmed rules at machine speed","Illegal in most countries","Trading without computers"],a:1,x:"The majority of market volume today is machines trading with machines."},
-{id:"ai4_2",m:"ai4",d:2,c:"credit-scoring",q:"AI credit scoring improves on classic bureaus mainly by...",o:["Always approving more loans","Using alternative data (cash-flow, behavior) to score people invisible to traditional credit files","Removing the need for repayment","Being unregulated"],a:1,x:"Billions of people lack credit history but generate data. Scoring them expands access — if done responsibly."},
-{id:"ai4_3",m:"ai4",d:2,c:"fraud-detection",q:"Real-time AI fraud detection works by...",o:["Blocking all foreign transactions","Scoring every transaction in milliseconds and flagging anomalies versus learned normal behavior","Calling the customer each time","Checking a list of banned names only"],a:1,x:"Anomaly detection at transaction speed: your card works abroad, yet a weird 3am purchase pattern gets blocked."},
-{id:"ai4_4",m:"ai4",d:1,c:"robo-advisors",q:"A robo-advisor is...",o:["A physical robot in a bank branch","Software that builds and rebalances investment portfolios automatically at low fees","A trading chatroom","A financial news app"],a:1,x:"Questionnaire → risk profile → automated diversified portfolio. Wealth management for 0.25% instead of 1-2%."},
-{id:"ai4_5",m:"ai4",d:3,c:"model-risk",q:"A systemic danger of widespread AI trading models is...",o:["They get bored","Models trained on similar data can herd — reacting identically and amplifying crashes","They unionize","They trade too slowly"],a:1,x:"Flash crashes preview this: correlated automated reactions cascade faster than humans can intervene."},
-{id:"ai4_6",m:"ai4",d:3,c:"explainability",q:"Why does loan-decision AI need explainability?",o:["To make the code prettier","Regulators and customers can demand the reason for a denial — 'the black box said no' is legally indefensible","To run faster","Explainability is optional everywhere"],a:1,x:"Adverse-action rules require reasons. Interpretable models or explanation tools are a legal necessity in lending."},
-{id:"ai4_7",m:"ai4",d:3,c:"bias",q:"A lending model trained on decades of historical decisions risks...",o:["Nothing, history is objective","Automating past discrimination present in that data at scale","Approving everyone","Becoming a chatbot"],a:1,x:"Bias in, bias out — but now systematic, fast, and with a veneer of objectivity. Fairness testing is mandatory engineering."},
-{id:"ai4_8",m:"ai4",d:3,c:"backtesting",q:"A strategy shows amazing returns in backtests. The trap to check first:",o:["The returns are too small","Overfitting to the past — tweaked until it fits one historical sample that will not repeat","Backtests are always reliable","The data is too recent"],a:1,x:"Torture historical data long enough and it confesses to anything. Out-of-sample and live testing separate skill from curve-fitting."},
+{id:"ai4_1",m:"ai4",d:1,c:"algo-trading",q:"A client asks nervously: 'Are robots REALLY trading the market?' Algorithmic trading is...",o:["Trading only tech company stocks","Executing orders automatically by programmed rules at machine speed","Illegal in most countries","Trading without computers"],a:1,x:"The majority of market volume today is machines trading with machines."},
+{id:"ai4_2",m:"ai4",d:2,c:"credit-scoring",q:"Pitch to a lender: 'How does AI credit scoring improve on the classic credit bureaus?'",o:["It always approves more loans","It uses alternative data (cash-flow, behavior) to score people invisible to traditional credit files","It removes the need for repayment","It is unregulated"],a:1,x:"Billions of people lack credit history but generate data. Scoring them expands access — if done responsibly."},
+{id:"ai4_3",m:"ai4",d:2,c:"fraud-detection",q:"A prospect bank asks: 'How does your real-time fraud detection actually work?'",o:["We block all foreign transactions","We score every transaction in milliseconds and flag anomalies versus learned normal behavior","We call the customer each time","We check a list of banned names only"],a:1,x:"Anomaly detection at transaction speed: your card works abroad, yet a weird 3am purchase pattern gets blocked."},
+{id:"ai4_4",m:"ai4",d:1,c:"robo-advisors",q:"Family dinner: your parents ask what a 'robo-advisor' is. It is...",o:["A physical robot in a bank branch","Software that builds and rebalances investment portfolios automatically at low fees","A trading chatroom","A financial news app"],a:1,x:"Questionnaire → risk profile → automated diversified portfolio. Wealth management for 0.25% instead of 1-2%."},
+{id:"ai4_5",m:"ai4",d:3,c:"model-risk",q:"Risk panel asks: 'What is a SYSTEMIC danger of widespread AI trading models?'",o:["They get bored","Models trained on similar data can herd — reacting identically and amplifying crashes","They unionize","They trade too slowly"],a:1,x:"Flash crashes preview this: correlated automated reactions cascade faster than humans can intervene."},
+{id:"ai4_6",m:"ai4",d:3,c:"explainability",q:"A regulator audits your lending AI: 'Why must your loan decisions be explainable?'",o:["To make the code prettier","Regulators and customers can demand the reason for a denial — 'the black box said no' is legally indefensible","To run faster","Explainability is optional everywhere"],a:1,x:"Adverse-action rules require reasons. Interpretable models or explanation tools are a legal necessity in lending."},
+{id:"ai4_7",m:"ai4",d:3,c:"bias",q:"Ethics review: our lending model trains on decades of historical decisions. The risk is...",o:["None, history is objective","Automating past discrimination present in that data, at scale","Approving everyone","It becomes a chatbot"],a:1,x:"Bias in, bias out — but now systematic, fast, and with a veneer of objectivity. Fairness testing is mandatory engineering."},
+{id:"ai4_8",m:"ai4",d:3,c:"backtesting",q:"A quant shows a backtest with INSANE returns and wants budget. What trap do you check first?",o:["The returns are too small","Overfitting to the past — tweaked until it fits one historical sample that will not repeat","Backtests are always reliable","The data is too recent"],a:1,x:"Torture historical data long enough and it confesses to anything. Out-of-sample and live testing separate skill from curve-fitting."},
 ];
 
-/* Business events */
+/* Crisis events — real situations landing on YOUR desk */
 const EVENTS = [
 {id:"ev_outage",ico:"🔥",title:"3 AM: PAYMENTS ARE DOWN",minTier:1,
- s:"Your payment processing crashes during peak hours. Customers are furious on social media. Your CTO asks what to prioritize.",
+ s:"Your phone rings at 3am: payment processing crashed during peak hours. Customers are furious on social media. The CTO asks what to prioritize.",
  q:"What is the FIRST priority?",o:["Post a marketing campaign to distract users","Fail over to redundant systems and communicate transparently with users","Blame the cloud provider publicly","Turn everything off until Monday"],a:1,
  x:"Failover first, honest status updates second. Downtime handled with transparency can even build trust.",rw:{cash:300,val:2000},pn:{cash:-400,val:-2500}},
 {id:"ev_fraud",ico:"🕵️",title:"FRAUD RING DETECTED",minTier:1,
- s:"Overnight, fraudulent signups spike 40x. Manual review cannot keep up and losses are mounting every hour.",
+ s:"Overnight, fraudulent signups spike 40x. Manual review cannot keep up and losses mount every hour. Everyone looks at you.",
  q:"Best immediate + structural response?",o:["Hire 200 reviewers tomorrow","Tighten risk rules now, then deploy an anomaly-detection model trained on the attack patterns","Ignore it, fraud is a cost of doing business","Shut down signups for a month"],a:1,
  x:"Stop the bleeding with rules, then fight machines with machines: real-time ML scoring scales where humans cannot.",rw:{cash:400,val:2500},pn:{cash:-500,val:-3000}},
 {id:"ev_rates",ico:"📉",title:"CENTRAL BANK SHOCK",minTier:2,
- s:"The central bank unexpectedly raises rates by 1%. Your lending fintech's funding costs jump overnight.",
- q:"What happens to your existing fixed-rate loan book's value?",o:["It rises — loans are worth more now","It falls — your old loans yield less than new market rates","Nothing changes","It doubles"],a:1,
+ s:"The central bank unexpectedly raises rates by 1%. Your lending desk's funding costs jump overnight. The CFO wants your read NOW.",
+ q:"What happens to the existing fixed-rate loan book's value?",o:["It rises — loans are worth more now","It falls — old loans yield less than new market rates","Nothing changes","It doubles"],a:1,
  x:"Like bonds: old fixed-rate assets are worth less when new money earns more. Rate risk management exists for this.",rw:{cash:450,val:3000},pn:{cash:-600,val:-3500}},
 {id:"ev_viral",ico:"📱",title:"YOU WENT VIRAL!",minTier:1,
- s:"A celebrity praised your app. Signups jump 50x in 24 hours. Your servers are sweating and your KYC queue exploded.",
+ s:"A celebrity praised the app. Signups jump 50x in 24 hours. Servers are sweating and the KYC queue exploded. Management asks for your call.",
  q:"What breaks FIRST if you do nothing, and why is it dangerous?",o:["The logo — it needs a redesign","Onboarding: unverified users pile up, creating both churn AND regulatory exposure","Nothing, growth is always pure upside","The office coffee machine"],a:1,
  x:"Viral growth stress-tests compliance and infrastructure simultaneously. Auto-scaling plus automated KYC saves the moment.",rw:{cash:600,val:4000},pn:{cash:-400,val:-2000}},
 {id:"ev_audit",ico:"📋",title:"SURPRISE REGULATOR AUDIT",minTier:2,
- s:"The regulator announces an AML audit next week. Your compliance officer looks pale.",
- q:"What will auditors want to see FIRST?",o:["Your office decoration","Documented KYC/AML procedures, monitoring logs, and filed suspicious-activity reports","Your marketing budget","The CEO's diploma"],a:1,
+ s:"The regulator announces an AML audit next week. The compliance officer looks pale and asks you to prep the file.",
+ q:"What will auditors want to see FIRST?",o:["The office decoration","Documented KYC/AML procedures, monitoring logs, and filed suspicious-activity reports","The marketing budget","The CEO's diploma"],a:1,
  x:"Compliance is evidence: procedures, logs, reports. If it is not documented, for a regulator it did not happen.",rw:{cash:400,val:3000},pn:{cash:-700,val:-4000}},
 {id:"ev_crypto",ico:"🪙",title:"CRYPTO WINTER HITS",minTier:3,
- s:"Crypto prices crash 70%. Your exchange feature's volume evaporates, but engineering still costs the same.",
+ s:"Crypto prices crash 70%. The exchange feature's volume evaporates, but engineering still costs the same. Strategy meeting, now.",
  q:"The resilient strategic answer is...",o:["Bet the company on a memecoin","Diversify revenue streams — businesses surviving crypto winters are never single-product","Fire all engineers","Pretend prices will recover by Friday"],a:1,
  x:"Cycle-proof companies have multiple engines. Concentration is how fintechs die in downturns.",rw:{cash:500,val:3500},pn:{cash:-600,val:-3500}},
 {id:"ev_llm",ico:"💬",title:"THE AI SUPPORT GAMBIT",minTier:2,
- s:"Support tickets doubled. An engineer suggests an LLM assistant for customer service. Your head of ops worries it will tell customers nonsense.",
- q:"The smart deployment is...",o:["Full autonomy on day one — let it move money","RAG over your real docs, clear escalation to humans, and no irreversible actions without confirmation","Refuse all AI forever","Let it answer only in poetry"],a:1,
+ s:"Support tickets doubled. An engineer suggests an LLM assistant for customer service. Ops worries it will tell customers nonsense. Your call.",
+ q:"The smart deployment is...",o:["Full autonomy on day one — let it move money","RAG over our real docs, clear escalation to humans, and no irreversible actions without confirmation","Refuse all AI forever","Let it answer only in poetry"],a:1,
  x:"Ground it in your documentation, keep humans in the loop, and gate sensitive actions. AI augments support before it replaces it.",rw:{cash:450,val:3000},pn:{cash:-400,val:-2000}},
 {id:"ev_breach",ico:"🛡️",title:"PHISHING ATTACK ON STAFF",minTier:1,
- s:"An employee reports a suspicious email asking them to 'urgently verify' their admin password. Two colleagues already clicked.",
+ s:"An employee reports a suspicious email asking to 'urgently verify' their admin password. Two colleagues already clicked. You own security today.",
  q:"Immediate response?",o:["Delete the email and move on","Reset exposed credentials, enforce 2FA, check access logs for intrusion, then train the team","Unplug the internet permanently","Reply to the attacker angrily"],a:1,
  x:"Contain (resets + 2FA), investigate (logs), prevent (training). Humans are the attack surface; process is the patch.",rw:{cash:300,val:2000},pn:{cash:-500,val:-2500}},
 {id:"ev_vc",ico:"💎",title:"TERM SHEET ON THE TABLE",minTier:3,
- s:"A famous VC offers $10M for 25% of your company. Champagne? Your CFO clears her throat and asks THE question.",
+ s:"A famous VC offers $10M for 25% of the company. Champagne? The CFO clears her throat and asks the room THE question.",
  q:"What valuation does this offer imply?",o:["$10M","$40M post-money — the $10M buys a quarter of the company","$2.5M","$100M"],a:1,
  x:"If $10M = 25%, the whole = $40M post-money (pre-money $30M). Founders who cannot do this math get eaten alive.",rw:{cash:800,val:5000},pn:{cash:-300,val:-1500}},
 {id:"ev_model",ico:"⚠️",title:"THE MODEL IS DRIFTING",minTier:3,
- s:"Your credit model's default predictions are degrading month over month. The data science team is puzzled; approvals look normal.",
+ s:"The credit model's default predictions degrade month over month. The data science team is puzzled; approvals look normal. They ask your diagnosis.",
  q:"Most likely culprit?",o:["The GPU is tired","Data drift — economic conditions changed, so patterns the model learned no longer hold","Someone deleted the README","Customers are lying more"],a:1,
  x:"Models are snapshots of the past. When reality shifts (rates, jobs, behavior), retraining and monitoring pipelines are vital.",rw:{cash:500,val:3500},pn:{cash:-600,val:-3000}},
 ];
 
-/* Company upgrades — knowledge-gated items at the MART */
+/* Projects you pitch to management — need budget (cash) AND skill mastery */
 const UPGRADES = [
-{id:"u_eng",ico:"👩‍💻",name:"Hire First Engineer",cost:800,req:{m:"tech1",p:60},desc:"Someone who actually reads the error messages.",fx:{cashMult:.1,val:1500}},
-{id:"u_app",ico:"📱",name:"Launch Mobile App",cost:2000,req:{m:"tech1",p:80},desc:"Your product in every pocket.",fx:{xpMult:.1,val:2500}},
-{id:"u_emoney",ico:"🪪",name:"E-Money License",cost:3200,req:{m:"fin1",p:80},desc:"Legally hold customer funds. The regulator nods at you.",fx:{cashMult:.1,val:4000}},
-{id:"u_api",ico:"🔌",name:"Open Banking Integration",cost:4800,req:{m:"tech2",p:70},desc:"Plug into every bank account in the market.",fx:{cashMult:.15,val:5000}},
-{id:"u_invest",ico:"📈",name:"Investment Product",cost:5600,req:{m:"fin2",p:70},desc:"ETF portfolios for your users. AUM begins.",fx:{cashMult:.15,val:6000}},
-{id:"u_data",ico:"🗄️",name:"Data Warehouse",cost:4000,req:{m:"tech2",p:80},desc:"All your data, one source of truth. Analysts weep with joy.",fx:{xpMult:.15,val:4000}},
-{id:"u_ml",ico:"🤖",name:"Fraud ML Model",cost:7200,req:{m:"ai2",p:70},desc:"A model that smells fraud before it happens.",fx:{cashMult:.2,val:8000}},
-{id:"u_cards",ico:"💳",name:"Card Issuing Program",cost:9600,req:{m:"fin3",p:70},desc:"Your logo on real cards. Interchange revenue flows.",fx:{cashMult:.2,val:10000}},
+{id:"u_eng",ico:"👩‍💻",name:"Hire First Engineer",cost:800,req:{m:"tech1",p:60},desc:"Convince management to grow your team.",fx:{cashMult:.1,val:1500}},
+{id:"u_app",ico:"📱",name:"Launch Mobile App",cost:2000,req:{m:"tech1",p:80},desc:"Lead the mobile launch. Your name on the release.",fx:{xpMult:.1,val:2500}},
+{id:"u_emoney",ico:"🪪",name:"E-Money License",cost:3200,req:{m:"fin1",p:80},desc:"Drive the licensing file. The regulator nods at you.",fx:{cashMult:.1,val:4000}},
+{id:"u_api",ico:"🔌",name:"Open Banking Integration",cost:4800,req:{m:"tech2",p:70},desc:"Plug the product into every bank in the market.",fx:{cashMult:.15,val:5000}},
+{id:"u_invest",ico:"📈",name:"Investment Product",cost:5600,req:{m:"fin2",p:70},desc:"Launch ETF portfolios for the users. AUM begins.",fx:{cashMult:.15,val:6000}},
+{id:"u_data",ico:"🗄️",name:"Data Warehouse",cost:4000,req:{m:"tech2",p:80},desc:"One source of truth. Analysts weep with joy.",fx:{xpMult:.15,val:4000}},
+{id:"u_ml",ico:"🤖",name:"Fraud ML Model",cost:7200,req:{m:"ai2",p:70},desc:"Ship a model that smells fraud before it happens.",fx:{cashMult:.2,val:8000}},
+{id:"u_cards",ico:"💳",name:"Card Issuing Program",cost:9600,req:{m:"fin3",p:70},desc:"The company logo on real cards. Interchange flows.",fx:{cashMult:.2,val:10000}},
 {id:"u_sec",ico:"🔐",name:"Security Ops Center",cost:8000,req:{m:"tech3",p:70},desc:"24/7 eyes on every threat. Hackers sigh and move on.",fx:{val:9000,xpMult:.1}},
-{id:"u_ai",ico:"✨",name:"AI Copilot Features",cost:12800,req:{m:"ai3",p:80},desc:"LLM-powered insights in your app. The press goes wild.",fx:{cashMult:.25,val:14000}},
+{id:"u_ai",ico:"✨",name:"AI Copilot Features",cost:12800,req:{m:"ai3",p:80},desc:"LLM-powered insights in the app. The press goes wild.",fx:{cashMult:.25,val:14000}},
 {id:"u_comp",ico:"⚖️",name:"RegTech Compliance Suite",cost:14400,req:{m:"fin4",p:70},desc:"Automated KYC/AML. Auditors leave disappointed.",fx:{val:15000,cashMult:.15}},
 {id:"u_global",ico:"🌍",name:"Global Infrastructure",cost:19200,req:{m:"tech4",p:80},desc:"Multi-region, redundant, idempotent. 99.999% uptime.",fx:{val:20000,xpMult:.2}},
 {id:"u_quant",ico:"📡",name:"AI Trading Desk",cost:24000,req:{m:"ai4",p:80},desc:"Models trading responsibly (with kill switches).",fx:{cashMult:.35,val:25000}},
@@ -441,10 +454,10 @@ const UPGRADES = [
 ];
 
 const QUIZ_LEN = 6, BOSS_LEN = 8, REVIEW_LEN = 10;
-const QUIZ_HP = 3, BOSS_HP = 3;          // wrong answers allowed before KO
+const QUIZ_HP = 3, BOSS_HP = 3;          // mistakes allowed before the meeting collapses
 const BOSS_SECS = 20, BOSS_MODULE_REQ = 65;
 const BOX_DAYS = [0, 1, 3, 7, 16, 30];
-const FREE_BOXES = 2;                    // boxes earnable same-day; beyond needs real spaced review
+const FREE_BOXES = 2;                    // same-day cap; beyond needs real spaced review
 const DAY = 86400000;
 
 /* ----------------------- STATE ----------------------- */
@@ -561,7 +574,7 @@ function recordAnswer(q, ok){
   state.answered++; if(ok) state.correctTotal++;
 }
 
-/* ----------------------- ECONOMY / RPG ----------------------- */
+/* ----------------------- ECONOMY / CAREER ----------------------- */
 function cashMult(){ return 1 + state.company.upgrades.reduce((a,id) => a + ((UPGRADES.find(u=>u.id===id).fx.cashMult)||0), 0); }
 function xpMult(){ return 1 + state.company.upgrades.reduce((a,id) => a + ((UPGRADES.find(u=>u.id===id).fx.xpMult)||0), 0); }
 function valuation(){
@@ -576,7 +589,7 @@ function bossReady(t){ return MODULES.filter(m => m.tier === t).every(m => modul
 function gainXP(n){
   const before = rank().name;
   state.xp += Math.round(n * xpMult());
-  if(rank().name !== before){ SFX.rank(); toast("🎉 RANK UP! " + rank().ico + " " + rank().name); }
+  if(rank().name !== before){ SFX.rank(); toast("🎉 TITLE UP! " + rank().ico + " " + rank().name); }
 }
 function gainCash(n){ state.company.cash += Math.round(n * cashMult()); }
 function touchStreak(){
@@ -589,21 +602,21 @@ function touchStreak(){
 function logEv(s){ state.log.unshift(s); state.log = state.log.slice(0,6); }
 function fmt(n){ return n >= 1e6 ? "$" + (n/1e6).toFixed(2) + "M" : "$" + n.toLocaleString("en-US"); }
 
-/* ----------------------- BATTLE SESSION ----------------------- */
+/* ----------------------- MEETING SESSION ----------------------- */
 let S = null;
 let timerH = null;
 
 function shuffleOpts(q){ return q.o.map((t,i) => ({t, orig:i})).sort(() => Math.random() - .5); }
 
-function battleFoe(){
-  if(S.mode === "boss"){ const t = TIERS[S.tier-1]; return {name:t.boss, ico:t.bico}; }
-  if(S.mode === "review") return {name:"MEMORY PHANTOM", ico:"🌫️"};
-  const m = MODULES.find(x => x.id === S.mid);
-  return {name:m.mon, ico:m.mico};
+function sessionFoe(){
+  if(S.mode === "boss"){ const t = TIERS[S.tier-1]; return {name:t.itw, ico:t.bico, win:"🎉 PROMOTED!", bar:"OFFER"}; }
+  if(S.mode === "review") return REVIEW_PERSONA;
+  return S.persona;
 }
 function startQuiz(mid){
   SFX.intro();
   S = {mode:"quiz", mid, qs:pickQuiz(mid), i:0, ok:0, combo:0, php:QUIZ_HP, lastHit:"",
+       persona:PERSONAS[Math.floor(Math.random()*PERSONAS.length)],
        xpEarned:0, cashEarned:0, picked:-1, phase:"intro"};
   S.opts = shuffleOpts(S.qs[0]); state.view = "session"; render();
 }
@@ -695,7 +708,7 @@ function finishSession(ko){
     if(!ko) m.best = Math.max(m.best, S.pct);
     state.mod[S.mid] = m;
     const mod = MODULES.find(x=>x.id===S.mid);
-    logEv((ko ? "💀 KO vs " : "⚔️ ") + mod.mon + " — " + S.pct + "%");
+    logEv((ko ? "💼 Lost the meeting on " : "🤝 ") + mod.name + " — " + S.pct + "%");
     S.eventNext = !ko && Math.random() < .3;
   } else if(S.mode === "boss"){
     if(!ko){
@@ -705,11 +718,11 @@ function finishSession(ko){
         const reward = 1000 * S.tier;
         state.company.cash += reward; gainXP(60*S.tier);
         S.bossReward = reward;
-        logEv("🏅 BADGE EARNED: " + TIERS[S.tier-1].boss);
+        logEv("🏅 PROMOTED to " + TIERS[S.tier-1].role + "!");
       } else S.bossReward = 0;
-    } else logEv("💀 Crushed by " + TIERS[S.tier-1].boss);
+    } else logEv("📞 Failed the " + TIERS[S.tier-1].itw + " interview");
   } else if(S.mode === "review"){
-    logEv((ko?"💀":"🔁") + " Training — " + S.pct + "%");
+    logEv((ko?"💀":"🧠") + " Mentor drill — " + S.pct + "%");
   }
   if(ko) SFX.lose(); else SFX.win();
   save(); render();
@@ -727,9 +740,9 @@ function buyUpgrade(id){
   state.company.cash -= u.cost;
   state.company.upgrades.push(id);
   gainXP(30);
-  logEv("🏗️ Built: " + u.name);
+  logEv("🏗️ Shipped project: " + u.name);
   SFX.buy();
-  toast(u.ico + " " + u.name.toUpperCase() + " GET!");
+  toast(u.ico + " PROJECT SHIPPED: " + u.name.toUpperCase());
   save(); render();
 }
 function toast(msg){
@@ -745,17 +758,17 @@ function setName(){
   const n = (el.value || "").trim();
   if(!n) return;
   state.company.name = n; state.view = "hq";
-  logEv("🚀 " + n + " is founded!");
+  logEv("🚀 First day as an intern at " + n + "!");
   SFX.win();
   save(); render();
 }
 function resetGame(){
-  if(!confirm("Reset ALL progress? Your empire will crumble to dust.")) return;
+  if(!confirm("Reset ALL progress? Your whole career will vanish.")) return;
   state = freshState(); save(); render();
 }
 function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 
-/* typewriter for battle dialog */
+/* typewriter for meeting dialog */
 let twTimer = null;
 function typewrite(id, text){
   const el = document.getElementById(id);
@@ -779,22 +792,22 @@ function vOnboard(){
     <div class="crown">👑</div>
     <h1 style="font-size:20px;margin:10px 0 4px">FINTECH</h1>
     <h1 style="font-size:20px;color:var(--gold);text-shadow:2px 2px 0 var(--ink)">TYCOON</h1>
-    <p class="tiny" style="margin:10px 0">— ZERO TO KING —</p>
+    <p class="tiny" style="margin:10px 0">— INTERN TO KING —</p>
     <div class="pb" style="text-align:left;max-width:430px;margin:18px auto">
-      <p>PROF. LEDGER: Welcome to the world of FINTECH! Wild concepts of <b>FINANCE</b> 💰, <b>TECH</b> 💻 and <b>AI</b> 🤖 roam these lands.</p>
-      <p style="margin-top:10px">Defeat them in battle to grow your startup from a garage to a KINGDOM. But beware... knowledge fades. Only true masters reach the throne.</p>
-      <p style="margin-top:10px">Now... what will you name your startup?</p>
+      <p>Monday, 8:55 AM. Your first day as an INTERN at a fintech startup.</p>
+      <p style="margin-top:10px">Survive client meetings, prospect pitches, crisis calls and promotion interviews. Master <b>FINANCE</b> 💰, <b>TECH</b> 💻 and <b>AI</b> 🤖 to climb from the basement to the throne.</p>
+      <p style="margin-top:10px">First question of your career: what is this startup called?</p>
     </div>
     <div style="max-width:430px;margin:0 auto">
-      <input type="text" id="cname" maxlength="20" placeholder="STARTUP NAME" onkeydown="if(event.key==='Enter')setName()">
-      <button class="primary big" style="margin-top:12px" onclick="setName()">▶ START ADVENTURE</button>
+      <input type="text" id="cname" maxlength="20" placeholder="COMPANY NAME" onkeydown="if(event.key==='Enter')setName()">
+      <button class="primary big" style="margin-top:12px" onclick="setName()">▶ CLOCK IN</button>
       <p class="tiny blink" style="margin-top:14px">PRESS START — © FINTECH KINGDOM</p>
     </div>
   </div>`;
 }
 
 function vNav(){
-  const tabs = [["hq","🏰","BASE"],["learn","🗺️","WORLD"],["review","🥋","DOJO"],["company","🏪","MART"]];
+  const tabs = [["hq","🪪","CAREER"],["learn","🏢","OFFICE"],["review","📚","TRAIN"],["company","🏗️","PROJECTS"]];
   const due = dueReviews().length;
   return `<nav>` + tabs.map(([v,i,l]) =>
     `<button class="${state.view===v?'on':''}" onclick="go('${v}')"><span class="nico">${i}</span>${l}${v==='review'&&due?` (${due})`:''}</button>`
@@ -811,32 +824,31 @@ function vHQ(){
   return `
   <div class="pb dark">
     <div class="row sb">
-      <div><p class="tiny">FOUNDER CARD</p><h2>${esc(state.company.name)}</h2></div>
-      <div class="sprite" style="font-size:34px">${r.ico}</div>
+      <div><p class="tiny">EMPLOYEE CARD — ${esc(state.company.name).toUpperCase()}</p><h2>${r.ico} ${r.name}</h2></div>
+      <div class="sprite" style="font-size:34px">🧑‍💼</div>
     </div>
-    <p style="margin-top:6px">RANK: <span style="color:#f8d870">${r.name}</span></p>
     <div class="row sb" style="margin-top:8px">
-      <span class="tiny">${nx ? (nx.xp - state.xp) + " XP TO " + nx.name : "MAXIMUM RANK!"}</span>
+      <span class="tiny">${nx ? (nx.xp - state.xp) + " XP TO " + nx.name.toUpperCase() : "MAXIMUM TITLE!"}</span>
       <span class="tiny">${state.xp} XP</span>
     </div>
     <div class="bar" style="margin-top:4px;background:#404060"><i style="width:${rankPct}%;background:#f8d870"></i></div>
-    <p style="margin-top:10px" class="tiny">BADGES:
-      ${TIERS.map(t => `<span class="badge ${state.boss[t.n]?'':'empty'}" title="${t.boss}">${state.boss[t.n]?t.badge:"?"}</span>`).join("")}
+    <p style="margin-top:10px" class="tiny">PROMOTIONS:
+      ${TIERS.map(t => `<span class="badge ${state.boss[t.n]?'':'empty'}" title="${t.role}">${state.boss[t.n]?t.badge:"?"}</span>`).join("")}
     </p>
   </div>
   <div class="grid3">
-    <div class="pb center"><p class="tiny">CASH</p><h2 style="color:var(--gold)">${fmt(state.company.cash)}</h2></div>
-    <div class="pb center"><p class="tiny">VALUATION</p><h2 style="color:var(--blue)">${fmt(valuation())}</h2></div>
+    <div class="pb center"><p class="tiny">SAVINGS</p><h2 style="color:var(--gold)">${fmt(state.company.cash)}</h2></div>
+    <div class="pb center"><p class="tiny">CO. VALUATION</p><h2 style="color:var(--blue)">${fmt(valuation())}</h2></div>
     <div class="pb center"><p class="tiny">ACCURACY</p><h2>${acc}%${state.streak.count>1?` 🔥${state.streak.count}`:""}</h2></div>
   </div>
   ${due ? `<div class="pb cream"><div class="row sb">
-    <div style="flex:1"><h3>🌫️ ${due} MEMORIES ARE FADING!</h3><p class="tiny">The MEMORY PHANTOM feeds on forgotten knowledge.</p></div>
-    <button class="primary" onclick="startReview()">FIGHT</button></div></div>` : ""}
+    <div style="flex:1"><h3>🧓 YOUR MENTOR: "${due} things you are forgetting!"</h3><p class="tiny">Drill them now or they fade for good.</p></div>
+    <button class="primary" onclick="startReview()">DRILL</button></div></div>` : ""}
   ${nextBossTier && bossReady(nextBossTier.n) ? `<div class="pb cream"><div class="row sb">
-    <div style="flex:1"><h3>${TIERS[nextBossTier.n-1].bico} ${nextBossTier.boss} BLOCKS YOUR PATH!</h3><p class="tiny">Defeat the boss to earn the ${TIERS[nextBossTier.n-1].badge} badge and open Tier ${nextBossTier.n+1}.</p></div>
-    <button class="danger" onclick="startBoss(${nextBossTier.n})">BATTLE</button></div></div>` : ""}
+    <div style="flex:1"><h3>${TIERS[nextBossTier.n-1].bico} PROMOTION INTERVIEW AVAILABLE!</h3><p class="tiny">${TIERS[nextBossTier.n-1].itw} is waiting. Pass to become ${TIERS[nextBossTier.n-1].role}.</p></div>
+    <button class="danger" onclick="startBoss(${nextBossTier.n})">INTERVIEW</button></div></div>` : ""}
   <div class="pb">
-    <h3 class="caps">▦ Mastery</h3>
+    <h3 class="caps">▦ Skills</h3>
     ${Object.entries(TRACKS).map(([k,t]) => {
       const pct = Math.round(trackMastery(k)*100);
       return `<div class="row sb" style="margin-top:8px"><span class="tiny">${t.ico} ${t.name.toUpperCase()}</span><span class="tiny">${pct}%</span></div>
@@ -844,10 +856,10 @@ function vHQ(){
     }).join("")}
     ${weak.length ? `<p class="tiny" style="margin-top:10px">WEAK SPOTS: ${weak.map(w => w.c.toUpperCase()+" "+Math.round(w.m*100)+"%").join(" • ")}</p>` : ""}
   </div>
-  <div class="pb"><h3 class="caps">▦ Journal</h3>
-    ${state.log.length ? state.log.map(l => `<p class="tiny" style="margin-top:6px">• ${esc(l)}</p>`).join("") : '<p class="tiny" style="margin-top:6px">• Your story begins. Head to the WORLD map!</p>'}
+  <div class="pb"><h3 class="caps">▦ Work journal</h3>
+    ${state.log.length ? state.log.map(l => `<p class="tiny" style="margin-top:6px">• ${esc(l)}</p>`).join("") : '<p class="tiny" style="margin-top:6px">• Your career begins. Head to the OFFICE!</p>'}
   </div>
-  <div class="pb"><h3 class="caps">▦ Road to the throne</h3>
+  <div class="pb"><h3 class="caps">▦ Career ladder</h3>
     <div style="margin-top:6px">${RANKS.map(k => `<div class="rankrow ${k.name===r.name?'now':state.xp>=k.xp?'done':''}">
       <span>${k.ico}</span><span class="tiny" style="flex:1">${k.name}</span><span class="tiny">${k.xp}</span></div>`).join("")}</div>
   </div>
@@ -858,15 +870,15 @@ function vHQ(){
 }
 
 function vLearn(){
-  let html = `<h2 class="caps">🗺️ World Map</h2>
-  <p class="tiny" style="margin:6px 0">Tame every wild Finmon of a tier (≥${BOSS_MODULE_REQ}% mastery) to challenge its boss. Full mastery needs spaced training over days!</p>`;
+  let html = `<h2 class="caps">🏢 The Office</h2>
+  <p class="tiny" style="margin:6px 0">Pick a skill, study the playbook, then take meetings. Reach ≥${BOSS_MODULE_REQ}% on every skill of your stage to unlock the PROMOTION INTERVIEW. Full mastery needs spaced training over several days!</p>`;
   for(const t of TIERS){
     const unlocked = tierUnlocked(t.n);
     html += `<div class="pb dark" style="padding:9px 12px"><div class="row sb">
-      <span class="tiny">ROUTE ${t.n} — ${t.name.toUpperCase()}</span>
-      ${state.boss[t.n] ? `<span class="tag gold">${t.badge} CLEARED</span>`
-        : unlocked && bossReady(t.n) ? `<button class="danger tiny" onclick="startBoss(${t.n})">${t.bico} FIGHT ${t.boss}</button>`
-        : unlocked ? `<span class="tag">BOSS: ${t.boss}</span>` : `<span class="tag">🔒 LOCKED</span>`}
+      <span class="tiny">STAGE ${t.n} — ${t.name.toUpperCase()}</span>
+      ${state.boss[t.n] ? `<span class="tag gold">${t.badge} ${t.role.toUpperCase()}</span>`
+        : unlocked && bossReady(t.n) ? `<button class="danger tiny" onclick="startBoss(${t.n})">${t.bico} INTERVIEW: ${t.itw}</button>`
+        : unlocked ? `<span class="tag">NEXT: ${t.role.toUpperCase()} (interview)</span>` : `<span class="tag">🔒 GET PROMOTED FIRST</span>`}
     </div></div>`;
     html += `<div class="grid3">`;
     for(const m of MODULES.filter(x => x.tier === t.n)){
@@ -874,16 +886,15 @@ function vLearn(){
       const tr = TRACKS[m.track];
       html += unlocked
         ? `<div class="pb mcard" onclick="go('lesson_${m.id}')" style="margin:0">
-            <div class="row sb"><span class="sprite mini">${m.mico}</span><span class="tag ${tr.cls}">${tr.ico}</span></div>
-            <p style="margin-top:6px"><b>${m.mon}</b> <span class="tiny">Lv.${Math.floor(pct/10)}</span></p>
-            <p class="tiny" style="margin:3px 0">${m.name}</p>
-            <div class="bar"><i style="width:${pct}%;background:${hpBarColor(pct/100)}"></i></div>
-            <p class="tiny" style="margin-top:3px">${pct}%${pct>=100?" ⭐ TAMED":""}</p>
+            <div class="row sb"><span class="sprite mini">${m.ico}</span><span class="tag ${tr.cls}">${tr.ico} ${tr.name.toUpperCase()}</span></div>
+            <p style="margin-top:6px"><b>${m.name}</b></p>
+            <div class="bar" style="margin-top:4px"><i style="width:${pct}%;background:${hpBarColor(pct/100)}"></i></div>
+            <p class="tiny" style="margin-top:3px">SKILL ${pct}%${pct>=100?" ⭐ MASTERED":""}</p>
           </div>`
         : `<div class="pb" style="margin:0;opacity:.7">
-            <span class="sprite mini shadow">${m.mico}</span>
-            <p style="margin-top:6px"><b>???</b></p>
-            <p class="tiny">A mysterious creature. Clear Route ${t.n-1} first.</p>
+            <span class="sprite mini">🔒</span>
+            <p style="margin-top:6px"><b>${m.name}</b></p>
+            <p class="tiny">Above your pay grade. Pass the Stage ${t.n-1} interview first.</p>
           </div>`;
     }
     html += `</div><div style="height:12px"></div>`;
@@ -896,27 +907,26 @@ function vLesson(mid){
   const tr = TRACKS[m.track];
   const pct = modulePct(mid);
   const st = state.mod[mid];
-  return `<button class="tiny" onclick="go('learn')">◀ MAP</button>
+  return `<button class="tiny" onclick="go('learn')">◀ OFFICE</button>
   <div class="pb dark" style="margin-top:10px"><div class="row sb">
-    <div><p class="tiny">FINDEX No.${MODULES.indexOf(m)+1} — ${tr.name.toUpperCase()} TYPE</p>
-      <h2>${m.mon}</h2><p class="tiny">${m.name}</p></div>
-    <span class="sprite">${m.mico}</span></div>
+    <div><p class="tiny">PLAYBOOK — ${tr.name.toUpperCase()} TRACK • STAGE ${m.tier}</p>
+      <h2>${m.name}</h2></div>
+    <span class="sprite">${m.ico}</span></div>
     <div class="bar" style="margin-top:8px;background:#404060"><i style="width:${pct}%;background:${hpBarColor(pct/100)}"></i></div>
-    <p class="tiny" style="margin-top:4px">MASTERY ${pct}%${st ? " • BEST " + st.best + "% • " + st.attempts + " BATTLES" : " • NEVER FOUGHT"}</p>
+    <p class="tiny" style="margin-top:4px">SKILL ${pct}%${st ? " • BEST MEETING " + st.best + "% • " + st.attempts + " MEETINGS" : " • NO MEETINGS YET"}</p>
   </div>
-  <div class="pb"><h3 class="caps">📖 Field notes</h3>
+  <div class="pb"><h3 class="caps">📖 Study the playbook</h3>
     <ul style="list-style:none;margin-top:10px">${m.lesson.map(l => `<li class="lessonli tiny" style="font-size:9px">${l}</li>`).join("")}</ul>
   </div>
-  <button class="primary big" onclick="startQuiz('${mid}')">⚔ BATTLE ${m.mon}!</button>`;
+  <button class="primary big" onclick="startQuiz('${mid}')">🤝 TAKE A MEETING (${QUIZ_LEN} QUESTIONS)</button>`;
 }
 
-function vBattle(){
+function vMeeting(){
   if(S.mode === "event") return vEvent();
   if(S.done) return vResults();
   const q = S.qs[S.i];
-  const foe = battleFoe();
+  const foe = sessionFoe();
   const total = S.qs.length;
-  const ehp = total - S.ok;
   const maxhp = S.mode === "boss" ? BOSS_HP : QUIZ_HP;
   const inFb = S.phase === "fb";
   const ok = inFb && S.picked >= 0 && S.opts[S.picked].orig === q.a;
@@ -924,10 +934,10 @@ function vBattle(){
   let dialog;
   if(S.phase === "intro"){
     dialog = `<div class="dlg"><p id="twmsg"></p><span class="arrow">▼</span></div>
-      <button class="primary big" style="margin-top:8px" onclick="beginFight()">⚔ FIGHT</button>`;
+      <button class="primary big" style="margin-top:8px" onclick="beginFight()">🚪 ENTER THE ROOM</button>`;
   } else if(S.phase === "q"){
-    dialog = `<p class="tiny" style="margin-bottom:6px">${"★".repeat(q.d)}${"☆".repeat(3-q.d)} ${q.d===1?"BASIC":q.d===2?"PRO":"EXPERT"} ATTACK ${S.combo>=3?` — 🔥COMBO x${S.combo>=5?"1.5":"1.25"}`:""}</p>
-      <p style="margin-bottom:10px">${q.q}</p>
+    dialog = `<p class="tiny" style="margin-bottom:6px">${"★".repeat(q.d)}${"☆".repeat(3-q.d)} ${q.d===1?"BASIC":q.d===2?"PRO":"EXPERT"} QUESTION ${S.combo>=3?` — 🔥ON FIRE x${S.combo>=5?"1.5":"1.25"}`:""}</p>
+      <div class="speech"><p style="font-size:9px">${foe.name}: "${q.q}"</p></div>
       <div class="moves">${S.opts.map((o,i) => `<button class="move" onclick="answer(${i})">▶ ${o.t}</button>`).join("")}</div>`;
   } else {
     dialog = `<div class="moves">${S.opts.map((o,i) => {
@@ -937,29 +947,30 @@ function vBattle(){
       }).join("")}
       <div></div></div>
       <p id="twmsg" style="margin-top:10px"></p>
-      <p class="tiny" style="margin-top:8px">${q.x}</p>
-      <button class="primary big" style="margin-top:10px" onclick="nextQ()">${S.php<=0 ? "..." : S.i >= total-1 ? "FINISH ▶" : "NEXT ▶"}</button>`;
+      <p class="tiny" style="margin-top:8px">💡 ${q.x}</p>
+      <button class="primary big" style="margin-top:10px" onclick="nextQ()">${S.php<=0 ? "..." : S.i >= total-1 ? "WRAP UP ▶" : "NEXT ▶"}</button>`;
   }
 
   return `
   <div class="row sb">
-    <span class="tiny caps">${S.mode==="boss"?"💀 BOSS BATTLE":S.mode==="review"?"🥋 TRAINING BATTLE":"⚔ WILD BATTLE"}</span>
-    <span class="tiny">TURN ${S.i+1}/${total}</span>
+    <span class="tiny caps">${S.mode==="boss"?"🎩 PROMOTION INTERVIEW":S.mode==="review"?"📚 MENTOR DRILL":"🤝 MEETING"}</span>
+    <span class="tiny">Q ${S.i+1}/${total}</span>
   </div>
   <div class="bfield">
     <div class="erow">
       <div class="infobox">
-        <p class="tiny"><b>${foe.name}</b>${S.mode==="boss"?" 💀":""}</p>
-        <div class="row sb"><span class="tiny">HP</span>
+        <p class="tiny"><b>${foe.name}</b></p>
+        <div class="row sb"><span class="tiny">${foe.bar}</span>
           ${S.mode==="boss" && S.phase==="q" ? `<span class="timerbox" id="bosstimer">${S.secs}</span>` : ""}</div>
-        <div class="bar"><i style="width:${Math.round(100*ehp/total)}%;background:${hpBarColor(ehp/total)}"></i></div>
+        <div class="bar"><i style="width:${Math.round(100*S.ok/total)}%;background:var(--hpg)"></i></div>
       </div>
-      <span class="sprite big ${S.phase==='intro'?'appear':''} ${inFb && S.lastHit==='enemy' ? (ehp===0?'faint':'hit'):''}">${foe.ico}</span>
+      <span class="sprite big ${S.phase==='intro'?'appear':''} ${inFb && S.lastHit==='enemy' ? 'hit':''}">${foe.ico}</span>
     </div>
     <div class="prow">
       <span class="sprite ${inFb && S.lastHit==='player' ? (S.php<=0?'faint':'hit'):''}">🧑‍💼</span>
       <div class="infobox">
-        <p class="tiny"><b>${esc(state.company.name).slice(0,14)}</b></p>
+        <p class="tiny"><b>YOU (${rank().name.toUpperCase().slice(0,14)})</b></p>
+        <p class="tiny">CREDIBILITY</p>
         <p class="hearts">${hearts(S.php, maxhp)}</p>
       </div>
     </div>
@@ -971,7 +982,7 @@ function vEvent(){
   const ev = S.ev;
   const answered = S.picked !== -1;
   const ok = answered && S.picked >= 0 && S.opts[S.picked].orig === ev.a;
-  return `<div class="pb dark"><p class="tiny blink">⚡ BREAKING NEWS</p>
+  return `<div class="pb dark"><p class="tiny blink">⚡ CRISIS — IT LANDS ON YOUR DESK</p>
     <h2 style="margin:8px 0">${ev.ico} ${ev.title}</h2>
     <p class="tiny" style="line-height:2">${ev.s}</p></div>
   <div class="pb"><p style="margin-bottom:10px">${ev.q}</p>
@@ -980,37 +991,37 @@ function vEvent(){
       if(answered){ if(o.orig === ev.a) cls += " good"; else if(i === S.picked) cls += " bad"; else cls += " fade"; }
       return `<button class="${cls}" ${answered?"disabled":""} onclick="answer(${i})">▶ ${o.t}</button>`;
     }).join("")}</div>
-    ${answered ? `<p style="margin-top:10px">${ok?"✅ MASTERSTROKE!":"❌ COSTLY MISTAKE..."}</p>
-      <p class="tiny" style="margin-top:6px">${ev.x}</p>
-      <p class="tiny" style="margin-top:8px;color:${ok?'var(--green)':'var(--red)'}">${ok ? `+${fmt(ev.rw.cash)} CASH / +${fmt(ev.rw.val)} VALUATION / +25 XP` : `${fmt(ev.pn.cash)} CASH / ${fmt(ev.pn.val)} VALUATION`}</p>
-      <button class="primary big" style="margin-top:10px" onclick="endSession(false)">BACK TO BASE ▶</button>` : ""}
+    ${answered ? `<p style="margin-top:10px">${ok?"✅ MASTERSTROKE! The team exhales.":"❌ COSTLY CALL... the team winces."}</p>
+      <p class="tiny" style="margin-top:6px">💡 ${ev.x}</p>
+      <p class="tiny" style="margin-top:8px;color:${ok?'var(--green)':'var(--red)'}">${ok ? `+${fmt(ev.rw.cash)} BONUS / +${fmt(ev.rw.val)} CO. VALUATION / +25 XP` : `${fmt(ev.pn.cash)} SAVINGS / ${fmt(ev.pn.val)} CO. VALUATION`}</p>
+      <button class="primary big" style="margin-top:10px" onclick="endSession(false)">BACK TO DESK ▶</button>` : ""}
   </div>`;
 }
 
 function vResults(){
-  const foe = battleFoe();
+  const foe = sessionFoe();
   let title, sub = "";
   if(S.ko){
-    title = "💀 YOU BLACKED OUT!";
-    sub = S.mode === "boss" ? foe.name + " was too strong. Train the tier modules and return!"
-        : "You kept the XP you earned, but " + foe.name + " escaped untamed.";
+    title = S.mode === "boss" ? "📞 “WE WILL CALL YOU BACK...”" : "💼 THE MEETING COLLAPSED!";
+    sub = S.mode === "boss" ? "Interview failed. Sharpen the stage skills and reapply!"
+        : "You kept the XP you earned, but your skill score for this meeting does not count.";
   } else if(S.mode === "boss"){
-    title = "🏅 " + foe.name + " DEFEATED!";
-    sub = S.bossReward ? "BADGE GET! " + fmt(S.bossReward) + " bounty + " + (60*S.tier) + " XP. Route " + (S.tier+1 <= 4 ? S.tier+1 : "MAX") + " is open!" : "Glory never gets old.";
+    title = "🎉 PROMOTED!";
+    sub = S.bossReward ? "You are now " + TIERS[S.tier-1].role.toUpperCase() + "! Signing bonus " + fmt(S.bossReward) + " + " + (60*S.tier) + " XP. New floor unlocked!" : "Aced it again. Respect.";
   } else {
-    title = S.pct >= 90 ? "🌟 FLAWLESS VICTORY!" : S.pct >= 70 ? "⚔ VICTORY!" : "😮‍💨 NARROW ESCAPE...";
-    sub = S.pct >= 70 ? "" : "The engine will hunt your mistakes in the DOJO.";
+    title = S.pct >= 90 ? "🌟 FLAWLESS MEETING!" : S.pct >= 70 ? foe.win : "😮‍💨 YOU SCRAPED THROUGH...";
+    sub = S.pct >= 70 ? "" : "Your mentor will drill the misses in TRAIN.";
   }
   return `<div class="pb center">
-    <span class="sprite big ${S.ko?'':'appear'}">${S.ko ? "🧑‍💼" : foe.ico}</span>
+    <span class="sprite big appear">${S.ko ? "🧑‍💼" : foe.ico}</span>
     <h2 style="margin:10px 0">${title}</h2>
     ${sub ? `<p class="tiny">${sub}</p>` : ""}
     <div class="grid3" style="margin:12px 0">
-      <div class="pb cream center" style="margin:0"><p class="tiny">HITS</p><h3>${S.ok}/${S.qs.length}</h3></div>
+      <div class="pb cream center" style="margin:0"><p class="tiny">GOOD ANSWERS</p><h3>${S.ok}/${S.qs.length}</h3></div>
       <div class="pb cream center" style="margin:0"><p class="tiny">XP</p><h3 style="color:var(--violet)">+${S.xpEarned}</h3></div>
-      <div class="pb cream center" style="margin:0"><p class="tiny">CASH</p><h3 style="color:var(--gold)">+${fmt(S.cashEarned)}</h3></div>
+      <div class="pb cream center" style="margin:0"><p class="tiny">BONUS</p><h3 style="color:var(--gold)">+${fmt(S.cashEarned)}</h3></div>
     </div>
-    ${S.eventNext ? `<p class="tiny blink" style="margin-bottom:8px">⚡ SOMETHING IS HAPPENING AT YOUR COMPANY...</p>
+    ${S.eventNext ? `<p class="tiny blink" style="margin-bottom:8px">⚡ YOUR PHONE BUZZES. SOMETHING IS HAPPENING...</p>
       <button class="danger big" onclick="endSession(true)">HANDLE IT ▶</button>`
     : `<button class="primary big" onclick="endSession(false)">CONTINUE ▶</button>`}
   </div>`;
@@ -1019,26 +1030,26 @@ function vResults(){
 function vReview(){
   const due = dueReviews();
   const cs = conceptStats();
-  return `<h2 class="caps">🥋 The Dojo</h2>
-  <p class="tiny" style="margin:6px 0">The MEMORY PHANTOM grows stronger as you forget. Spaced repetition: each concept returns right before it fades (1, 3, 7, 16, 30 days). Beyond level 2, mastery only grows on a DUE day — patience, grasshopper.</p>
+  return `<h2 class="caps">📚 Training Room</h2>
+  <p class="tiny" style="margin:6px 0">Knowledge fades — that is the forgetting curve. Your mentor schedules each concept right before you lose it (1, 3, 7, 16, 30 days). Beyond skill level 2, mastery only grows on a DUE day. No cramming your way to the top.</p>
   <div class="pb cream">
     ${due.length ? `<div class="row sb">
-      <div style="flex:1"><h3>🌫️ ${due.length} FADING ${due.length>1?"MEMORIES":"MEMORY"}!</h3><p class="tiny">Defeat the phantom to lock them in.</p></div>
-      <button class="primary" onclick="startReview()">FIGHT</button></div>`
-    : `<h3>✅ MIND FORTRESS SECURE</h3><p class="tiny">Nothing due. The forgetting curve never sleeps — return tomorrow.</p>`}
+      <div style="flex:1"><h3>🧓 ${due.length} THING${due.length>1?"S":""} TO DRILL!</h3><p class="tiny">"Repetition is the mother of mastery," says your mentor.</p></div>
+      <button class="primary" onclick="startReview()">DRILL</button></div>`
+    : `<h3>✅ ALL SHARP</h3><p class="tiny">Nothing due today. The forgetting curve never sleeps — come back tomorrow.</p>`}
   </div>
   ${cs.length ? `<div class="pb"><h3 class="caps">▦ Concept mastery</h3>
     ${cs.map(w => `<div class="row sb" style="margin-top:8px"><span class="tiny">${w.c.toUpperCase()}</span><span class="tiny">${Math.round(w.m*100)}%</span></div>
       <div class="bar"><i style="width:${Math.round(w.m*100)}%;background:${hpBarColor(w.m)}"></i></div>`).join("")}
-  </div>` : `<div class="pb"><p class="tiny">Fight some battles first — your concept map will appear here.</p></div>`}`;
+  </div>` : `<div class="pb"><p class="tiny">Take some meetings first — your concept map will appear here.</p></div>`}`;
 }
 
 function vCompany(){
-  return `<h2 class="caps">🏪 Tycoon Mart</h2>
-  <div class="pb"><p>CLERK: Welcome to ${esc(state.company.name).toUpperCase()} MART! Upgrades need <b>CASH</b> and <b>KNOWLEDGE</b>. No shortcuts to the throne!</p></div>
+  return `<h2 class="caps">🏗️ Your Projects</h2>
+  <div class="pb"><p>Pitch projects to management. Each needs <b>BUDGET</b> (your earned bonuses) and proven <b>SKILL</b>. Shipped projects raise the company valuation — and your multipliers.</p></div>
   <div class="grid3">
-    <div class="pb center" style="margin:0"><p class="tiny">CASH</p><h3 style="color:var(--gold)">${fmt(state.company.cash)}</h3></div>
-    <div class="pb center" style="margin:0"><p class="tiny">CASH MULT</p><h3>x${cashMult().toFixed(2)}</h3></div>
+    <div class="pb center" style="margin:0"><p class="tiny">BUDGET</p><h3 style="color:var(--gold)">${fmt(state.company.cash)}</h3></div>
+    <div class="pb center" style="margin:0"><p class="tiny">BONUS MULT</p><h3>x${cashMult().toFixed(2)}</h3></div>
     <div class="pb center" style="margin:0"><p class="tiny">XP MULT</p><h3>x${xpMult().toFixed(2)}</h3></div>
   </div>
   <div style="height:10px"></div>
@@ -1048,18 +1059,18 @@ function vCompany(){
     const reqOK = modulePct(u.req.m) >= u.req.p;
     const canBuy = !owned && reqOK && state.company.cash >= u.cost;
     const fx = [];
-    if(u.fx.cashMult) fx.push("+" + Math.round(u.fx.cashMult*100) + "% CASH");
+    if(u.fx.cashMult) fx.push("+" + Math.round(u.fx.cashMult*100) + "% BONUS");
     if(u.fx.xpMult) fx.push("+" + Math.round(u.fx.xpMult*100) + "% XP");
     if(u.fx.val) fx.push("+" + fmt(u.fx.val) + " VAL");
     return `<div class="pb" style="margin:8px 0;${owned?'background:#d8e8c8':''}">
       <div class="row sb">
         <span class="sprite mini">${u.ico}</span>
         <div style="flex:1;min-width:150px">
-          <p><b>${u.name.toUpperCase()}</b> ${owned?'<span class="tag green">OWNED</span>':`<span class="tag gold">${fmt(u.cost)}</span>`}</p>
+          <p><b>${u.name.toUpperCase()}</b> ${owned?'<span class="tag green">SHIPPED</span>':`<span class="tag gold">${fmt(u.cost)}</span>`}</p>
           <p class="tiny" style="margin:3px 0">${u.desc}</p>
-          <p class="tiny"><span class="tag ${reqOK?'green':'red'}">${reqM.mon} ≥${u.req.p}% (${modulePct(u.req.m)}%)</span> ${fx.join(" • ")}</p>
+          <p class="tiny"><span class="tag ${reqOK?'green':'red'}">${reqM.name} ≥${u.req.p}% (you: ${modulePct(u.req.m)}%)</span> ${fx.join(" • ")}</p>
         </div>
-        ${!owned ? `<button class="tiny" ${canBuy?"":"disabled"} onclick="buyUpgrade('${u.id}')">${reqOK ? (state.company.cash >= u.cost ? "BUY" : "NO CASH") : "LOCKED"}</button>` : ""}
+        ${!owned ? `<button class="tiny" ${canBuy?"":"disabled"} onclick="buyUpgrade('${u.id}')">${reqOK ? (state.company.cash >= u.cost ? "PITCH IT" : "NO BUDGET") : "SKILL TOO LOW"}</button>` : ""}
       </div></div>`;
   }).join("")}`;
 }
@@ -1068,27 +1079,27 @@ function render(){
   const app = document.getElementById("app");
   if(!state.company.name){ app.innerHTML = vOnboard(); return; }
   let body;
-  if(state.view === "session" && S) body = vBattle();
+  if(state.view === "session" && S) body = vMeeting();
   else if(state.view && state.view.startsWith("lesson_")) body = vLesson(state.view.slice(7));
   else if(state.view === "learn") body = vLearn();
   else if(state.view === "review") body = vReview();
   else if(state.view === "company") body = vCompany();
   else { state.view = "hq"; body = vHQ(); }
   app.innerHTML = body + (state.view === "session" ? "" : vNav());
-  /* battle dialog typewriter */
+  /* meeting dialog typewriter */
   if(state.view === "session" && S && !S.done && S.mode !== "event"){
-    const foe = battleFoe();
+    const foe = sessionFoe();
     if(S.phase === "intro"){
-      const msg = S.mode === "boss" ? "Boss " + foe.name + " wants to crush your startup!"
-        : S.mode === "review" ? "The MEMORY PHANTOM emerges from the fog of forgetting!"
-        : "A wild " + foe.name + " appeared!";
+      const msg = S.mode === "boss" ? TIERS[S.tier-1].itw + " checks your file and gestures to a chair. This interview decides your promotion. " + BOSS_SECS + "s per question — no pressure."
+        : S.mode === "review" ? REVIEW_PERSONA.intro
+        : foe.intro;
       typewrite("twmsg", msg);
     } else if(S.phase === "fb"){
       const q = S.qs[S.i];
       const ok = S.picked >= 0 && S.opts[S.picked].orig === q.a;
-      const msg = S.picked < 0 ? "⏰ Too slow! " + foe.name + " strikes!"
-        : ok ? (S.combo >= 3 ? "💥 CRITICAL HIT! " + foe.name + " staggers!" : "✅ A solid hit! +" + Math.round(6*q.d*(S.mode==="boss"?1.5:1)) + " XP")
-        : "❌ It backfired! " + foe.name + " hits you hard!";
+      const msg = S.picked < 0 ? "⏰ You froze! " + foe.name + " frowns and makes a note..."
+        : ok ? (S.combo >= 3 ? "💥 BRILLIANT ANSWER! " + foe.name + " is visibly impressed!" : "✅ Solid answer. " + foe.name + " nods. +" + Math.round(6*q.d*(S.mode==="boss"?1.5:1)) + " XP")
+        : "❌ Wrong call. Your credibility takes a hit!";
       typewrite("twmsg", msg);
     }
   }
