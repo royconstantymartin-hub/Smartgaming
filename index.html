@@ -290,6 +290,14 @@ const QUESTIONS = [
 {id:"fin1_6",m:"fin1",d:2,c:"interest",q:"A client invests $100 at 10% annual COMPOUND interest and asks: 'What exactly do I have after 2 years?'",o:["$120","$121","$110","$200"],a:1,x:"Year 1: 100→110. Year 2: 110×1.10 = 121. Interest on interest — that is compounding."},
 {id:"fin1_7",m:"fin1",d:2,c:"banking",q:"An anxious customer read that banks 'don't keep everyone's money in the vault'. What does fractional reserve banking mean?",o:["Banks keep all deposits in their vaults","Banks keep only a fraction of deposits and lend out the rest","Banks only lend to other banks","Every loan is split into fractions"],a:1,x:"Banks lend out most deposits, keeping only a fraction available. That multiplies credit in the economy — and is why trust matters."},
 {id:"fin1_8",m:"fin1",d:3,c:"central-banks",q:"Rates jumped again. At the all-hands, your CEO asks: 'Why do central banks RAISE rates to fight inflation?'",o:["To make banks richer","Costlier borrowing cools spending and demand, easing price pressure","Higher rates print more money","It forces shops to lower prices by law"],a:1,x:"Expensive credit means less borrowing and spending. Lower demand slows price increases. It is a brake pedal for the economy."},
+{id:"fin1_9",m:"fin1",d:1,c:"money",q:"A barter-loving friend asks why humans even invented money. The main problem it solves is...",o:["Coincidence of wants: direct barter requires finding someone who wants exactly what you have","People like shiny objects","Governments needed something to tax","Banks needed a product to sell"],a:0,x:"Barter needs a double coincidence of wants. Money lets anyone trade with anyone — that is why every civilization invented it."},
+{id:"fin1_10",m:"fin1",d:2,c:"banking",q:"A client asks why the bank pays 1% on savings but charges 6% on loans. That gap is...",o:["The spread — the bank's core revenue, covering risk and costs","An illegal hidden fee","A government tax","An accounting error"],a:0,x:"The interest spread funds the bank: it pays for defaults, operations, and profit. No spread, no bank."},
+{id:"fin1_11",m:"fin1",d:2,c:"inflation",q:"Inflation is 8% and a colleague got a 3% raise. They shrug: 'At least my pay went UP.' What really happened?",o:["Their purchasing power fell about 5% — a real pay cut","They got richer","Nothing changed","Inflation does not affect salaries"],a:0,x:"What matters is REAL income: nominal raise minus inflation. 3% − 8% = −5% of buying power."},
+{id:"fin1_12",m:"fin1",d:1,c:"central-banks",q:"A friend asks if they can open a personal account at the central bank. You explain...",o:["No — central banks serve commercial banks and the state, not retail customers","Yes, with a minimum deposit","Only civil servants can","Yes, but only online"],a:0,x:"Central banks are the bank OF banks. Your account lives at a commercial bank, which itself banks at the central bank."},
+{id:"fin1_13",m:"fin1",d:2,c:"interest",q:"Two savings offers: 10% SIMPLE interest vs 10% COMPOUND, for 10 years. The client asks if it matters.",o:["Yes — compound earns interest on interest and pulls far ahead over time","No, they are identical","Simple is always better","It only matters above $1M"],a:0,x:"Simple: 100 → 200 in 10 years. Compound: 100 → 259. The longer the horizon, the more compounding wins."},
+{id:"fin1_14",m:"fin1",d:3,c:"banking",q:"Rumors spread and every depositor rushes to withdraw at once. Why can a bank run kill even a HEALTHY bank?",o:["Deposits are lent out — no bank holds enough cash for everyone at the same time","Banks forget the PIN codes","The ATMs overheat","It cannot — banks always hold all the cash"],a:0,x:"Fractional reserve banking means the money is in loans, not the vault. Deposit insurance exists precisely to stop the panic."},
+{id:"fin1_15",m:"fin1",d:2,c:"money",q:"A client asks where the 'actual money' behind their balance is. Most money today is...",o:["Digital entries in bank ledgers, not physical cash","Gold bars in vaults","Paper bills stored in a warehouse","Cryptocurrency"],a:0,x:"Over 90% of money exists only as ledger entries. Physical cash is a small fraction of the money supply."},
+{id:"fin1_16",m:"fin1",d:3,c:"central-banks",q:"Panic hits a mid-size bank and depositors queue outside. What backstops exist to stop contagion?",o:["Deposit insurance plus the central bank acting as lender of last resort","Nothing — banks just fail","The police disperse the queue","A public apology from the CEO"],a:0,x:"Insurance reassures depositors; emergency central-bank liquidity keeps solvent banks alive through the panic."},
 // tech1
 {id:"tech1_1",m:"tech1",d:1,c:"software",q:"Your new sales colleague whispers before a demo: 'Honestly... what IS software?'",o:["The physical parts of a computer","Instructions (code) that tell hardware what to do","The internet","An electrical signal"],a:1,x:"Hardware is the machine; software is the recipe the machine follows."},
 {id:"tech1_2",m:"tech1",d:1,c:"frontend-backend",q:"A non-technical founder asks you in the elevator: 'In our app, what is the backend exactly?'",o:["The screen the user sees","Server-side logic and data the user never sees directly","The phone's battery","The app store page"],a:1,x:"Frontend = the interface in your hands. Backend = the servers, logic, and databases doing the real work elsewhere."},
@@ -299,6 +307,14 @@ const QUESTIONS = [
 {id:"tech1_6",m:"tech1",d:2,c:"internet",q:"A junior asks what the 'http' at the start of our URLs means. HTTP is...",o:["A programming language","The protocol browsers and servers use to communicate","A type of computer virus","A database"],a:1,x:"HyperText Transfer Protocol defines how clients request web resources and how servers reply. HTTPS adds encryption."},
 {id:"tech1_7",m:"tech1",d:2,c:"open-source",q:"Legal asks whether we can build on open-source software. First: what IS open-source software?",o:["Always free of bugs","Code anyone can read, use, and modify","Software without a license","Illegal to use commercially"],a:1,x:"Linux, Python, PostgreSQL — the open-source foundations carry most of modern finance."},
 {id:"tech1_8",m:"tech1",d:3,c:"software",q:"The board challenges you: 'Why are we PAYING for payments and KYC APIs instead of building our own?'",o:["Regulators forbid building in-house","Speed and focus: buying commodity pieces lets us spend effort on what differentiates us","APIs are always free","Investors require it"],a:1,x:"Build vs buy: rebuilding solved problems burns time and money. Winners assemble proven blocks and innovate on top."},
+{id:"tech1_9",m:"tech1",d:1,c:"software",q:"Your cousin asks the difference between an app and a website.",o:["An app is installed on the device; a website runs in the browser — many products ship both","They are exactly the same thing","Websites are illegal for banks","Apps do not use the internet"],a:0,x:"Same backend, different doors: native apps live on the phone, websites load in the browser. Most fintechs offer both."},
+{id:"tech1_10",m:"tech1",d:2,c:"frontend-backend",q:"Bug hunt: the login button does nothing, and the server logs show NO request ever arriving. Where do you look first?",o:["The frontend — the request never left the app","The backend","The database","The office wifi router"],a:0,x:"No request in the logs = the problem is before the server. Tracing where data stops is debugging 101."},
+{id:"tech1_11",m:"tech1",d:2,c:"databases",q:"The PM asks why we can't just store everything in one giant spreadsheet.",o:["Databases handle concurrency, integrity and scale — spreadsheets break when many users write at once","Spreadsheets are illegal","Databases look prettier","No reason, a spreadsheet would be fine"],a:0,x:"Ten thousand users updating balances simultaneously needs transactions and locks — exactly what databases provide."},
+{id:"tech1_12",m:"tech1",d:2,c:"servers",q:"Mid-demo, the app shows '500 Internal Server Error'. The client asks what that means.",o:["Something failed on the server side, not on their device","Their phone is broken","They typed a wrong password","The whole internet is down"],a:0,x:"5xx codes = server-side failure. 4xx codes = problem with the request (like 404 not found)."},
+{id:"tech1_13",m:"tech1",d:2,c:"internet",q:"A user asks what the padlock next to the URL means.",o:["The connection is encrypted (HTTPS) — data cannot be read in transit","The website is government-approved","The app is locked","Their account is frozen"],a:0,x:"HTTPS encrypts traffic between browser and server. No padlock on a banking site = run away."},
+{id:"tech1_14",m:"tech1",d:3,c:"open-source",q:"The CTO warns we 'depend on open-source maintainers'. The real risk to manage is...",o:["Critical libraries run by volunteers can carry bugs or be abandoned — audit and update them","Open-source code is always malicious","We must pay every developer on Earth","There is no risk at all"],a:0,x:"Free code is not free of responsibility: dependency audits and updates are part of running serious infrastructure."},
+{id:"tech1_15",m:"tech1",d:1,c:"software",q:"QA reports a 'bug' in the payment flow. A bug is...",o:["A flaw in the code making it behave incorrectly","An insect in the server room","A hacker attack","A feature users dislike"],a:0,x:"From a literal moth in a 1947 computer to today: a bug is code doing what you wrote, not what you meant."},
+{id:"tech1_16",m:"tech1",d:3,c:"internet",q:"An investor asks why your app works on any phone, anywhere on Earth. The deep reason is...",o:["Universal open protocols (TCP/IP, HTTP) — any connected device speaking them can reach your servers","You installed software on every phone model","Each phone maker signed a partnership","It secretly only works in one country"],a:0,x:"Nobody owns the internet; everyone agrees on its protocols. That neutrality is why one startup can serve the world."},
 // ai1
 {id:"ai1_1",m:"ai1",d:1,c:"ai-definition",q:"A prospect interrupts your pitch: 'When you say AI, what do you actually MEAN?'",o:["Software smarter than humans at everything","Software performing tasks that typically require human intelligence","Chess programs","Software with feelings"],a:1,x:"Recognizing images, understanding language, predicting outcomes — tasks once exclusive to human minds."},
 {id:"ai1_2",m:"ai1",d:2,c:"ml-vs-rules",q:"Interview question: 'What is the key difference between machine learning and traditional rules-based software?'",o:["ML is always faster","ML learns patterns from data instead of following hand-written rules","Rules-based software cannot do math","ML does not need computers"],a:1,x:"Instead of a human writing IF/THEN rules, ML infers the rules from examples."},
@@ -308,6 +324,14 @@ const QUESTIONS = [
 {id:"ai1_6",m:"ai1",d:1,c:"ai-definition",q:"Your uncle claims he has 'never used AI in his life'. Which everyday example proves him wrong?",o:["His pocket calculator","His bank flagging a suspicious card payment automatically","His light switch","His paper map"],a:1,x:"Fraud alerts, face unlock, music recommendations, spam filters — AI already runs daily life quietly."},
 {id:"ai1_7",m:"ai1",d:2,c:"ai-history",q:"Conference panel: 'Why did AI suddenly boom in the last decade?'",o:["A single genius inventor","Big data + cheap massive compute (GPUs) + better algorithms converged","Government mandates","Faster internet cables alone"],a:1,x:"All three converged in the 2010s-2020s. Remove any one and the boom stalls."},
 {id:"ai1_8",m:"ai1",d:3,c:"data",q:"Risk review: our scoring model was trained on data from ONE country and we are launching worldwide. The biggest danger?",o:["It runs slower abroad","Learned patterns may not fit other populations, causing biased or wrong outputs","Higher electricity bills","Patent issues"],a:1,x:"Models inherit the blind spots of their training data. Distribution shift and bias are the top causes of real-world AI failure."},
+{id:"ai1_9",m:"ai1",d:1,c:"ai-definition",q:"Your manager asks for ONE fintech AI feature the team could realistically ship this quarter.",o:["Automatic fraud alerts on unusual transactions","A faster database","A new logo","A bigger server"],a:0,x:"Fraud scoring is the classic first AI win in fintech: clear data, clear labels, immediate value."},
+{id:"ai1_10",m:"ai1",d:2,c:"ml-vs-rules",q:"Fraudsters change tactics weekly and your IF/THEN rules can't keep up. Why would ML help?",o:["It learns new patterns from fresh data instead of waiting for humans to write new rules","It is cheaper to run","It never makes mistakes","Rules are now illegal"],a:0,x:"Rules freeze yesterday's knowledge. Models retrained on recent data adapt as attackers adapt."},
+{id:"ai1_11",m:"ai1",d:1,c:"data",q:"The model performs badly and the data scientist sighs: 'garbage in, garbage out.' Meaning...",o:["Bad training data produces bad predictions, no matter how fancy the algorithm","The servers need cleaning","Data must be deleted regularly","The model is hungry"],a:0,x:"Data quality beats model sophistication. Most real-world AI failures are data failures."},
+{id:"ai1_12",m:"ai1",d:2,c:"narrow-ai",q:"A client loves your fraud model and asks it to ALSO write their marketing emails. You explain...",o:["Models are task-specific — fraud scoring and text generation are entirely different systems","Sure, any AI does everything","It just needs more RAM","Marketing is illegal for AI"],a:0,x:"Narrow AI excels at the task it was built for. Different jobs need different models (or a general-purpose LLM for text)."},
+{id:"ai1_13",m:"ai1",d:2,c:"ai-history",q:"A veteran engineer scoffs: 'AI already failed in the 90s.' Why is this time different?",o:["Compute, data and algorithms finally caught up with the ambitions","The marketing improved","Governments banned skepticism","Movies made AI popular"],a:0,x:"The 'AI winters' happened when promises outran hardware and data. GPUs and the internet changed the equation."},
+{id:"ai1_14",m:"ai1",d:3,c:"data",q:"You propose training a model on customer transactions. Legal raises a hand first. The concern is...",o:["Consent and data protection — personal financial data is heavily regulated","The server costs","What to name the model","Whether GPUs are in stock"],a:0,x:"Training data is still personal data. GDPR-style rules apply to models too — privacy review comes before training."},
+{id:"ai1_15",m:"ai1",d:1,c:"ai-definition",q:"Your CEO asks what 'generative AI' adds compared to classic AI.",o:["It creates new content (text, images, code) rather than only classifying or predicting","It is just faster","It needs no data","It is conscious"],a:0,x:"Classic ML answers 'fraud or not?'. Generative AI writes the email, drafts the report, codes the prototype."},
+{id:"ai1_16",m:"ai1",d:3,c:"ml-vs-rules",q:"The risk team wants to delete all rules and go '100% AI'. Your pragmatic answer:",o:["Combine them: rules for hard constraints and explainability, ML for adaptive patterns","Yes, delete every rule","No, ban all ML","Flip a coin"],a:0,x:"Production systems blend both: rules give guarantees regulators love, models catch what rules cannot."},
 // fin2
 {id:"fin2_1",m:"fin2",d:1,c:"stocks",q:"A first-time investor client asks: 'When I buy a share of stock, what do I actually OWN?'",o:["A loan to the company","A fraction of the company itself","A job at the company","An insurance policy on the company"],a:1,x:"Equity = ownership. You benefit from rising value and dividends, and you bear losses if it sinks."},
 {id:"fin2_2",m:"fin2",d:1,c:"bonds",q:"Same client, next question: 'And a bond — what is that exactly?'",o:["A share of ownership","A loan you make to a company or government","A type of bank account","A lottery ticket"],a:1,x:"The issuer pays you interest (the coupon) and repays the principal at maturity."},
@@ -317,6 +341,14 @@ const QUESTIONS = [
 {id:"fin2_6",m:"fin2",d:2,c:"valuation",q:"Due diligence call: the target startup has 1M shares trading at $50. The analyst asks you its market cap.",o:["$50 million","$1 million","$50 thousand","$500 million"],a:0,x:"Market cap = price × shares = 50 × 1,000,000 = $50M. It is the market's price tag on the whole company."},
 {id:"fin2_7",m:"fin2",d:1,c:"risk-return",q:"Financial TV in the lobby mentions a 'bull market'. The intern asks what that means. Prices are...",o:["Falling","Rising","Frozen","Only moving sideways"],a:1,x:"Bulls strike upward, bears swipe downward — rising vs falling markets."},
 {id:"fin2_8",m:"fin2",d:3,c:"bonds",q:"Rates just rose sharply. A worried client holding OLD bonds calls: 'What happens to their price?'",o:["They rise","They fall","Nothing","They become stocks"],a:1,x:"New bonds now pay more, so old low-coupon bonds must sell at a discount to compete. Rates up, bond prices down."},
+{id:"fin2_9",m:"fin2",d:1,c:"stocks",q:"A client spots 'dividend' on their statement and asks what it is.",o:["A share of company profits paid out to shareholders","A bank fee","A tax refund","A loan repayment"],a:0,x:"Profitable companies can return cash to owners. Dividends + price gains = total shareholder return."},
+{id:"fin2_10",m:"fin2",d:2,c:"etf",q:"The client asks why you suggest a broad index ETF instead of picking 'winner stocks'.",o:["Most professionals fail to beat the index over time; the index is cheap and diversified","Indexes never go down","Stock picking is illegal","ETFs are government-guaranteed"],a:0,x:"Decades of data: after fees, the majority of active managers underperform the index. Hard to beat boring."},
+{id:"fin2_11",m:"fin2",d:2,c:"risk-return",q:"Markets drop 5% in a week and your client wants to sell EVERYTHING. Your calm advice rests on...",o:["Volatility is normal; long horizons and diversification beat panic-selling","Markets only ever go up","Selling in a panic is always right","Switching to lottery tickets"],a:0,x:"Drawdowns are the price of equity returns. Investors who panic-sell tend to lock in losses and miss recoveries."},
+{id:"fin2_12",m:"fin2",d:1,c:"bonds",q:"The client asks what the 'coupon' on their bond means.",o:["The regular interest payment the bond pays","A discount voucher","The bond's serial number","A penalty fee"],a:0,x:"Historic bonds had physical coupons you clipped to claim interest. The name survived the paper."},
+{id:"fin2_13",m:"fin2",d:3,c:"valuation",q:"Two companies earn the SAME profit, yet one trades far higher. The analyst says markets 'pay for growth'. Prices reflect...",o:["Expectations about future earnings, not just current profits","Only past performance","The CEO's salary","Office locations"],a:0,x:"A price is a forecast. High multiples = the market expects much bigger profits ahead — rightly or wrongly."},
+{id:"fin2_14",m:"fin2",d:2,c:"diversification",q:"Your client proudly 'diversified'... into five tech stocks. What did they miss?",o:["The assets are highly correlated — real diversification spans sectors, regions and asset classes","Five is too many stocks","Tech never falls","They should hold only one stock"],a:0,x:"When tech sneezes, all five catch a cold together. Diversification only works across things that do not move as one."},
+{id:"fin2_15",m:"fin2",d:1,c:"risk-return",q:"A client grumbles their savings account earns less than stocks could. The honest answer:",o:["It is safer and instantly accessible — low risk means low return","The bank is cheating them","Stocks are guaranteed to earn more","There is no reason"],a:0,x:"Safety, liquidity, return: pick two. A savings account maximizes the first two by sacrificing the third."},
+{id:"fin2_16",m:"fin2",d:3,c:"valuation",q:"Founders insist their startup 'is worth' $100M. The investor smiles. A company is ultimately worth...",o:["What buyers are willing to pay — a valuation is a price, not a fact","Its office furniture","Exactly 10x revenue, always","Whatever the founder says"],a:0,x:"Valuation methods produce estimates; the market produces the truth. Ask anyone who raised in a downturn."},
 // tech2
 {id:"tech2_1",m:"tech2",d:1,c:"api",q:"Interview at a fintech: 'Explain an API to our CFO in one line.'",o:["A type of computer chip","A contract letting one program use another program's features or data","An internet provider","A security camera"],a:1,x:"APIs are how software talks to software. Stripe's API lets your app charge cards without touching the card networks."},
 {id:"tech2_2",m:"tech2",d:2,c:"api",q:"A VC asks during your pitch: 'Why were open banking APIs such a big deal for fintech?'",o:["They made banks free","They let licensed third parties access bank data and payments, enabling apps built on top of any bank","They removed all regulation","They replaced the internet"],a:1,x:"Account aggregators, budgeting apps, instant credit scoring — all exist because banks were forced to open APIs."},
@@ -326,6 +358,14 @@ const QUESTIONS = [
 {id:"tech2_6",m:"tech2",d:3,c:"microservices",q:"Architecture review: the CTO asks you to summarize the REAL tradeoff between microservices and a monolith.",o:["Microservices are always better","Independent scaling and team autonomy vs added complexity in communication and operations","Monoliths cannot use databases","Microservices need no testing"],a:1,x:"Many small services = flexibility but distributed-systems pain. One codebase = simplicity but coupling. Stage-dependent choice."},
 {id:"tech2_7",m:"tech2",d:2,c:"big-data",q:"A data vendor keeps saying 'big data, the 3 Vs!' in the meeting. Which are they?",o:["Value, Vision, Victory","Volume, Velocity, Variety","Virtual, Visible, Verified","Vectors, Versions, Volumes"],a:1,x:"A lot of data, arriving fast, in many formats — that is when ordinary tools break and 'big data' tech begins."},
 {id:"tech2_8",m:"tech2",d:3,c:"api",q:"Integration call: the payment provider offers webhooks. The client asks how a webhook differs from a normal API call.",o:["It is encrypted","Their server pushes a notification to YOU when an event happens, instead of you polling","It only works at night","It cannot carry data"],a:1,x:"Polling asks 'anything new?' every second. A webhook means the payment processor calls your URL the instant money lands."},
+{id:"tech2_9",m:"tech2",d:1,c:"api",q:"The payment provider hands you an 'API key'. It is...",o:["A secret credential identifying and authorizing your app's requests","A physical USB key","The office door code","A password customers type"],a:0,x:"Leak your API key and someone else can act as your company. Treat it like the keys to the vault."},
+{id:"tech2_10",m:"tech2",d:2,c:"cloud",q:"Compliance demands EU customer data stays in the EU. In cloud terms, you need...",o:["Data residency: hosting in EU cloud regions","Buying European laptops","Printing the data","A faster internet plan"],a:0,x:"Cloud providers offer regions precisely for this: you choose where data physically lives."},
+{id:"tech2_11",m:"tech2",d:2,c:"saas",q:"The CFO worries about depending entirely on one SaaS vendor. That risk is called...",o:["Vendor lock-in — migrating away later can be costly and slow","Vendor friendship","Cloud poisoning","Subscription fatigue"],a:0,x:"Convenience today, dependence tomorrow. Exit plans and data portability are part of vendor due diligence."},
+{id:"tech2_12",m:"tech2",d:2,c:"big-data",q:"Marketing wants live dashboards updating the instant each transaction lands. Which of the 3 Vs is the challenge?",o:["Velocity — processing data the moment it arrives","Variety — too many formats","Veracity — the data is false","None, dashboards are trivial"],a:0,x:"Real-time pipelines (streams, not batches) are a different engineering world from a nightly report."},
+{id:"tech2_13",m:"tech2",d:1,c:"cloud",q:"Your laptop dies an hour before the deadline — but the work is safe 'in the cloud'. Meaning...",o:["Stored on remote servers you access over the internet","Inside the laptop battery","Printed somewhere","In the office basement"],a:0,x:"The file never lived only on the laptop. Cloud storage = someone else's redundant, backed-up servers."},
+{id:"tech2_14",m:"tech2",d:3,c:"microservices",q:"Last night the notifications service crashed — but payments kept flowing. This isolation is a benefit of...",o:["Microservices — failures stay contained in one service","A monolith","Turning the servers off","Pure luck"],a:0,x:"Blast-radius control: in a well-cut microservice architecture, one failing service does not drag down the core."},
+{id:"tech2_15",m:"tech2",d:2,c:"api",q:"Your integration suddenly receives '429 Too Many Requests'. The provider is...",o:["Rate-limiting you — slow down, batch, or back off and retry","Going bankrupt","Hacked","Requesting a meeting"],a:0,x:"Rate limits protect shared infrastructure. Serious clients implement exponential backoff instead of hammering."},
+{id:"tech2_16",m:"tech2",d:3,c:"api",q:"The bank 'upgraded' its API overnight and your app broke at 9 AM. What should THEY have done?",o:["Versioned the API and deprecated gradually — breaking changes need migration time","Nothing, breaking clients is normal","Shut the API down entirely","Phoned every developer personally"],a:0,x:"Good API providers ship /v2 alongside /v1 with a deprecation calendar. Contracts are promises."},
 // ai2
 {id:"ai2_1",m:"ai2",d:1,c:"ml-definition",q:"Interview: 'Define machine learning — no buzzwords allowed.'",o:["Writing rules by hand for every case","Learning patterns from historical data to predict new cases","Building robots","Storing data in the cloud"],a:1,x:"Show the model thousands of past examples; it infers the pattern; it predicts on the next one."},
 {id:"ai2_2",m:"ai2",d:2,c:"supervised",q:"The data scientist says the fraud model 'needs labels'. Supervised learning requires...",o:["A human watching the computer","Labeled examples: input + the known correct answer","No data at all","A robot supervisor"],a:1,x:"To learn 'fraud vs legit', the model needs past transactions already labeled fraud or legit."},
@@ -335,6 +375,14 @@ const QUESTIONS = [
 {id:"ai2_6",m:"ai2",d:2,c:"features",q:"Your PM reads the model spec and asks: 'What does features mean here?'",o:["The model's settings menu","The input variables the model uses to predict (amount, time, location...)","Bugs in the code","Marketing highlights"],a:1,x:"Feature engineering — choosing and shaping good inputs — often matters more than the algorithm itself."},
 {id:"ai2_7",m:"ai2",d:2,c:"supervised",q:"Two tickets land on your desk: predict fraud (yes/no) and predict customer lifetime value (in $). These are...",o:["Both classification","Classification vs regression","Both regression","Clustering vs ranking"],a:1,x:"Category output = classification. Numeric output = regression."},
 {id:"ai2_8",m:"ai2",d:3,c:"evaluation",q:"A vendor brags their fraud model is '99.9% accurate' — on data where 99.9% of transactions are legit. What do you tell your boss?",o:["Sounds great, sign the contract","It may catch ZERO fraud — predicting 'always legit' achieves the same accuracy","Accuracy cannot exceed 99%","The data is too small"],a:1,x:"On imbalanced data, accuracy lies. Use precision and recall: of flagged transactions how many are fraud, and of all fraud how much is caught."},
+{id:"ai2_9",m:"ai2",d:1,c:"ml-definition",q:"Your manager asks how the spam filter 'knows' an email is spam.",o:["It learned patterns from millions of emails already labeled spam or not-spam","An employee reads every email","It checks one fixed list of words","It guesses randomly"],a:0,x:"Classic supervised learning: past labeled examples teach the model what spam looks like."},
+{id:"ai2_10",m:"ai2",d:2,c:"features",q:"Red flag in review: the fraud model uses 'was the transaction refunded' as an input feature. The flaw?",o:["Data leakage — refunds happen AFTER fraud is known; the model is cheating with future information","Refunds are irrelevant to fraud","Too few features","Nothing is wrong"],a:0,x:"At prediction time the refund has not happened yet. Leakage makes models look brilliant in testing and useless live."},
+{id:"ai2_11",m:"ai2",d:2,c:"evaluation",q:"Ops complains the fraud model blocks too many GOOD customers. You must balance...",o:["Precision (fewer false alarms) against recall (catching more fraud)","Accuracy and luck","RAM and CPU","Latency and uptime"],a:0,x:"Tighten the net and you catch more fraud but trap more innocents. The threshold is a business decision, not a math one."},
+{id:"ai2_12",m:"ai2",d:1,c:"supervised",q:"To train a model that predicts loan defaults, the FIRST thing you need is...",o:["Historical loans labeled with whether they actually defaulted","A bigger office","Data from the future","A quantum computer"],a:0,x:"Supervised learning eats labeled history. No labeled outcomes, no default model."},
+{id:"ai2_13",m:"ai2",d:2,c:"unsupervised",q:"You have NO labeled fraud examples yet. Which approach can still flag suspicious transactions?",o:["Anomaly detection — learn what 'normal' looks like and flag deviations","Supervised classification","Calling customers one by one","Blocking everything"],a:0,x:"Unsupervised anomaly detection bootstraps fraud-fighting before you have confirmed fraud labels."},
+{id:"ai2_14",m:"ai2",d:3,c:"overfitting",q:"The intern's model has 5,000 parameters trained on 300 loans. The reviewer winces because...",o:["With far more parameters than data it will memorize, not learn — overfitting is near-certain","More parameters are always better","300 loans is plenty for anything","Reviewers always wince"],a:0,x:"Model capacity must match data size. A giant model on tiny data is a memorization machine."},
+{id:"ai2_15",m:"ai2",d:2,c:"evaluation",q:"Before celebrating the model's 85% score, the lead asks for a 'baseline'. Why?",o:["If a dumb rule already scores 84%, the fancy model adds almost nothing","Baselines are a legal requirement","To slow the project down","Baselines boost accuracy"],a:0,x:"Always compare against the simplest possible approach. Value = lift OVER the baseline, not the raw score."},
+{id:"ai2_16",m:"ai2",d:3,c:"ml-definition",q:"The churn model was great last year and gets worse every month. The professional fix is...",o:["Monitor performance continuously and retrain on fresh data regularly","Buy a bigger GPU","Rename the model","Hide the dashboard"],a:0,x:"Models decay as the world drifts. MLOps = treating models as living systems, not one-off projects."},
 // fin3
 {id:"fin3_1",m:"fin3",d:2,c:"payments",q:"Whiteboard onboarding at the payments startup: 'In a card payment, who is the ISSUER?'",o:["The merchant's bank","The customer's bank that issued the card","The card network","The cash register company"],a:1,x:"Issuer = customer's bank. Acquirer = merchant's bank. The network (Visa/Mastercard) connects them."},
 {id:"fin3_2",m:"fin3",d:2,c:"interchange",q:"The CFO is modeling revenue and asks you: 'Remind me what the interchange fee is?'",o:["A currency exchange rate","A per-transaction fee paid to the card issuer, funding card businesses","A tax on imports","A subway ticket"],a:1,x:"A slice of every card payment flows to the issuer — it funds rewards programs and is core revenue for card fintechs."},
@@ -344,6 +392,14 @@ const QUESTIONS = [
 {id:"fin3_6",m:"fin3",d:2,c:"lending",q:"Investor due diligence: 'Walk me through the P2P lending model.'",o:["Banks lending to other banks","Matching individual lenders with borrowers directly, taking a platform fee","Printing your own currency","Lending only to governments"],a:1,x:"The platform handles scoring and servicing; investors take the credit risk in exchange for the interest."},
 {id:"fin3_7",m:"fin3",d:3,c:"unit-economics",q:"Board meeting: CAC is $200, LTV is $120, and growth wants to TRIPLE ad spend. What happens if we scale now?",o:["The problem fixes itself","We burn cash faster — every new customer destroys $80 of value","LTV doubles automatically","Investors will be pleased"],a:1,x:"LTV must exceed CAC. Growth with broken unit economics is just accelerated bankruptcy."},
 {id:"fin3_8",m:"fin3",d:3,c:"payments",q:"An analyst on the earnings call describes payments as a 'rails business'. What do they mean?",o:["It was invented by railway companies","Revenue = enormous volume × tiny take rate flowing over infrastructure built once","It only works on straight lines","It runs on blockchain"],a:1,x:"Like railways: build the track once, earn a tiny toll on everything that moves across it. Volume is everything."},
+{id:"fin3_9",m:"fin3",d:1,c:"payments",q:"A merchant asks who their 'acquirer' is in the card payment chain.",o:["The merchant's bank that receives the card funds","The customer's bank","The card printer","A debt collector"],a:0,x:"Issuer serves the cardholder, acquirer serves the merchant, the network connects them."},
+{id:"fin3_10",m:"fin3",d:2,c:"payments",q:"A cardholder disputes a charge and the money gets pulled back from the merchant. This is...",o:["A chargeback — buyer protection built into card networks","A refund the merchant chose to give","A tax","The interchange fee"],a:0,x:"Chargebacks protect consumers and terrify merchants. Too many of them and the network fines or expels you."},
+{id:"fin3_11",m:"fin3",d:2,c:"neobanks",q:"A neobank with NO banking license still offers real accounts. How?",o:["Banking-as-a-Service: a licensed partner bank holds the accounts underneath","It is simply illegal","They print their own money","The accounts are fake"],a:0,x:"BaaS lets fintechs rent a license: the partner bank holds funds and compliance, the fintech owns the experience."},
+{id:"fin3_12",m:"fin3",d:2,c:"revenue-models",q:"Your neobank loses money on every free user. The classic monetization ladder is...",o:["Free tier → premium subscriptions, interchange revenue, lending and partnerships","Charging for the app icon","Selling the user database","Ads only"],a:0,x:"Free acquires users; interchange, subscriptions and credit monetize them. The ladder must outrun the burn."},
+{id:"fin3_13",m:"fin3",d:3,c:"unit-economics",q:"CAC is $90 and each customer brings $10 of margin per month. Finance asks for the payback period.",o:["9 months — the time to earn back the acquisition cost","90 months","1 month","It cannot be computed"],a:0,x:"Payback = CAC ÷ monthly margin. Under 12 months is generally healthy for consumer fintech."},
+{id:"fin3_14",m:"fin3",d:1,c:"bnpl",q:"A shopper asks what happens if they miss a BNPL installment.",o:["Late fees and possibly blocked future purchases — BNPL is still credit","Nothing, ever","Prison","The merchant pays it for them"],a:0,x:"'Pay later' is a loan wearing sneakers. Regulators increasingly treat it exactly like credit."},
+{id:"fin3_15",m:"fin3",d:3,c:"payments",q:"A customer pays in euros; the merchant settles in dollars. Where do extra revenue and cost appear?",o:["FX conversion: a spread on the exchange rate","No conversion happens","In the shipping fee","In the card's plastic"],a:0,x:"Cross-border payments monetize the FX spread — and it is why 'multi-currency accounts' became a fintech product."},
+{id:"fin3_16",m:"fin3",d:3,c:"lending",q:"Two borrowers want the same loan; the riskier one is quoted a higher rate. Why?",o:["The rate prices expected losses — higher default risk costs more to lend to","The bank dislikes them personally","Pricing is random","Rates must be identical by law"],a:0,x:"Risk-based pricing: the interest on the many must cover the defaults of the few, or the lender dies."},
 // tech3
 {id:"tech3_1",m:"tech3",d:1,c:"encryption",q:"Security onboarding, day one: 'What does encryption actually do for our data?'",o:["Deletes it after reading","Scrambles it so only key-holders can read it","Hides it inside images","Makes automatic backups"],a:1,x:"In transit (HTTPS) and at rest (encrypted disks) — unreadable without the key."},
 {id:"tech3_2",m:"tech3",d:1,c:"authentication",q:"After a phishing scare, IT enforces 2FA company-wide. What does two-factor authentication combine?",o:["Two passwords","Something you know (password) + something you have (phone/key)","Two usernames","Fingerprint and face only"],a:1,x:"Stealing a password is easy; stealing the password AND your phone is much harder."},
@@ -353,6 +409,14 @@ const QUESTIONS = [
 {id:"tech3_6",m:"tech3",d:2,c:"bitcoin",q:"Your CEO mixed up Bitcoin and blockchain on stage. Brief them: what is the actual relationship?",o:["They are the same thing","Bitcoin is one application built ON a blockchain; blockchain is the underlying technology","Blockchain is a type of Bitcoin","Bitcoin invented the internet"],a:1,x:"Blockchain also powers other chains, tokenized assets, and settlement experiments far beyond Bitcoin."},
 {id:"tech3_7",m:"tech3",d:2,c:"smart-contracts",q:"A partner proposes automating settlements 'with smart contracts'. What is a smart contract?",o:["A PDF signed electronically","A program on a blockchain that executes automatically when conditions are met","A lawyer chatbot","A phone subscription"],a:1,x:"Code as enforcement: 'when payment arrives, release the asset' — executed by the network, no intermediary."},
 {id:"tech3_8",m:"tech3",d:2,c:"wallets",q:"Support escalation: a user lost the private key to their self-custody wallet and demands a reset. The truth is...",o:["Support resets it in 24h","The funds are permanently inaccessible — no reset exists","The bank refunds them","They can guess it eventually"],a:1,x:"Self-custody means total responsibility. An estimated 20% of all Bitcoin is lost forever this way."},
+{id:"tech3_9",m:"tech3",d:1,c:"authentication",q:"After the breach drill, IT bans 'password123'. The actual golden rule for passwords is...",o:["Long, unique per service, stored in a password manager","Short but changed daily","Your birthday, backwards","The same one everywhere, for memory"],a:0,x:"Reuse is the killer: one leaked site exposes every account sharing that password. Managers make unique easy."},
+{id:"tech3_10",m:"tech3",d:2,c:"encryption",q:"A PM says 'we use HTTPS, so the database must be safe.' What did they miss?",o:["HTTPS protects data in transit; the database also needs encryption at rest and access control","Nothing, HTTPS covers everything","Databases cannot be encrypted","HTTPS is purely decorative"],a:0,x:"Transit and rest are two different battlefields. A stolen unencrypted disk ignores HTTPS entirely."},
+{id:"tech3_11",m:"tech3",d:2,c:"blockchain",q:"A client asks who 'approves' Bitcoin transactions if no bank is involved.",o:["The network: nodes reach consensus and miners batch transactions into blocks","A secret committee","The app store","Nobody — it is pure chaos"],a:0,x:"Decentralized consensus replaces the trusted middleman. That is the whole invention."},
+{id:"tech3_12",m:"tech3",d:3,c:"smart-contracts",q:"'Code is law' — until the smart contract has a bug. The lesson from the famous DeFi hacks is...",o:["Code executes as written, not as intended — audits are critical before money flows","Bugs are impossible on blockchains","Hacks are good marketing","Lawyers can fix it instantly"],a:0,x:"Hundreds of millions have been drained through contract bugs. Immutability cuts both ways: no patch after deployment."},
+{id:"tech3_13",m:"tech3",d:1,c:"security-human",q:"A caller claims to be 'IT support' and asks for your login 'to fix a bug'. This technique is...",o:["Social engineering — manipulating people instead of machines","A standard firewall test","Routine maintenance","Two-factor authentication"],a:0,x:"Real IT never asks for your password. Humans are the favorite attack surface because they want to be helpful."},
+{id:"tech3_14",m:"tech3",d:3,c:"wallets",q:"A client hesitates between exchange custody and a self-custody wallet. The REAL tradeoff is...",o:["Convenience and recovery options versus full control and full responsibility","The color of the app","Self-custody is always safer for everyone","Exchanges are always safe"],a:0,x:"Exchanges can be hacked or fail; self-custody can be lost forever. Know thyself before choosing."},
+{id:"tech3_15",m:"tech3",d:2,c:"bitcoin",q:"A merchant wants crypto payments but fears the price swings. The common middle ground is...",o:["Stablecoins pegged to a fiat currency","Only accepting payments at midnight","Doubling all prices","Refusing to give change"],a:0,x:"Stablecoins aim to combine crypto rails with fiat stability — which is why regulators watch them closely."},
+{id:"tech3_16",m:"tech3",d:3,c:"encryption",q:"An engineer just committed the production API secret to a PUBLIC GitHub repo. First move?",o:["Revoke and rotate the key immediately — assume it is already compromised","Delete the commit and relax","Rename the repository","Email the key to yourself for safekeeping"],a:0,x:"Bots scrape public repos for secrets within minutes. Deletion does not unleak a key; rotation does."},
 // ai3
 {id:"ai3_1",m:"ai3",d:1,c:"neural-networks",q:"An investor asks where the term 'neural network' even comes from. They are loosely inspired by...",o:["Telephone switchboards","The human brain's interconnected neurons","Spider webs","Road networks"],a:1,x:"Layers of simple units, each transforming the data slightly — stacked, they learn astonishing patterns."},
 {id:"ai3_2",m:"ai3",d:2,c:"deep-learning",q:"Interview: 'What does the deep in deep learning actually refer to?'",o:["Deep philosophical questions","Many layers in the neural network","Underwater datacenters","Deep storage of data"],a:1,x:"Depth = many stacked layers, letting the network build complex concepts from simple ones."},
@@ -362,6 +426,14 @@ const QUESTIONS = [
 {id:"ai3_6",m:"ai3",d:2,c:"hallucination",q:"Support escalation: the chatbot confidently INVENTED a refund policy to a customer. What is this failure called?",o:["A crash","Hallucination: fluent, confident, false statements","A refusal","Image recognition"],a:1,x:"In finance this is dangerous: always verify model output against a source of truth before money moves."},
 {id:"ai3_7",m:"ai3",d:3,c:"rag",q:"Product wants the assistant to answer from OUR internal docs, updated daily. What do you propose?",o:["Retrain the model from scratch every day","RAG: retrieve relevant documents at question time and include them in the prompt","Email the docs to the AI company","Fine-tune once and never update"],a:1,x:"Retrieval-augmented generation keeps knowledge fresh without retraining — the standard pattern for enterprise AI."},
 {id:"ai3_8",m:"ai3",d:3,c:"deep-learning",q:"Finance reviews the AI budget: 'Why do you keep buying GPUs instead of normal CPUs?'",o:["They are cheaper","Deep learning is mostly giant matrix multiplications, which GPUs execute massively in parallel","They use less power","CPUs cannot do math"],a:1,x:"A GPU runs thousands of simple operations simultaneously — exactly the shape of neural network math."},
+{id:"ai3_9",m:"ai3",d:1,c:"prompting",q:"The assistant's answers are vague and generic. The cheapest first fix is...",o:["Improve the prompt: add context, constraints and examples","Retrain the model from scratch","Buy more GPUs","Switch careers"],a:0,x:"Prompt quality is the highest-leverage, lowest-cost dial. Engineering the input beats re-engineering the model."},
+{id:"ai3_10",m:"ai3",d:2,c:"llm",q:"Finance asks why the AI bill exploded as conversations got longer. LLM usage is billed by...",o:["Tokens processed — longer inputs and outputs cost more","Number of employees","Wifi usage","Words typed by customers only"],a:0,x:"Every token in AND out is metered. Long context + long answers = long invoice. Token budgeting is real engineering."},
+{id:"ai3_11",m:"ai3",d:2,c:"hallucination",q:"Hard rule: the bot must NEVER invent an account balance. The proper safeguard is...",o:["Fetch the balance from the real system and let the model only phrase the answer","Ask the model to promise honesty","Lower the temperature and hope","Use a bigger model"],a:0,x:"Facts come from systems of record; the LLM handles language. Never let a language model be your database."},
+{id:"ai3_12",m:"ai3",d:3,c:"rag",q:"You want the model to adopt your brand TONE in every reply. RAG or fine-tuning?",o:["Fine-tuning — style is learned behavior, not a retrievable fact","RAG","Neither works","Both are only for tone"],a:0,x:"RAG injects knowledge; fine-tuning shapes behavior and style. Pick the tool that matches the problem."},
+{id:"ai3_13",m:"ai3",d:1,c:"llm",q:"The team wants the assistant to read photos of receipts. You need a model that is...",o:["Multimodal — handling images as well as text","Just bigger","Open-source only","Trained exclusively on receipts"],a:0,x:"Multimodal models accept text + images (and more). Receipt parsing, ID checks, chart reading — all unlocked."},
+{id:"ai3_14",m:"ai3",d:3,c:"llm",q:"The assistant 'forgets' the beginning of very long documents. The limiting factor is...",o:["The context window — the maximum tokens the model can consider at once","The server's RAM","The user's patience","Internet speed"],a:0,x:"Everything the model 'knows' about your request must fit in its context window. Beyond it: chunking, RAG, summaries."},
+{id:"ai3_15",m:"ai3",d:2,c:"deep-learning",q:"The data scientist distinguishes 'training' from 'inference'. Inference is...",o:["Using the trained model to answer new cases","Teaching the model","Deleting the model","A type of GPU"],a:0,x:"Training happens rarely and costs fortunes; inference happens millions of times a day and must be fast and cheap."},
+{id:"ai3_16",m:"ai3",d:3,c:"prompting",q:"You want the assistant to actually EXECUTE refunds, not just talk about them. The pattern is...",o:["Tool use / agents: the model calls approved functions, with checks and confirmations","Give it the database password and trust","Print instructions for humans, always, forever","Email the CEO for each refund"],a:0,x:"Agents act through whitelisted tools with guardrails: validation, limits, human sign-off for the irreversible."},
 // fin4
 {id:"fin4_1",m:"fin4",d:1,c:"kyc",q:"Day one at a regulated fintech. Compliance asks if you know what KYC stands for.",o:["Keep Your Cash","Know Your Customer — verifying who your customers really are","Key Yield Curve","Know Your Code"],a:1,x:"Identity verification is the legal gateway to offering any financial service."},
 {id:"fin4_2",m:"fin4",d:2,c:"aml",q:"The compliance officer briefs the team: 'Why do AML rules exist at all?'",o:["To limit ATM withdrawals","To prevent criminals from disguising illegal money as legitimate through the financial system","To set minimum interest rates","To protect bank buildings"],a:1,x:"Fintechs must monitor flows, flag suspicious patterns, and report them — or face crushing fines."},
@@ -371,6 +443,14 @@ const QUESTIONS = [
 {id:"fin4_6",m:"fin4",d:3,c:"open-banking-reg",q:"A journalist asks why PSD2-style open banking regulation mattered so much. Because it...",o:["Closed all bank branches","Forced banks to share data/payments access with licensed third parties, creating the fintech app ecosystem","Banned credit cards","Merged all banks"],a:1,x:"Regulation, not just technology, opened the door: your budgeting app legally plugs into your bank because of it."},
 {id:"fin4_7",m:"fin4",d:2,c:"sandbox",q:"Your startup wants to test a new product with real users BEFORE full licensing. The lawyer suggests a regulatory sandbox, which allows...",o:["Avoiding all regulation forever","Testing innovative products with real users under regulator supervision before full licensing","Playing games at work","Hiding from auditors"],a:1,x:"A controlled space to prove a model works before paying the full cost of licensing."},
 {id:"fin4_8",m:"fin4",d:2,c:"data-protection",q:"The data protection officer looks grim in the GDPR meeting. Why is data protection EXISTENTIAL for fintechs?",o:["It only affects social networks","Fines reach 4% of global revenue, and losing customer trust over data is often fatal","It bans databases","It applies only to banks"],a:1,x:"Fintechs hold the most sensitive data there is: money + identity. Mishandling it ends companies."},
+{id:"fin4_9",m:"fin4",d:1,c:"kyc",q:"Onboarding asks new users for an ID document and a selfie. This step is part of...",o:["KYC identity verification","A marketing campaign","A loyalty program","Tax filing"],a:0,x:"Prove the person is real and is who they claim — the legal entry ticket to financial services."},
+{id:"fin4_10",m:"fin4",d:2,c:"aml",q:"A user makes 20 transfers of $999 each, just under the $1,000 reporting line. This pattern is...",o:["Structuring — a classic money-laundering red flag to detect and report","Smart budgeting","Perfectly normal behavior","A rounding error"],a:0,x:"Deliberately slicing amounts to dodge thresholds is itself a crime. Monitoring systems hunt exactly this."},
+{id:"fin4_11",m:"fin4",d:2,c:"risk-types",q:"A borrower simply stops repaying their loan. Which risk just materialized?",o:["Credit risk","Market risk","Operational risk","Latency risk"],a:0,x:"Credit risk = counterparties failing to pay. The oldest risk in banking, and still the biggest."},
+{id:"fin4_12",m:"fin4",d:3,c:"capital",q:"The CEO wants to lend out 'everything we have' to grow faster. The risk officer blocks it because...",o:["Without buffers, a small wave of defaults makes the company insolvent","Lending is illegal","Growth is bad","Regulators love boldness"],a:0,x:"Capital is the shock absorber. Banks that ran without buffers star in every financial-crisis documentary."},
+{id:"fin4_13",m:"fin4",d:2,c:"data-protection",q:"A user emails: 'Delete ALL my data.' Under GDPR this is...",o:["A right to erasure you must honor (within legal limits) and be able to prove","Spam you can ignore","Technically impossible","Only valid for EU citizens abroad"],a:0,x:"Right to erasure is real, with carve-outs (AML records must be kept). You need processes, not improvisation."},
+{id:"fin4_14",m:"fin4",d:2,c:"regtech",q:"Compliance manually reviews 10,000 alerts a day and is drowning. The RegTech fix is...",o:["ML-based monitoring that scores and prioritizes alerts so humans handle the riskiest","Hiring 10,000 reviewers","Ignoring the alerts","Turning monitoring off"],a:0,x:"Most alerts are false positives. Triage by machine, judgment by human — that is RegTech in practice."},
+{id:"fin4_15",m:"fin4",d:3,c:"open-banking-reg",q:"An app wants to pull a user's bank data via open banking. What makes that access LEGAL?",o:["Explicit user consent, through a licensed third party","Knowing the user's password","Paying the bank","Asking nicely"],a:0,x:"Consent + licensing are the twin pillars. Screen-scraping with stored passwords is the outlaw past."},
+{id:"fin4_16",m:"fin4",d:3,c:"aml",q:"An analyst confirms a genuinely suspicious pattern. The legally required next step is...",o:["File a suspicious activity report to the authorities — quietly","Call the customer to warn them","Post it on the company chat for laughs","Freeze every account in the country"],a:0,x:"Report without tipping off: warning the customer is itself an offense. Discretion is the law."},
 // tech4
 {id:"tech4_1",m:"tech4",d:2,c:"scalability",q:"Capacity planning: traffic doubled this quarter. What does HORIZONTAL scaling mean?",o:["Buying one bigger server","Adding more machines that share the load","Making the code shorter","Moving servers sideways"],a:1,x:"The web scales out, not up: ten modest machines beat one giant, and you can keep adding."},
 {id:"tech4_2",m:"tech4",d:2,c:"latency",q:"A trading client threatens to leave over 30 milliseconds. Why does latency matter so much in trading?",o:["It does not","Milliseconds determine who gets the price first — slow systems systematically lose","Only the UI cares about speed","Regulators measure it"],a:1,x:"High-frequency firms pay fortunes to shave microseconds. In payments, latency kills checkout conversion instead."},
@@ -380,6 +460,14 @@ const QUESTIONS = [
 {id:"tech4_6",m:"tech4",d:2,c:"devops",q:"DevOps onboarding: 'What do our CI/CD pipelines actually do?'",o:["Replace all developers","Automatically test and deploy every code change — speed with a safety net","Exist only at big banks","Slow down releases on purpose"],a:1,x:"Continuous integration/deployment: each change runs the full test suite before shipping. Fast AND safe."},
 {id:"tech4_7",m:"tech4",d:2,c:"caching",q:"The app is slow and someone proposes 'adding caching'. Caching improves performance by...",o:["Compressing the database","Keeping frequently-read data in fast memory to cut load and latency","Deleting old data","Buying faster internet"],a:1,x:"But beware: a stale cache showing yesterday's balance is a fintech incident, not an optimization."},
 {id:"tech4_8",m:"tech4",d:3,c:"consistency",q:"Architecture debate: where is 'eventual consistency' actually acceptable?",o:["Account balances during a withdrawal","A social feed or analytics dashboard — but NOT the money ledger itself","Everywhere in a bank","Nowhere, ever"],a:1,x:"Replicas agreeing 'eventually' is fine for likes; for money you need strong consistency or provable reconciliation."},
+{id:"tech4_9",m:"tech4",d:1,c:"scalability",q:"Incoming traffic gets split across 10 servers by a component sitting in front of them. That component is...",o:["A load balancer","A firewall","A database","A GPU"],a:0,x:"The load balancer is the traffic cop of scaled systems: it spreads requests and routes around dead servers."},
+{id:"tech4_10",m:"tech4",d:2,c:"redundancy",q:"Redundancy keeps us online — but yesterday an engineer DELETED a table, on every replica at once. What saves us now?",o:["Backups with point-in-time recovery — redundancy faithfully copies mistakes too","More servers","A bigger monitor","A sincere apology"],a:0,x:"Replication is for failures; backups are for mistakes. Confusing the two has ended companies."},
+{id:"tech4_11",m:"tech4",d:2,c:"devops",q:"The 6 PM Friday release just broke checkout. The fastest SAFE move is...",o:["Roll back to the previous version, then debug calmly","Debug live in production all weekend","Ignore it until Monday","Ask users to restart their phones"],a:0,x:"Restore service first, find the root cause second. Fast rollback is why you keep releases small and reversible."},
+{id:"tech4_12",m:"tech4",d:2,c:"caching",q:"After a deposit, the app still shows the OLD balance for an hour. The classic cause is...",o:["A stale cache — the balance cache was not invalidated on update","The deposit failed","The user is imagining it","The database is too fast"],a:0,x:"'There are only two hard things in computer science: cache invalidation and naming things.' This is the first one."},
+{id:"tech4_13",m:"tech4",d:3,c:"ledgers",q:"Every night, a job compares our internal ledger against the bank's records, line by line. This process is...",o:["Reconciliation — catching mismatches before they become losses","A waste of compute","Crypto mining","Data science"],a:0,x:"Fintechs reconcile obsessively: every unexplained cent is either a bug, a fraud, or a future regulator question."},
+{id:"tech4_14",m:"tech4",d:2,c:"latency",q:"Users in Asia complain about slow loading; all servers sit in Europe. The standard fix is...",o:["Serve content from edge locations closer to users (CDN) or add regions","Ask users to move","Even bigger servers in Europe","Remove all images"],a:0,x:"The speed of light is a hard SLA. Move the content closer to the user — that is what CDNs and regions are for."},
+{id:"tech4_15",m:"tech4",d:3,c:"consistency",q:"A vendor promises a system that is always available AND instantly consistent worldwide AND partition-tolerant. You smile, because...",o:["The CAP theorem says you cannot have all three under network partitions","It just costs extra","Every cloud already has it","Physics does not apply to fintech"],a:0,x:"When the network splits, you choose: stay available or stay consistent. Anyone selling all three is selling fog."},
+{id:"tech4_16",m:"tech4",d:3,c:"idempotency",q:"You are designing the money-transfer API. Which field makes client retries safe?",o:["A unique idempotency key per operation, stored and checked server-side","A timestamp alone","The user's name","Nothing — retries should be forbidden"],a:0,x:"Same key seen twice = same operation, executed once. The cornerstone of payment APIs on unreliable networks."},
 // ai4
 {id:"ai4_1",m:"ai4",d:1,c:"algo-trading",q:"A client asks nervously: 'Are robots REALLY trading the market?' Algorithmic trading is...",o:["Trading only tech company stocks","Executing orders automatically by programmed rules at machine speed","Illegal in most countries","Trading without computers"],a:1,x:"The majority of market volume today is machines trading with machines."},
 {id:"ai4_2",m:"ai4",d:2,c:"credit-scoring",q:"Pitch to a lender: 'How does AI credit scoring improve on the classic credit bureaus?'",o:["It always approves more loans","It uses alternative data (cash-flow, behavior) to score people invisible to traditional credit files","It removes the need for repayment","It is unregulated"],a:1,x:"Billions of people lack credit history but generate data. Scoring them expands access — if done responsibly."},
@@ -389,6 +477,14 @@ const QUESTIONS = [
 {id:"ai4_6",m:"ai4",d:3,c:"explainability",q:"A regulator audits your lending AI: 'Why must your loan decisions be explainable?'",o:["To make the code prettier","Regulators and customers can demand the reason for a denial — 'the black box said no' is legally indefensible","To run faster","Explainability is optional everywhere"],a:1,x:"Adverse-action rules require reasons. Interpretable models or explanation tools are a legal necessity in lending."},
 {id:"ai4_7",m:"ai4",d:3,c:"bias",q:"Ethics review: our lending model trains on decades of historical decisions. The risk is...",o:["None, history is objective","Automating past discrimination present in that data, at scale","Approving everyone","It becomes a chatbot"],a:1,x:"Bias in, bias out — but now systematic, fast, and with a veneer of objectivity. Fairness testing is mandatory engineering."},
 {id:"ai4_8",m:"ai4",d:3,c:"backtesting",q:"A quant shows a backtest with INSANE returns and wants budget. What trap do you check first?",o:["The returns are too small","Overfitting to the past — tweaked until it fits one historical sample that will not repeat","Backtests are always reliable","The data is too recent"],a:1,x:"Torture historical data long enough and it confesses to anything. Out-of-sample and live testing separate skill from curve-fitting."},
+{id:"ai4_9",m:"ai4",d:1,c:"robo-advisors",q:"A robo-advisor 'rebalanced' a client's portfolio overnight. Meaning it...",o:["Sold and bought assets to restore the target allocation mix","Deleted the account","Changed the password","Doubled the fees"],a:0,x:"Winners grow beyond their target weight; rebalancing trims them and tops up the rest. Discipline, automated."},
+{id:"ai4_10",m:"ai4",d:2,c:"fraud-detection",q:"Fraud blocks jumped — and so did support calls from furious LEGITIMATE customers. The metric to watch is...",o:["The false positive rate — good users wrongly blocked","Total transaction count","GPU usage","Model size"],a:0,x:"Every false positive is a paying customer you just insulted. Fraud teams live on the precision/recall knife-edge."},
+{id:"ai4_11",m:"ai4",d:2,c:"algo-trading",q:"A firm continuously quotes BOTH a buy and a sell price, pocketing the small gap. This strategy is...",o:["Market making — earning the bid-ask spread","Insider trading","Buy and hold","Panic selling"],a:0,x:"Market makers provide liquidity and earn the spread thousands of times a day. Speed and risk control are everything."},
+{id:"ai4_12",m:"ai4",d:2,c:"credit-scoring",q:"A young customer has NO credit history. Which alternative data could legitimately help score them?",o:["Cash-flow patterns: steady income and regular bill payments","Their horoscope","Their friends' debts","Their hair color"],a:0,x:"Open banking makes cash-flow underwriting possible: real income and spending behavior instead of a blank file."},
+{id:"ai4_13",m:"ai4",d:3,c:"model-risk",q:"Your trading model goes haywire during a flash event. What should ALREADY have been in place?",o:["Kill switches and position limits that halt the model automatically","A motivational poster","Even faster trading","A bigger model"],a:0,x:"Every automated trader needs an automated brake. Knight Capital lost $440M in 45 minutes without one."},
+{id:"ai4_14",m:"ai4",d:3,c:"explainability",q:"The credit team asks WHY the model denied one specific applicant. You provide...",o:["The main factors driving that decision, via interpretable models or explanation tools","The raw source code only","A shrug","The marketing deck"],a:0,x:"Per-decision explanations (top contributing factors) are how AI lending survives audits and adverse-action rules."},
+{id:"ai4_15",m:"ai4",d:2,c:"fraud-detection",q:"Ops drowns in scanned KYC documents. The quickest AI win is...",o:["Automated document extraction and verification (OCR + models)","Hiring a calligrapher","Printing more documents","Refusing documents"],a:0,x:"Document AI turns hours of manual typing into seconds of extraction with human review on the edge cases."},
+{id:"ai4_16",m:"ai4",d:3,c:"backtesting",q:"The quant fixed their overfitted backtest. What test NOW separates skill from luck?",o:["Out-of-sample validation and live paper-trading on data never used in development","Running the same backtest louder","A more confident presentation","More leverage"],a:0,x:"A strategy must work on data it has never seen — then survive live markets with fake money before real money."},
 ];
 
 /* Crisis events — real situations landing on YOUR desk */
@@ -460,8 +556,11 @@ const BOX_DAYS = [0, 1, 3, 7, 16, 30];
 const FREE_BOXES = 2;                    // same-day cap; beyond needs real spaced review
 const DAY = 86400000;
 
-/* ----------------------- STATE ----------------------- */
-const SAVE_KEY = "fintech_tycoon_v2";
+/* ----------------------- STATE & SAVE FILES ----------------------- */
+const SLOTS = ["ft_save_1","ft_save_2","ft_save_3"];
+const META = "ft_active_slot";
+const LEGACY_KEY = "fintech_tycoon_v2";
+let activeSlot = null;
 let state = null;
 
 function freshState(){
@@ -474,16 +573,77 @@ function freshState(){
     evDone:[], log:[], sound:true,
   };
 }
-function save(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(state)); }catch(e){} }
-function load(){
-  try{ const raw = localStorage.getItem(SAVE_KEY); if(raw){ state = JSON.parse(raw); return; } }catch(e){}
-  state = freshState();
+function save(){
+  if(activeSlot === null || !state) return;
+  try{ localStorage.setItem(SLOTS[activeSlot], JSON.stringify(state)); }catch(e){}
+}
+function slotInfo(i){
+  try{
+    const raw = localStorage.getItem(SLOTS[i]);
+    if(!raw) return null;
+    const s = JSON.parse(raw);
+    if(!s.company || !s.company.name) return null;
+    let r = RANKS[0]; for(const k of RANKS) if((s.xp||0) >= k.xp) r = k;
+    return {name:s.company.name, rank:r, xp:s.xp||0, cash:(s.company.cash||0)};
+  }catch(e){ return null; }
+}
+function chooseSlot(i){
+  activeSlot = i;
+  try{ localStorage.setItem(META, String(i)); }catch(e){}
+  try{ const raw = localStorage.getItem(SLOTS[i]); state = raw ? JSON.parse(raw) : freshState(); }
+  catch(e){ state = freshState(); }
+  if(state.view === "session") state.view = "hq";
+  S = null;
+  save(); render();
+}
+function deleteSlot(i, ev){
+  if(ev) ev.stopPropagation();
+  if(!confirm("Delete save file " + (i+1) + " FOREVER?")) return;
+  try{ localStorage.removeItem(SLOTS[i]); }catch(e){}
+  render();
+}
+function backToTitle(){
+  save(); activeSlot = null; state = null; S = null;
+  try{ localStorage.removeItem(META); }catch(e){}
+  render(); window.scrollTo(0,0);
+}
+function exportCode(){ return btoa(unescape(encodeURIComponent(JSON.stringify(state)))); }
+function copyExport(){
+  const el = document.getElementById("exp");
+  if(!el) return;
+  el.select(); el.setSelectionRange(0, 999999);
+  try{ document.execCommand("copy"); }catch(e){}
+  try{ if(navigator.clipboard) navigator.clipboard.writeText(el.value); }catch(e){}
+  toast("📋 CODE COPIED!");
+}
+function doImport(){
+  const el = document.getElementById("imp");
+  if(!el) return;
+  try{
+    const s = JSON.parse(decodeURIComponent(escape(atob(el.value.trim()))));
+    if(!s.company) throw 0;
+    state = s; state.view = "hq"; S = null;
+    save(); toast("✅ SAVE LOADED!"); render();
+  }catch(e){ toast("❌ INVALID CODE"); }
+}
+function boot(){
+  try{ // migrate the old single save into file 1
+    const legacy = localStorage.getItem(LEGACY_KEY);
+    if(legacy && !localStorage.getItem(SLOTS[0])){
+      localStorage.setItem(SLOTS[0], legacy);
+      localStorage.removeItem(LEGACY_KEY);
+    }
+  }catch(e){}
+  let m = null;
+  try{ m = localStorage.getItem(META); }catch(e){}
+  if(m !== null && m !== "" && SLOTS[+m]) chooseSlot(+m);
+  else render();
 }
 
 /* ----------------------- 8-BIT SOUND ----------------------- */
 let actx = null;
 function beep(seq){
-  if(!state.sound) return;
+  if(!state || !state.sound) return;
   try{
     actx = actx || new (window.AudioContext || window.webkitAudioContext)();
     let t = actx.currentTime;
@@ -547,6 +707,7 @@ function pickQuiz(mid){
     if(s.at > 0 && s.due <= now) v -= 100;
     if(s.at === 0) v -= 50 - Math.abs(q.d - targetD)*8;
     v += qMastery(q.id) * 30;
+    if(s.at > 0 && now - (s.last||0) < 6*3600*1000) v += 40; // avoid questions seen in the last 6h
     v += Math.random()*6;
     return v;
   };
@@ -564,7 +725,7 @@ function pickReview(){
 function recordAnswer(q, ok){
   const s = qstat(q.id);
   const wasDue = s.at === 0 || s.due <= Date.now();
-  s.at++;
+  s.at++; s.last = Date.now();
   if(ok){
     s.ok++;
     if(s.box < FREE_BOXES || wasDue) s.box = Math.min(BOX_DAYS.length - 1, s.box + 1);
@@ -787,6 +948,46 @@ function typewrite(id, text){
 function hpBarColor(p){ return p > .5 ? "var(--hpg)" : p > .25 ? "var(--hpy)" : "var(--hpr)"; }
 function hearts(n, max){ return "❤️".repeat(n) + "🖤".repeat(Math.max(0, max-n)); }
 
+function vTitle(){
+  return `<div class="center" style="padding-top:6vh">
+    <div class="crown">👑</div>
+    <h1 style="font-size:20px;margin:10px 0 4px">FINTECH</h1>
+    <h1 style="font-size:20px;color:var(--gold);text-shadow:2px 2px 0 var(--ink)">TYCOON</h1>
+    <p class="tiny" style="margin:10px 0">— INTERN TO KING —</p>
+    <div style="max-width:430px;margin:14px auto;text-align:left">
+      <p class="tiny center blink" style="margin-bottom:8px">SELECT A SAVE FILE</p>
+      ${[0,1,2].map(i => {
+        const inf = slotInfo(i);
+        return `<div class="pb mcard" onclick="chooseSlot(${i})" style="margin:8px 0">
+          <div class="row sb">
+            <div><p class="tiny">FILE ${i+1}</p>
+            ${inf ? `<p><b>${esc(inf.name)}</b></p><p class="tiny">${inf.rank.ico} ${inf.rank.name} • ${inf.xp} XP • ${fmt(inf.cash)}</p>`
+                  : `<p><b>NEW GAME</b></p><p class="tiny">An empty desk awaits...</p>`}</div>
+            ${inf ? `<button class="tiny danger" onclick="deleteSlot(${i}, event)">✖</button>` : `<span class="sprite mini">🗄️</span>`}
+          </div></div>`;
+      }).join("")}
+      <p class="tiny center" style="margin-top:12px">Pick a file, then use EXPORT/IMPORT inside the game to back up or transfer a career between devices.</p>
+    </div></div>`;
+}
+
+function vExport(){
+  return `<button class="tiny" onclick="go('hq')">◀ BACK</button>
+  <div class="pb" style="margin-top:10px"><h3 class="caps">⬆ Export save</h3>
+    <p class="tiny" style="margin:8px 0">This code IS your career (file ${activeSlot+1}). Copy it somewhere safe, then paste it on any device via IMPORT.</p>
+    <textarea id="exp" readonly onclick="this.select()" style="width:100%;height:130px;font-family:inherit;font-size:7px;line-height:1.6;border:3px solid var(--ink);padding:8px;background:#fff;color:var(--ink)">${exportCode()}</textarea>
+    <button class="primary big" style="margin-top:10px" onclick="copyExport()">📋 COPY CODE</button>
+  </div>`;
+}
+
+function vImport(){
+  return `<button class="tiny" onclick="go('hq')">◀ BACK</button>
+  <div class="pb" style="margin-top:10px"><h3 class="caps">⬇ Import save</h3>
+    <p class="tiny" style="margin:8px 0">Paste a save code below. WARNING: it replaces the career currently in file ${activeSlot+1}.</p>
+    <textarea id="imp" placeholder="PASTE SAVE CODE HERE" style="width:100%;height:130px;font-family:inherit;font-size:7px;line-height:1.6;border:3px solid var(--ink);padding:8px;background:#fff;color:var(--ink)"></textarea>
+    <button class="primary big" style="margin-top:10px" onclick="doImport()">⬇ LOAD THIS SAVE</button>
+  </div>`;
+}
+
 function vOnboard(){
   return `<div class="center" style="padding-top:7vh">
     <div class="crown">👑</div>
@@ -801,6 +1002,10 @@ function vOnboard(){
     <div style="max-width:430px;margin:0 auto">
       <input type="text" id="cname" maxlength="20" placeholder="COMPANY NAME" onkeydown="if(event.key==='Enter')setName()">
       <button class="primary big" style="margin-top:12px" onclick="setName()">▶ CLOCK IN</button>
+      <div class="row sb" style="margin-top:12px">
+        <button class="tiny" onclick="backToTitle()">◀ FILES</button>
+        <button class="tiny" onclick="go('import')">⬇ IMPORT A SAVE CODE</button>
+      </div>
       <p class="tiny blink" style="margin-top:14px">PRESS START — © FINTECH KINGDOM</p>
     </div>
   </div>`;
@@ -864,7 +1069,10 @@ function vHQ(){
       <span>${k.ico}</span><span class="tiny" style="flex:1">${k.name}</span><span class="tiny">${k.xp}</span></div>`).join("")}</div>
   </div>
   <div class="row sb">
-    <button class="tiny" onclick="toggleSound()">${state.sound?"🔊 SOUND ON":"🔇 SOUND OFF"}</button>
+    <button class="tiny" onclick="backToTitle()">💾 FILES</button>
+    <button class="tiny" onclick="go('export')">⬆ EXPORT</button>
+    <button class="tiny" onclick="go('import')">⬇ IMPORT</button>
+    <button class="tiny" onclick="toggleSound()">${state.sound?"🔊":"🔇"}</button>
     <button class="tiny" onclick="resetGame()">⚠ RESET</button>
   </div>`;
 }
@@ -1077,6 +1285,9 @@ function vCompany(){
 
 function render(){
   const app = document.getElementById("app");
+  if(activeSlot === null || !state){ app.innerHTML = vTitle(); return; }
+  if(state.view === "import"){ app.innerHTML = vImport(); return; }
+  if(state.view === "export" && state.company.name){ app.innerHTML = vExport(); return; }
   if(!state.company.name){ app.innerHTML = vOnboard(); return; }
   let body;
   if(state.view === "session" && S) body = vMeeting();
@@ -1105,9 +1316,7 @@ function render(){
   }
 }
 
-load();
-if(state.view === "session") state.view = "hq";
-render();
+boot();
 </script>
 </body>
 </html>

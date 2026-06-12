@@ -16,11 +16,16 @@ Everything lives in a single file: **`index.html`**. No install, no backend, no 
 6. **Pass promotion interviews** — each career stage ends with a timed interview (HR Manager → Head of Product → CTO+CFO → The Board). 20s per question, 3 mistakes max.
 7. **Reach the throne** — climb 10 titles from Intern to **FINTECH KING** (21,000 XP).
 
+## 💾 Save files
+
+- **3 save files** on the title screen (retro style) — run several careers in parallel.
+- **Export / import**: generate a save code from the CAREER screen and paste it on any other device to transfer your career.
+
 ## 🧠 The adaptive engine (built-in, offline)
 
 - **Spaced repetition (Leitner)** — every question has a memory box (1, 3, 7, 16, 30 days). Miss it and it comes back immediately; master it and it fades to long-term review.
 - **Day-gated mastery** — same-day grinding caps a skill at 67%. Full mastery requires coming back when reviews are actually due. No cramming your way to the top.
-- **Dynamic difficulty** — meetings pick questions near your level and target your weakest concepts first.
+- **Dynamic difficulty & variety** — meetings pick questions near your level, target your weakest concepts first, and avoid anything you saw in the last 6 hours.
 
 ## 📚 Curriculum
 
@@ -31,4 +36,4 @@ Everything lives in a single file: **`index.html`**. No install, no backend, no 
 | 3 — Managers Office | Fintech Models & Payments | Security, Blockchain & Crypto | Deep Learning, LLMs & GenAI |
 | 4 — Executive Suite | Risk, Regulation & RegTech | Scaling Fintech Systems | AI in Finance |
 
-96 situational questions, 10 crisis events, 14 projects, 4 promotion interviews. One file. Zero dependencies.
+192 situational questions (16 per skill — no two meetings alike), 10 crisis events, 14 projects, 4 promotion interviews. One file. Zero dependencies.
